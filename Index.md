@@ -6,9 +6,14 @@ A proposed open and generalized protocol is being outlined here.  This protocol 
 
 All values are little endian.
 
-[Level 1](/Level_1.md)
-[Level 2](/Level_2.md)
+[Level 1](Level_1.md)
+
+[Level 2](Level_2.md)
+
 ##Level 3 frame type codes(incomplete):
-[Type 0: Initialization frames](/Level_3/Type_0_Index.md)
-[Type 1: Display frames sent from host](/Level_3/Type_1_Index.md)
-[Type 2: Key presses and other events sent from braille device](/Level_3/Type_2_Index.md)
+
+[Type 0: Initialization frames](Level_3/Type_0_Index.md)
+
+[Type 1: Display frames sent from host](Level_3/Type_1_Index.md)
+
+[Type 2: Key presses and other events sent from braille device](Level_3/Type_2_Index.md)
