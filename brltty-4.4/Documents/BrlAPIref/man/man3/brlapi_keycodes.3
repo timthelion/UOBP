@@ -1,0 +1,894 @@
+.TH "Types and Defines fore BrlAPI Key Codes" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Types and Defines fore BrlAPI Key Codes \- 
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_PRIxKEYCODE\fP   PRIx64"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PRIuKEYCODE\fP   PRIu64"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_MAX\fP   UINT64_C(0XFFFFFFFFFFFFFFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLAGS_MASK\fP   UINT64_C(0XFFFFFFFF00000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLAGS_SHIFT\fP   32"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG\fP(v)   ((\fBbrlapi_keyCode_t\fP)(v) << BRLAPI_KEY_FLAGS_SHIFT)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD1\fP   BRLAPI_KEY_FLG(0x00000008)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD2\fP   BRLAPI_KEY_FLG(0x00000010)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD3\fP   BRLAPI_KEY_FLG(0x00000020)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD4\fP   BRLAPI_KEY_FLG(0x00000040)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD5\fP   BRLAPI_KEY_FLG(0x00000080)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_MASK\fP   UINT64_C(0X00000000E0000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_SHIFT\fP   29"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_CMD\fP   UINT64_C(0X0000000020000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_SYM\fP   UINT64_C(0X0000000000000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CODE_MASK\fP   UINT64_C(0X000000001FFFFFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CODE_SHIFT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BLK_MASK\fP   UINT64_C(0X1FFF0000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BLK_SHIFT\fP   16"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ARG_MASK\fP   UINT64_C(0X0000FFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ARG_SHIFT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD\fP(v)   ((v) << BRLAPI_KEY_CMD_BLK_SHIFT)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_BACKSPACE\fP   UINT64_C(0X0000FF08)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_TAB\fP   UINT64_C(0X0000FF09)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_LINEFEED\fP   UINT64_C(0X0000FF0D)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_ESCAPE\fP   UINT64_C(0X0000FF1B)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_HOME\fP   UINT64_C(0X0000FF50)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_LEFT\fP   UINT64_C(0X0000FF51)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_UP\fP   UINT64_C(0X0000FF52)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_RIGHT\fP   UINT64_C(0X0000FF53)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_DOWN\fP   UINT64_C(0X0000FF54)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_PAGE_UP\fP   UINT64_C(0X0000FF55)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_PAGE_DOWN\fP   UINT64_C(0X0000FF56)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_END\fP   UINT64_C(0X0000FF57)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_INSERT\fP   UINT64_C(0X0000FF63)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_FUNCTION\fP   UINT64_C(0X0000FFBE)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_DELETE\fP   UINT64_C(0X0000FFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_UNICODE\fP   UINT64_C(0X01000000)"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef uint64_t \fBbrlapi_keyCode_t\fP"
+.br
+.in -1c 
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NOOP\fP   (BRLAPI_KEY_CMD(0) + 0)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_LNUP\fP   (BRLAPI_KEY_CMD(0) + 1)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_LNDN\fP   (BRLAPI_KEY_CMD(0) + 2)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_WINUP\fP   (BRLAPI_KEY_CMD(0) + 3)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_WINDN\fP   (BRLAPI_KEY_CMD(0) + 4)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRDIFLN\fP   (BRLAPI_KEY_CMD(0) + 5)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXDIFLN\fP   (BRLAPI_KEY_CMD(0) + 6)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ATTRUP\fP   (BRLAPI_KEY_CMD(0) + 7)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ATTRDN\fP   (BRLAPI_KEY_CMD(0) + 8)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_TOP\fP   (BRLAPI_KEY_CMD(0) + 9)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BOT\fP   (BRLAPI_KEY_CMD(0) + 10)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_TOP_LEFT\fP   (BRLAPI_KEY_CMD(0) + 11)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BOT_LEFT\fP   (BRLAPI_KEY_CMD(0) + 12)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRPGRPH\fP   (BRLAPI_KEY_CMD(0) + 13)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXPGRPH\fP   (BRLAPI_KEY_CMD(0) + 14)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRPROMPT\fP   (BRLAPI_KEY_CMD(0) + 15)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXPROMPT\fP   (BRLAPI_KEY_CMD(0) + 16)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRSEARCH\fP   (BRLAPI_KEY_CMD(0) + 17)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXSEARCH\fP   (BRLAPI_KEY_CMD(0) + 18)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CHRLT\fP   (BRLAPI_KEY_CMD(0) + 19)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CHRRT\fP   (BRLAPI_KEY_CMD(0) + 20)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_HWINLT\fP   (BRLAPI_KEY_CMD(0) + 21)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_HWINRT\fP   (BRLAPI_KEY_CMD(0) + 22)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_FWINLT\fP   (BRLAPI_KEY_CMD(0) + 23)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_FWINRT\fP   (BRLAPI_KEY_CMD(0) + 24)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_FWINLTSKIP\fP   (BRLAPI_KEY_CMD(0) + 25)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_FWINRTSKIP\fP   (BRLAPI_KEY_CMD(0) + 26)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_LNBEG\fP   (BRLAPI_KEY_CMD(0) + 27)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_LNEND\fP   (BRLAPI_KEY_CMD(0) + 28)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_HOME\fP   (BRLAPI_KEY_CMD(0) + 29)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BACK\fP   (BRLAPI_KEY_CMD(0) + 30)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_RETURN\fP   (BRLAPI_KEY_CMD(0) + 31)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_FREEZE\fP   (BRLAPI_KEY_CMD(0) + 32)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_DISPMD\fP   (BRLAPI_KEY_CMD(0) + 33)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SIXDOTS\fP   (BRLAPI_KEY_CMD(0) + 34)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SLIDEWIN\fP   (BRLAPI_KEY_CMD(0) + 35)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SKPIDLNS\fP   (BRLAPI_KEY_CMD(0) + 36)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SKPBLNKWINS\fP   (BRLAPI_KEY_CMD(0) + 37)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRVIS\fP   (BRLAPI_KEY_CMD(0) + 38)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRHIDE\fP   (BRLAPI_KEY_CMD(0) + 39)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRTRK\fP   (BRLAPI_KEY_CMD(0) + 40)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRSIZE\fP   (BRLAPI_KEY_CMD(0) + 41)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRBLINK\fP   (BRLAPI_KEY_CMD(0) + 42)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ATTRVIS\fP   (BRLAPI_KEY_CMD(0) + 43)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ATTRBLINK\fP   (BRLAPI_KEY_CMD(0) + 44)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CAPBLINK\fP   (BRLAPI_KEY_CMD(0) + 45)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_TUNES\fP   (BRLAPI_KEY_CMD(0) + 46)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_AUTOREPEAT\fP   (BRLAPI_KEY_CMD(0) + 47)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_AUTOSPEAK\fP   (BRLAPI_KEY_CMD(0) + 48)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_HELP\fP   (BRLAPI_KEY_CMD(0) + 49)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_INFO\fP   (BRLAPI_KEY_CMD(0) + 50)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_LEARN\fP   (BRLAPI_KEY_CMD(0) + 51)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PREFMENU\fP   (BRLAPI_KEY_CMD(0) + 52)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PREFSAVE\fP   (BRLAPI_KEY_CMD(0) + 53)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PREFLOAD\fP   (BRLAPI_KEY_CMD(0) + 54)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_FIRST_ITEM\fP   (BRLAPI_KEY_CMD(0) + 55)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_LAST_ITEM\fP   (BRLAPI_KEY_CMD(0) + 56)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_PREV_ITEM\fP   (BRLAPI_KEY_CMD(0) + 57)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_NEXT_ITEM\fP   (BRLAPI_KEY_CMD(0) + 58)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_PREV_SETTING\fP   (BRLAPI_KEY_CMD(0) + 59)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_NEXT_SETTING\fP   (BRLAPI_KEY_CMD(0) + 60)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MUTE\fP   (BRLAPI_KEY_CMD(0) + 61)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPKHOME\fP   (BRLAPI_KEY_CMD(0) + 62)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_LINE\fP   (BRLAPI_KEY_CMD(0) + 63)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_ABOVE\fP   (BRLAPI_KEY_CMD(0) + 64)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_BELOW\fP   (BRLAPI_KEY_CMD(0) + 65)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_SLOWER\fP   (BRLAPI_KEY_CMD(0) + 66)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_FASTER\fP   (BRLAPI_KEY_CMD(0) + 67)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_SOFTER\fP   (BRLAPI_KEY_CMD(0) + 68)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SAY_LOUDER\fP   (BRLAPI_KEY_CMD(0) + 69)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SWITCHVT_PREV\fP   (BRLAPI_KEY_CMD(0) + 70)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SWITCHVT_NEXT\fP   (BRLAPI_KEY_CMD(0) + 71)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CSRJMP_VERT\fP   (BRLAPI_KEY_CMD(0) + 72)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PASTE\fP   (BRLAPI_KEY_CMD(0) + 73)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_RESTARTBRL\fP   (BRLAPI_KEY_CMD(0) + 74)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_RESTARTSPEECH\fP   (BRLAPI_KEY_CMD(0) + 75)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_OFFLINE\fP   (BRLAPI_KEY_CMD(0) + 76)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SHIFT\fP   (BRLAPI_KEY_CMD(0) + 77)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_UPPER\fP   (BRLAPI_KEY_CMD(0) + 78)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CONTROL\fP   (BRLAPI_KEY_CMD(0) + 79)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_META\fP   (BRLAPI_KEY_CMD(0) + 80)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_TIME\fP   (BRLAPI_KEY_CMD(0) + 81)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_MENU_PREV_LEVEL\fP   (BRLAPI_KEY_CMD(0) + 82)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_SEL_LINE\fP   (BRLAPI_KEY_CMD(0) + 83)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_SEL_CHAR\fP   (BRLAPI_KEY_CMD(0) + 84)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_INS_CHARS\fP   (BRLAPI_KEY_CMD(0) + 85)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_DEL_CHARS\fP   (BRLAPI_KEY_CMD(0) + 86)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_REP_CHARS\fP   (BRLAPI_KEY_CMD(0) + 87)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ASPK_CMP_WORDS\fP   (BRLAPI_KEY_CMD(0) + 88)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_CURR_CHAR\fP   (BRLAPI_KEY_CMD(0) + 89)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_PREV_CHAR\fP   (BRLAPI_KEY_CMD(0) + 90)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_NEXT_CHAR\fP   (BRLAPI_KEY_CMD(0) + 91)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_CURR_WORD\fP   (BRLAPI_KEY_CMD(0) + 92)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_PREV_WORD\fP   (BRLAPI_KEY_CMD(0) + 93)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_NEXT_WORD\fP   (BRLAPI_KEY_CMD(0) + 94)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_CURR_LINE\fP   (BRLAPI_KEY_CMD(0) + 95)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_PREV_LINE\fP   (BRLAPI_KEY_CMD(0) + 96)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_NEXT_LINE\fP   (BRLAPI_KEY_CMD(0) + 97)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_FRST_CHAR\fP   (BRLAPI_KEY_CMD(0) + 98)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_LAST_CHAR\fP   (BRLAPI_KEY_CMD(0) + 99)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_FRST_LINE\fP   (BRLAPI_KEY_CMD(0) + 100)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_LAST_LINE\fP   (BRLAPI_KEY_CMD(0) + 101)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_DESC_CURR_CHAR\fP   (BRLAPI_KEY_CMD(0) + 102)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPELL_CURR_WORD\fP   (BRLAPI_KEY_CMD(0) + 103)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ROUTE_CURR_LOCN\fP   (BRLAPI_KEY_CMD(0) + 104)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SPEAK_CURR_LOCN\fP   (BRLAPI_KEY_CMD(0) + 105)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SHOW_CURR_LOCN\fP   (BRLAPI_KEY_CMD(0) + 106)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_TOGGLE_ON\fP   BRLAPI_KEY_FLG(0X0100)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_TOGGLE_OFF\fP   BRLAPI_KEY_FLG(0X0200)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_TOGGLE_MASK\fP   (BRLAPI_KEY_FLG_TOGGLE_ON | BRLAPI_KEY_FLG_TOGGLE_OFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOTION_ROUTE\fP   BRLAPI_KEY_FLG(0X0400)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_REPEAT_INITIAL\fP   BRLAPI_KEY_FLG(0X8000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_REPEAT_DELAY\fP   BRLAPI_KEY_FLG(0X4000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_REPEAT_MASK\fP   (BRLAPI_KEY_FLG_REPEAT_INITIAL | BRLAPI_KEY_FLG_REPEAT_DELAY)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ROUTE\fP   BRLAPI_KEY_CMD(0X01)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CLIP_NEW\fP   BRLAPI_KEY_CMD(0X02)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CUTBEGIN\fP   BRLAPI_KEY_CMD(0X02)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CLIP_ADD\fP   BRLAPI_KEY_CMD(0X03)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CUTAPPEND\fP   BRLAPI_KEY_CMD(0X03)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_COPY_RECT\fP   BRLAPI_KEY_CMD(0X04)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CUTRECT\fP   BRLAPI_KEY_CMD(0X04)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_COPY_LINE\fP   BRLAPI_KEY_CMD(0X05)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CUTLINE\fP   BRLAPI_KEY_CMD(0X05)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SWITCHVT\fP   BRLAPI_KEY_CMD(0X06)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRINDENT\fP   BRLAPI_KEY_CMD(0X07)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXINDENT\fP   BRLAPI_KEY_CMD(0X08)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_DESCCHAR\fP   BRLAPI_KEY_CMD(0X09)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SETLEFT\fP   BRLAPI_KEY_CMD(0X0A)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_SETMARK\fP   BRLAPI_KEY_CMD(0X0B)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_GOTOMARK\fP   BRLAPI_KEY_CMD(0X0C)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_GOTOLINE\fP   BRLAPI_KEY_CMD(0X0D)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_LINE_SCALED\fP   BRLAPI_KEY_FLG(0X0100)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_LINE_TOLEFT\fP   BRLAPI_KEY_FLG(0X0200)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PRDIFCHAR\fP   BRLAPI_KEY_CMD(0X0E)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_NXDIFCHAR\fP   BRLAPI_KEY_CMD(0X0F)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CLIP_COPY\fP   BRLAPI_KEY_CMD(0X10)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_COPYCHARS\fP   BRLAPI_KEY_CMD(0X10)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CLIP_APPEND\fP   BRLAPI_KEY_CMD(0X11)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_APNDCHARS\fP   BRLAPI_KEY_CMD(0X11)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PWGEN\fP   BRLAPI_KEY_CMD(0X12)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PASSDOTS\fP   BRLAPI_KEY_CMD(0X22)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_SHIFT\fP   BRLAPI_KEY_FLG(0X01)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_UPPER\fP   BRLAPI_KEY_FLG(0X02)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_CONTROL\fP   BRLAPI_KEY_FLG(0X04)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_META\fP   BRLAPI_KEY_FLG(0X08)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT1\fP   0001"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT2\fP   0002"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT3\fP   0004"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT4\fP   0010"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT5\fP   0020"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT6\fP   0040"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT7\fP   0100"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT8\fP   0200"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOTC\fP   0400"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PASSAT\fP   BRLAPI_KEY_CMD(0X23)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PASSXT\fP   BRLAPI_KEY_CMD(0X24)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_PASSPS2\fP   BRLAPI_KEY_CMD(0X25)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_KBD_RELEASE\fP   BRLAPI_KEY_FLG(0X0100)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_KBD_EMUL0\fP   BRLAPI_KEY_FLG(0X0200)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_KBD_EMUL1\fP   BRLAPI_KEY_FLG(0X0400)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_CONTEXT\fP   BRLAPI_KEY_CMD(0X26)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOTS\fP(dot1, dot2, dot3, dot4, dot5, dot6, dot7, dot8)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DOT_CHORD\fP   256"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Key codes are unsigned 64 bit integers. This 64-bit space is split into 3 parts:
+.PP
+.IP "\(bu" 2
+bits 63-32 (BRLAPI_KEY_FLAGS_MASK), flags: bits 39-32 are standard X modifiers (shift, control, meta, ...). Other flags are used for some commands, see documentation of BRLAPI_KEY_FLG_* for their respective uses.
+.IP "\(bu" 2
+bits 31-29 (BRLAPI_KEY_TYPE_MASK), key type: either BRLAPI_KEY_TYPE_CMD for braille commands, or BRLAPI_KEY_TYPE_SYM for standard X keysyms.
+.IP "\(bu" 2
+bits 28-0 (BRLAPI_KEY_CODE_MASK), key code: for braille commands, see BRLAPI_KEY_CMD_* ; for standard X keysyms, this is the keysym value, see X11 documentation, a complete list is probably available on your system in /usr/include/X11/keysymdef.h
+.PP
+.PP
+The third part is itself split into two parts: a command number and a command value. The relative sizes of these parts vary according to the key type.
+.PP
+For a braille command, bits 28-16 (BRLAPI_KEY_CMD_BLK_MASK) hold the braille command number, while bits 15-0 (BRLAPI_KEY_CMD_ARG_MASK) hold the command value.
+.PP
+For a X keysym, if it is a unicode keysym (0x1uvwxyz), then the command number part is 0x1000000 and the value part is 0xuvwxyz. Else, the command part is held by bits 28-8 and the value part is held by bits 7-0. This permits to easily handle usual cases like 0x00xy (latin1), 0x01xy (latin2), XK_Backspace (0xff08, backspace), XK_Tab (0xff09, tab), ...
+.PP
+For instance, if key == 0x0000000020010008,
+.IP "\(bu" 2
+(key & BRLAPI_KEY_TYPE_MASK) == BRLAPI_KEY_TYPE_CMD, so it's a braille command
+.IP "\(bu" 2
+(key & BRLAPI_KEY_CMD_BLK_MASK) == BRLAPI_KEY_CMD_ROUTE, so it's the braille route command.
+.IP "\(bu" 2
+(key & BRLAPI_KEY_CMD_ARG_MASK) == 8, so the highlighted cell is the 9th one (cells are numbered from 0)
+.IP "\(bu" 2
+(key & BRLAPI_KEY_FLAGS_MASK) == 0, so no modifier key was pressed during the command, and no particular flag applies to the command.
+.PP
+.PP
+if key == 0x000000010000FF09,
+.IP "\(bu" 2
+(key & BRLAPI_KEY_TYPE_MASK) == BRLAPI_KEY_TYPE_SYM, so it's a keysym
+.IP "\(bu" 2
+(key & BRLAPI_KEY_CODE_MASK) == XK_Tab, so it's the tab key. BRLAPI_KEY_SYM_TAB can also be used here, as well as a few other BRLAPI_KEY_SYM_* constants which are provided to avoid having to include X11/keysymdef.h
+.IP "\(bu" 2
+(key & BRLAPI_KEY_FLAGS_MASK) == BRLAPI_KEY_FLG_SHIFT, so the shift modifier was pressed during the command.
+.PP
+.PP
+in the X11 standard some keysyms are directly unicode, for instance if key == 0x0000000001001EA0,
+.IP "\(bu" 2
+(key & BRLAPI_KEY_TYPE_MASK) == BRLAPI_KEY_TYPE_SYM, so it's a keysym
+.IP "\(bu" 2
+(key & BRLAPI_KEY_SYM_UNICODE) != 0 so it's a unicode keysym, whose value is key & (BRLAPI_KEY_SYM_UNICODE-1). Of course, one can also consider (key & BRLAPI_KEY_CODE_MASK) == XK_Abelowdot
+.IP "\(bu" 2
+(key & BRLAPI_KEY_FLAGS_MASK) == 0, so no modifier key was pressed during the command, and no particular flag applies to the command.
+.PP
+.PP
+The \fBbrlapi_expandKeyCode()\fP function may be used for splitting key codes into these parts. 
+.SH "Define Documentation"
+.PP 
+.SS "#define BRLAPI_DOT1   0001"upper-left dot of standard braille cell 
+.SS "#define BRLAPI_DOT2   0002"middle-left dot of standard braille cell 
+.SS "#define BRLAPI_DOT3   0004"lower-left dot of standard braille cell 
+.SS "#define BRLAPI_DOT4   0010"upper-right dot of standard braille cell 
+.SS "#define BRLAPI_DOT5   0020"middle-right dot of standard braille cell 
+.SS "#define BRLAPI_DOT6   0040"lower-right dot of standard braille cell 
+.SS "#define BRLAPI_DOT7   0100"lower-left dot of computer braille cell 
+.SS "#define BRLAPI_DOT8   0200"lower-right dot of computer braille cell 
+.SS "#define BRLAPI_DOT_CHORD   256"space key 
+.SS "#define BRLAPI_DOTC   0400"space key pressed 
+.SS "#define BRLAPI_DOTS(dot1, dot2, dot3, dot4, dot5, dot6, dot7, dot8)"\fBValue:\fP
+.PP
+.nf
+(\
+  ((dot1)? BRLAPI_DOT1: 0) | \
+  ((dot2)? BRLAPI_DOT2: 0) | \
+  ((dot3)? BRLAPI_DOT3: 0) | \
+  ((dot4)? BRLAPI_DOT4: 0) | \
+  ((dot5)? BRLAPI_DOT5: 0) | \
+  ((dot6)? BRLAPI_DOT6: 0) | \
+  ((dot7)? BRLAPI_DOT7: 0) | \
+  ((dot8)? BRLAPI_DOT8: 0) \
+)
+.fi
+Helper macro to easily produce braille patterns 
+.SS "#define BRLAPI_KEY_CMD(v)   ((v) << BRLAPI_KEY_CMD_BLK_SHIFT)"
+.SS "#define BRLAPI_KEY_CMD_APNDCHARS   BRLAPI_KEY_CMD(0X11)"deprecated definition of CLIP_APPEND - append characters to clipboard 
+.SS "#define BRLAPI_KEY_CMD_ARG_MASK   UINT64_C(0X0000FFFF)"Mask for braille command value 
+.SS "#define BRLAPI_KEY_CMD_ARG_SHIFT   0"Shift for braille command value 
+.SS "#define BRLAPI_KEY_CMD_ASPK_CMP_WORDS   (BRLAPI_KEY_CMD(0) + 88)"set autospeak completed words on/off 
+.SS "#define BRLAPI_KEY_CMD_ASPK_DEL_CHARS   (BRLAPI_KEY_CMD(0) + 86)"set autospeak deleted characters on/off 
+.SS "#define BRLAPI_KEY_CMD_ASPK_INS_CHARS   (BRLAPI_KEY_CMD(0) + 85)"set autospeak inserted characters on/off 
+.SS "#define BRLAPI_KEY_CMD_ASPK_REP_CHARS   (BRLAPI_KEY_CMD(0) + 87)"set autospeak replaced characters on/off 
+.SS "#define BRLAPI_KEY_CMD_ASPK_SEL_CHAR   (BRLAPI_KEY_CMD(0) + 84)"set autospeak selected character on/off 
+.SS "#define BRLAPI_KEY_CMD_ASPK_SEL_LINE   (BRLAPI_KEY_CMD(0) + 83)"set autospeak selected line on/off 
+.SS "#define BRLAPI_KEY_CMD_ATTRBLINK   (BRLAPI_KEY_CMD(0) + 44)"set attribute blinking on/off 
+.SS "#define BRLAPI_KEY_CMD_ATTRDN   (BRLAPI_KEY_CMD(0) + 8)"go down to nearest line with different highlighting 
+.SS "#define BRLAPI_KEY_CMD_ATTRUP   (BRLAPI_KEY_CMD(0) + 7)"go up to nearest line with different highlighting 
+.SS "#define BRLAPI_KEY_CMD_ATTRVIS   (BRLAPI_KEY_CMD(0) + 43)"set attribute underlining on/off 
+.SS "#define BRLAPI_KEY_CMD_AUTOREPEAT   (BRLAPI_KEY_CMD(0) + 47)"set autorepeat on/off 
+.SS "#define BRLAPI_KEY_CMD_AUTOSPEAK   (BRLAPI_KEY_CMD(0) + 48)"set autospeak on/off 
+.SS "#define BRLAPI_KEY_CMD_BACK   (BRLAPI_KEY_CMD(0) + 30)"go back after cursor tracking 
+.SS "#define BRLAPI_KEY_CMD_BLK_MASK   UINT64_C(0X1FFF0000)"Mask for braille command type 
+.SS "#define BRLAPI_KEY_CMD_BLK_SHIFT   16"Shift for braille command type 
+.SS "#define BRLAPI_KEY_CMD_BOT   (BRLAPI_KEY_CMD(0) + 10)"go to bottom line 
+.SS "#define BRLAPI_KEY_CMD_BOT_LEFT   (BRLAPI_KEY_CMD(0) + 12)"go to beginning of bottom line 
+.SS "#define BRLAPI_KEY_CMD_CAPBLINK   (BRLAPI_KEY_CMD(0) + 45)"set capital letter blinking on/off 
+.SS "#define BRLAPI_KEY_CMD_CHRLT   (BRLAPI_KEY_CMD(0) + 19)"go left one character 
+.SS "#define BRLAPI_KEY_CMD_CHRRT   (BRLAPI_KEY_CMD(0) + 20)"go right one character 
+.SS "#define BRLAPI_KEY_CMD_CLIP_ADD   BRLAPI_KEY_CMD(0X03)"append to clipboard from character 
+.SS "#define BRLAPI_KEY_CMD_CLIP_APPEND   BRLAPI_KEY_CMD(0X11)"append characters to clipboard 
+.SS "#define BRLAPI_KEY_CMD_CLIP_COPY   BRLAPI_KEY_CMD(0X10)"copy characters to clipboard 
+.SS "#define BRLAPI_KEY_CMD_CLIP_NEW   BRLAPI_KEY_CMD(0X02)"start new clipboard at character 
+.SS "#define BRLAPI_KEY_CMD_CONTEXT   BRLAPI_KEY_CMD(0X26)"switch to command context 
+.SS "#define BRLAPI_KEY_CMD_CONTROL   (BRLAPI_KEY_CMD(0) + 79)"add control modifier to next typed character or emulated key 
+.SS "#define BRLAPI_KEY_CMD_COPY_LINE   BRLAPI_KEY_CMD(0X05)"linear copy to character 
+.SS "#define BRLAPI_KEY_CMD_COPY_RECT   BRLAPI_KEY_CMD(0X04)"rectangular copy to character 
+.SS "#define BRLAPI_KEY_CMD_COPYCHARS   BRLAPI_KEY_CMD(0X10)"deprecated definition of CLIP_COPY - copy characters to clipboard 
+.SS "#define BRLAPI_KEY_CMD_CSRBLINK   (BRLAPI_KEY_CMD(0) + 42)"set cursor blinking on/off 
+.SS "#define BRLAPI_KEY_CMD_CSRHIDE   (BRLAPI_KEY_CMD(0) + 39)"set hidden cursor on/off 
+.SS "#define BRLAPI_KEY_CMD_CSRJMP_VERT   (BRLAPI_KEY_CMD(0) + 72)"bring cursor to line 
+.SS "#define BRLAPI_KEY_CMD_CSRSIZE   (BRLAPI_KEY_CMD(0) + 41)"set cursor style block/underline 
+.SS "#define BRLAPI_KEY_CMD_CSRTRK   (BRLAPI_KEY_CMD(0) + 40)"set cursor tracking on/off 
+.SS "#define BRLAPI_KEY_CMD_CSRVIS   (BRLAPI_KEY_CMD(0) + 38)"set cursor visibility on/off 
+.SS "#define BRLAPI_KEY_CMD_CUTAPPEND   BRLAPI_KEY_CMD(0X03)"deprecated definition of CLIP_ADD - append to clipboard from character 
+.SS "#define BRLAPI_KEY_CMD_CUTBEGIN   BRLAPI_KEY_CMD(0X02)"deprecated definition of CLIP_NEW - start new clipboard at character 
+.SS "#define BRLAPI_KEY_CMD_CUTLINE   BRLAPI_KEY_CMD(0X05)"deprecated definition of COPY_LINE - linear copy to character 
+.SS "#define BRLAPI_KEY_CMD_CUTRECT   BRLAPI_KEY_CMD(0X04)"deprecated definition of COPY_RECT - rectangular copy to character 
+.SS "#define BRLAPI_KEY_CMD_DESC_CURR_CHAR   (BRLAPI_KEY_CMD(0) + 102)"describe current character 
+.SS "#define BRLAPI_KEY_CMD_DESCCHAR   BRLAPI_KEY_CMD(0X09)"describe character 
+.SS "#define BRLAPI_KEY_CMD_DISPMD   (BRLAPI_KEY_CMD(0) + 33)"set display mode attributes/text 
+.SS "#define BRLAPI_KEY_CMD_FREEZE   (BRLAPI_KEY_CMD(0) + 32)"freeze/unfreeze screen image 
+.SS "#define BRLAPI_KEY_CMD_FWINLT   (BRLAPI_KEY_CMD(0) + 23)"go left one window 
+.SS "#define BRLAPI_KEY_CMD_FWINLTSKIP   (BRLAPI_KEY_CMD(0) + 25)"go left to nearest non-blank window 
+.SS "#define BRLAPI_KEY_CMD_FWINRT   (BRLAPI_KEY_CMD(0) + 24)"go right one window 
+.SS "#define BRLAPI_KEY_CMD_FWINRTSKIP   (BRLAPI_KEY_CMD(0) + 26)"go right to nearest non-blank window 
+.SS "#define BRLAPI_KEY_CMD_GOTOLINE   BRLAPI_KEY_CMD(0X0D)"go to selected line 
+.SS "#define BRLAPI_KEY_CMD_GOTOMARK   BRLAPI_KEY_CMD(0X0C)"go to remembered window position 
+.SS "#define BRLAPI_KEY_CMD_HELP   (BRLAPI_KEY_CMD(0) + 49)"enter/leave help display 
+.SS "#define BRLAPI_KEY_CMD_HOME   (BRLAPI_KEY_CMD(0) + 29)"go to cursor 
+.SS "#define BRLAPI_KEY_CMD_HWINLT   (BRLAPI_KEY_CMD(0) + 21)"go left half a window 
+.SS "#define BRLAPI_KEY_CMD_HWINRT   (BRLAPI_KEY_CMD(0) + 22)"go right half a window 
+.SS "#define BRLAPI_KEY_CMD_INFO   (BRLAPI_KEY_CMD(0) + 50)"enter/leave status display 
+.SS "#define BRLAPI_KEY_CMD_LEARN   (BRLAPI_KEY_CMD(0) + 51)"enter/leave command learn mode 
+.SS "#define BRLAPI_KEY_CMD_LNBEG   (BRLAPI_KEY_CMD(0) + 27)"go to beginning of line 
+.SS "#define BRLAPI_KEY_CMD_LNDN   (BRLAPI_KEY_CMD(0) + 2)"go down one line 
+.SS "#define BRLAPI_KEY_CMD_LNEND   (BRLAPI_KEY_CMD(0) + 28)"go to end of line 
+.SS "#define BRLAPI_KEY_CMD_LNUP   (BRLAPI_KEY_CMD(0) + 1)"go up one line 
+.SS "#define BRLAPI_KEY_CMD_MENU_FIRST_ITEM   (BRLAPI_KEY_CMD(0) + 55)"go to first item 
+.SS "#define BRLAPI_KEY_CMD_MENU_LAST_ITEM   (BRLAPI_KEY_CMD(0) + 56)"go to last item 
+.SS "#define BRLAPI_KEY_CMD_MENU_NEXT_ITEM   (BRLAPI_KEY_CMD(0) + 58)"go to next item 
+.SS "#define BRLAPI_KEY_CMD_MENU_NEXT_SETTING   (BRLAPI_KEY_CMD(0) + 60)"select next choice 
+.SS "#define BRLAPI_KEY_CMD_MENU_PREV_ITEM   (BRLAPI_KEY_CMD(0) + 57)"go to previous item 
+.SS "#define BRLAPI_KEY_CMD_MENU_PREV_LEVEL   (BRLAPI_KEY_CMD(0) + 82)"go to previous menu level 
+.SS "#define BRLAPI_KEY_CMD_MENU_PREV_SETTING   (BRLAPI_KEY_CMD(0) + 59)"select previous choice 
+.SS "#define BRLAPI_KEY_CMD_META   (BRLAPI_KEY_CMD(0) + 80)"add meta modifier to next typed character or emulated key 
+.SS "#define BRLAPI_KEY_CMD_MUTE   (BRLAPI_KEY_CMD(0) + 61)"stop speaking 
+.SS "#define BRLAPI_KEY_CMD_NOOP   (BRLAPI_KEY_CMD(0) + 0)"do nothing 
+.SS "#define BRLAPI_KEY_CMD_NXDIFCHAR   BRLAPI_KEY_CMD(0X0F)"go down to nearest line with different character 
+.SS "#define BRLAPI_KEY_CMD_NXDIFLN   (BRLAPI_KEY_CMD(0) + 6)"go down to nearest line with different content 
+.SS "#define BRLAPI_KEY_CMD_NXINDENT   BRLAPI_KEY_CMD(0X08)"go down to nearest line with less indent than character 
+.SS "#define BRLAPI_KEY_CMD_NXPGRPH   (BRLAPI_KEY_CMD(0) + 14)"go down to first line of next paragraph 
+.SS "#define BRLAPI_KEY_CMD_NXPROMPT   (BRLAPI_KEY_CMD(0) + 16)"go down to next command prompt 
+.SS "#define BRLAPI_KEY_CMD_NXSEARCH   (BRLAPI_KEY_CMD(0) + 18)"search forward for clipboard text 
+.SS "#define BRLAPI_KEY_CMD_OFFLINE   (BRLAPI_KEY_CMD(0) + 76)"braille display temporarily unavailable 
+.SS "#define BRLAPI_KEY_CMD_PASSAT   BRLAPI_KEY_CMD(0X23)"AT (set 2) keyboard scan code 
+.SS "#define BRLAPI_KEY_CMD_PASSDOTS   BRLAPI_KEY_CMD(0X22)"type braille character 
+.SS "#define BRLAPI_KEY_CMD_PASSPS2   BRLAPI_KEY_CMD(0X25)"PS/2 (set 3) keyboard scan code 
+.SS "#define BRLAPI_KEY_CMD_PASSXT   BRLAPI_KEY_CMD(0X24)"XT (set 1) keyboard scan code 
+.SS "#define BRLAPI_KEY_CMD_PASTE   (BRLAPI_KEY_CMD(0) + 73)"insert clipboard text at cursor 
+.SS "#define BRLAPI_KEY_CMD_PRDIFCHAR   BRLAPI_KEY_CMD(0X0E)"go up to nearest line with different character 
+.SS "#define BRLAPI_KEY_CMD_PRDIFLN   (BRLAPI_KEY_CMD(0) + 5)"go up to nearest line with different content 
+.SS "#define BRLAPI_KEY_CMD_PREFLOAD   (BRLAPI_KEY_CMD(0) + 54)"restore preferences from disk 
+.SS "#define BRLAPI_KEY_CMD_PREFMENU   (BRLAPI_KEY_CMD(0) + 52)"enter/leave preferences menu 
+.SS "#define BRLAPI_KEY_CMD_PREFSAVE   (BRLAPI_KEY_CMD(0) + 53)"save preferences to disk 
+.SS "#define BRLAPI_KEY_CMD_PRINDENT   BRLAPI_KEY_CMD(0X07)"go up to nearest line with less indent than character 
+.SS "#define BRLAPI_KEY_CMD_PRPGRPH   (BRLAPI_KEY_CMD(0) + 13)"go up to last line of previous paragraph 
+.SS "#define BRLAPI_KEY_CMD_PRPROMPT   (BRLAPI_KEY_CMD(0) + 15)"go up to previous command prompt 
+.SS "#define BRLAPI_KEY_CMD_PRSEARCH   (BRLAPI_KEY_CMD(0) + 17)"search backward for clipboard text 
+.SS "#define BRLAPI_KEY_CMD_PWGEN   BRLAPI_KEY_CMD(0X12)"put random password into clipboard 
+.SS "#define BRLAPI_KEY_CMD_RESTARTBRL   (BRLAPI_KEY_CMD(0) + 74)"restart braille driver 
+.SS "#define BRLAPI_KEY_CMD_RESTARTSPEECH   (BRLAPI_KEY_CMD(0) + 75)"restart speech driver 
+.SS "#define BRLAPI_KEY_CMD_RETURN   (BRLAPI_KEY_CMD(0) + 31)"go to cursor or go back after cursor tracking 
+.SS "#define BRLAPI_KEY_CMD_ROUTE   BRLAPI_KEY_CMD(0X01)"bring cursor to character 
+.SS "#define BRLAPI_KEY_CMD_ROUTE_CURR_LOCN   (BRLAPI_KEY_CMD(0) + 104)"bring cursor to speech location 
+.SS "#define BRLAPI_KEY_CMD_SAY_ABOVE   (BRLAPI_KEY_CMD(0) + 64)"speak from top of screen through current line 
+.SS "#define BRLAPI_KEY_CMD_SAY_BELOW   (BRLAPI_KEY_CMD(0) + 65)"speak from current line through bottom of screen 
+.SS "#define BRLAPI_KEY_CMD_SAY_FASTER   (BRLAPI_KEY_CMD(0) + 67)"increase speech rate 
+.SS "#define BRLAPI_KEY_CMD_SAY_LINE   (BRLAPI_KEY_CMD(0) + 63)"speak current line 
+.SS "#define BRLAPI_KEY_CMD_SAY_LOUDER   (BRLAPI_KEY_CMD(0) + 69)"increase speech volume 
+.SS "#define BRLAPI_KEY_CMD_SAY_SLOWER   (BRLAPI_KEY_CMD(0) + 66)"decrease speech rate 
+.SS "#define BRLAPI_KEY_CMD_SAY_SOFTER   (BRLAPI_KEY_CMD(0) + 68)"decrease speech volume 
+.SS "#define BRLAPI_KEY_CMD_SETLEFT   BRLAPI_KEY_CMD(0X0A)"place left end of window at character 
+.SS "#define BRLAPI_KEY_CMD_SETMARK   BRLAPI_KEY_CMD(0X0B)"remember current window position 
+.SS "#define BRLAPI_KEY_CMD_SHIFT   (BRLAPI_KEY_CMD(0) + 77)"add shift modifier to next typed character or emulated key 
+.SS "#define BRLAPI_KEY_CMD_SHOW_CURR_LOCN   (BRLAPI_KEY_CMD(0) + 106)"set speech location visibility on/off 
+.SS "#define BRLAPI_KEY_CMD_SIXDOTS   (BRLAPI_KEY_CMD(0) + 34)"set text style 6-dot/8-dot 
+.SS "#define BRLAPI_KEY_CMD_SKPBLNKWINS   (BRLAPI_KEY_CMD(0) + 37)"set skipping of blank windows on/off 
+.SS "#define BRLAPI_KEY_CMD_SKPIDLNS   (BRLAPI_KEY_CMD(0) + 36)"set skipping of lines with identical content on/off 
+.SS "#define BRLAPI_KEY_CMD_SLIDEWIN   (BRLAPI_KEY_CMD(0) + 35)"set sliding window on/off 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_CURR_CHAR   (BRLAPI_KEY_CMD(0) + 89)"speak current character 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_CURR_LINE   (BRLAPI_KEY_CMD(0) + 95)"speak current line 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_CURR_LOCN   (BRLAPI_KEY_CMD(0) + 105)"speak speech location 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_CURR_WORD   (BRLAPI_KEY_CMD(0) + 92)"speak current word 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_FRST_CHAR   (BRLAPI_KEY_CMD(0) + 98)"go to and speak first non-blank character on line 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_FRST_LINE   (BRLAPI_KEY_CMD(0) + 100)"go to and speak first non-blank line on screen 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_LAST_CHAR   (BRLAPI_KEY_CMD(0) + 99)"go to and speak last non-blank character on line 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_LAST_LINE   (BRLAPI_KEY_CMD(0) + 101)"go to and speak last non-blank line on screen 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_NEXT_CHAR   (BRLAPI_KEY_CMD(0) + 91)"go to and speak next character 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_NEXT_LINE   (BRLAPI_KEY_CMD(0) + 97)"go to and speak next line 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_NEXT_WORD   (BRLAPI_KEY_CMD(0) + 94)"go to and speak next word 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_PREV_CHAR   (BRLAPI_KEY_CMD(0) + 90)"go to and speak previous character 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_PREV_LINE   (BRLAPI_KEY_CMD(0) + 96)"go to and speak previous line 
+.SS "#define BRLAPI_KEY_CMD_SPEAK_PREV_WORD   (BRLAPI_KEY_CMD(0) + 93)"go to and speak previous word 
+.SS "#define BRLAPI_KEY_CMD_SPELL_CURR_WORD   (BRLAPI_KEY_CMD(0) + 103)"spell current word 
+.SS "#define BRLAPI_KEY_CMD_SPKHOME   (BRLAPI_KEY_CMD(0) + 62)"go to current speech position 
+.SS "#define BRLAPI_KEY_CMD_SWITCHVT   BRLAPI_KEY_CMD(0X06)"switch to virtual terminal 
+.SS "#define BRLAPI_KEY_CMD_SWITCHVT_NEXT   (BRLAPI_KEY_CMD(0) + 71)"switch to next virtual terminal 
+.SS "#define BRLAPI_KEY_CMD_SWITCHVT_PREV   (BRLAPI_KEY_CMD(0) + 70)"switch to previous virtual terminal 
+.SS "#define BRLAPI_KEY_CMD_TIME   (BRLAPI_KEY_CMD(0) + 81)"show the current date and time 
+.SS "#define BRLAPI_KEY_CMD_TOP   (BRLAPI_KEY_CMD(0) + 9)"go to top line 
+.SS "#define BRLAPI_KEY_CMD_TOP_LEFT   (BRLAPI_KEY_CMD(0) + 11)"go to beginning of top line 
+.SS "#define BRLAPI_KEY_CMD_TUNES   (BRLAPI_KEY_CMD(0) + 46)"set alert tunes on/off 
+.SS "#define BRLAPI_KEY_CMD_UPPER   (BRLAPI_KEY_CMD(0) + 78)"add upper modifier to next typed character or emulated key 
+.SS "#define BRLAPI_KEY_CMD_WINDN   (BRLAPI_KEY_CMD(0) + 4)"go down several lines 
+.SS "#define BRLAPI_KEY_CMD_WINUP   (BRLAPI_KEY_CMD(0) + 3)"go up several lines 
+.SS "#define BRLAPI_KEY_CODE_MASK   UINT64_C(0X000000001FFFFFFF)"Mask for code of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_CODE_SHIFT   0"Shift for code of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_FLAGS_MASK   UINT64_C(0XFFFFFFFF00000000)"Mask for flags of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_FLAGS_SHIFT   32"Shift for flags of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_FLG(v)   ((\fBbrlapi_keyCode_t\fP)(v) << BRLAPI_KEY_FLAGS_SHIFT)"
+.SS "#define BRLAPI_KEY_FLG_CONTROL   BRLAPI_KEY_FLG(0X04)"control key pressed 
+.SS "#define BRLAPI_KEY_FLG_KBD_EMUL0   BRLAPI_KEY_FLG(0X0200)"it is an emulation 0 scan code 
+.SS "#define BRLAPI_KEY_FLG_KBD_EMUL1   BRLAPI_KEY_FLG(0X0400)"it is an emulation 1 scan code 
+.SS "#define BRLAPI_KEY_FLG_KBD_RELEASE   BRLAPI_KEY_FLG(0X0100)"it is a release scan code 
+.SS "#define BRLAPI_KEY_FLG_LINE_SCALED   BRLAPI_KEY_FLG(0X0100)"scale arg=0X00-0XFF to screen height 
+.SS "#define BRLAPI_KEY_FLG_LINE_TOLEFT   BRLAPI_KEY_FLG(0X0200)"go to beginning of line 
+.SS "#define BRLAPI_KEY_FLG_META   BRLAPI_KEY_FLG(0X08)"meta key pressed 
+.SS "#define BRLAPI_KEY_FLG_MOD1   BRLAPI_KEY_FLG(0x00000008)"Standard X modifiers Mod1 modifier (AKA meta) 
+.SS "#define BRLAPI_KEY_FLG_MOD2   BRLAPI_KEY_FLG(0x00000010)"Mod2 modifier (usually numlock) 
+.SS "#define BRLAPI_KEY_FLG_MOD3   BRLAPI_KEY_FLG(0x00000020)"Mod3 modifier 
+.SS "#define BRLAPI_KEY_FLG_MOD4   BRLAPI_KEY_FLG(0x00000040)"Mod4 modifier 
+.SS "#define BRLAPI_KEY_FLG_MOD5   BRLAPI_KEY_FLG(0x00000080)"Mod5 modifier (usually Alt-Gr) 
+.SS "#define BRLAPI_KEY_FLG_MOTION_ROUTE   BRLAPI_KEY_FLG(0X0400)"bring cursor into window after function 
+.SS "#define BRLAPI_KEY_FLG_REPEAT_DELAY   BRLAPI_KEY_FLG(0X4000)"wait before repeating 
+.SS "#define BRLAPI_KEY_FLG_REPEAT_INITIAL   BRLAPI_KEY_FLG(0X8000)"execute command on key press 
+.SS "#define BRLAPI_KEY_FLG_REPEAT_MASK   (BRLAPI_KEY_FLG_REPEAT_INITIAL | BRLAPI_KEY_FLG_REPEAT_DELAY)"mask for all repeat flags 
+.SS "#define BRLAPI_KEY_FLG_SHIFT   BRLAPI_KEY_FLG(0X01)"shift key pressed 
+.SS "#define BRLAPI_KEY_FLG_TOGGLE_MASK   (BRLAPI_KEY_FLG_TOGGLE_ON | BRLAPI_KEY_FLG_TOGGLE_OFF)"mask for all toggle flags 
+.SS "#define BRLAPI_KEY_FLG_TOGGLE_OFF   BRLAPI_KEY_FLG(0X0200)"disable feature 
+.SS "#define BRLAPI_KEY_FLG_TOGGLE_ON   BRLAPI_KEY_FLG(0X0100)"enable feature 
+.SS "#define BRLAPI_KEY_FLG_UPPER   BRLAPI_KEY_FLG(0X02)"convert to uppercase 
+.SS "#define BRLAPI_KEY_MAX   UINT64_C(0XFFFFFFFFFFFFFFFF)"Brlapi_keyCode_t's biggest value
+.PP
+As defined in \fC<stdint.h>\fP 
+.SS "#define BRLAPI_KEY_SYM_BACKSPACE   UINT64_C(0X0000FF08)"Standard X keysyms 
+.SS "#define BRLAPI_KEY_SYM_DELETE   UINT64_C(0X0000FFFF)"
+.SS "#define BRLAPI_KEY_SYM_DOWN   UINT64_C(0X0000FF54)"
+.SS "#define BRLAPI_KEY_SYM_END   UINT64_C(0X0000FF57)"
+.SS "#define BRLAPI_KEY_SYM_ESCAPE   UINT64_C(0X0000FF1B)"
+.SS "#define BRLAPI_KEY_SYM_FUNCTION   UINT64_C(0X0000FFBE)"
+.SS "#define BRLAPI_KEY_SYM_HOME   UINT64_C(0X0000FF50)"
+.SS "#define BRLAPI_KEY_SYM_INSERT   UINT64_C(0X0000FF63)"
+.SS "#define BRLAPI_KEY_SYM_LEFT   UINT64_C(0X0000FF51)"
+.SS "#define BRLAPI_KEY_SYM_LINEFEED   UINT64_C(0X0000FF0D)"
+.SS "#define BRLAPI_KEY_SYM_PAGE_DOWN   UINT64_C(0X0000FF56)"
+.SS "#define BRLAPI_KEY_SYM_PAGE_UP   UINT64_C(0X0000FF55)"
+.SS "#define BRLAPI_KEY_SYM_RIGHT   UINT64_C(0X0000FF53)"
+.SS "#define BRLAPI_KEY_SYM_TAB   UINT64_C(0X0000FF09)"
+.SS "#define BRLAPI_KEY_SYM_UNICODE   UINT64_C(0X01000000)"
+.SS "#define BRLAPI_KEY_SYM_UP   UINT64_C(0X0000FF52)"
+.SS "#define BRLAPI_KEY_TYPE_CMD   UINT64_C(0X0000000020000000)"Braille command brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_TYPE_MASK   UINT64_C(0X00000000E0000000)"Mask for type of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_TYPE_SHIFT   29"Shift for type of brlapi_keyCode_t 
+.SS "#define BRLAPI_KEY_TYPE_SYM   UINT64_C(0X0000000000000000)"X Keysym brlapi_keyCode_t 
+.SS "#define BRLAPI_PRIuKEYCODE   PRIu64"Unsigned print format for brlapi_keyCode_t 
+.SS "#define BRLAPI_PRIxKEYCODE   PRIx64"Hex print format for brlapi_keyCode_t 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef uint64_t \fBbrlapi_keyCode_t\fP"
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

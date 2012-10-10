@@ -1,0 +1,142 @@
+.TH "brlapi_keycodes.h" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brlapi_keycodes.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'brlapi_constants.h'\fP
+.br
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_PRIxKEYCODE\fP   PRIx64"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PRIuKEYCODE\fP   PRIu64"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_MAX\fP   UINT64_C(0XFFFFFFFFFFFFFFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLAGS_MASK\fP   UINT64_C(0XFFFFFFFF00000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLAGS_SHIFT\fP   32"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG\fP(v)   ((\fBbrlapi_keyCode_t\fP)(v) << BRLAPI_KEY_FLAGS_SHIFT)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD1\fP   BRLAPI_KEY_FLG(0x00000008)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD2\fP   BRLAPI_KEY_FLG(0x00000010)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD3\fP   BRLAPI_KEY_FLG(0x00000020)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD4\fP   BRLAPI_KEY_FLG(0x00000040)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_FLG_MOD5\fP   BRLAPI_KEY_FLG(0x00000080)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_MASK\fP   UINT64_C(0X00000000E0000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_SHIFT\fP   29"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_CMD\fP   UINT64_C(0X0000000020000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_TYPE_SYM\fP   UINT64_C(0X0000000000000000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CODE_MASK\fP   UINT64_C(0X000000001FFFFFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CODE_SHIFT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BLK_MASK\fP   UINT64_C(0X1FFF0000)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_BLK_SHIFT\fP   16"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ARG_MASK\fP   UINT64_C(0X0000FFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD_ARG_SHIFT\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_CMD\fP(v)   ((v) << BRLAPI_KEY_CMD_BLK_SHIFT)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_BACKSPACE\fP   UINT64_C(0X0000FF08)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_TAB\fP   UINT64_C(0X0000FF09)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_LINEFEED\fP   UINT64_C(0X0000FF0D)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_ESCAPE\fP   UINT64_C(0X0000FF1B)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_HOME\fP   UINT64_C(0X0000FF50)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_LEFT\fP   UINT64_C(0X0000FF51)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_UP\fP   UINT64_C(0X0000FF52)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_RIGHT\fP   UINT64_C(0X0000FF53)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_DOWN\fP   UINT64_C(0X0000FF54)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_PAGE_UP\fP   UINT64_C(0X0000FF55)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_PAGE_DOWN\fP   UINT64_C(0X0000FF56)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_END\fP   UINT64_C(0X0000FF57)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_INSERT\fP   UINT64_C(0X0000FF63)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_FUNCTION\fP   UINT64_C(0X0000FFBE)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_DELETE\fP   UINT64_C(0X0000FFFF)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_KEY_SYM_UNICODE\fP   UINT64_C(0X01000000)"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef uint64_t \fBbrlapi_keyCode_t\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

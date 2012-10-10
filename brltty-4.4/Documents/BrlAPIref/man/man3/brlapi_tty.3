@@ -1,0 +1,164 @@
+.TH "Entering & leaving tty mode" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Entering & leaving tty mode \- 
+.PP
+How to take control of ttys for direct braille display / read.  
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_TTY_DEFAULT\fP   -1"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_enterTtyMode\fP (int tty, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__enterTtyMode\fP (\fBbrlapi_handle_t\fP *handle, int tty, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_enterTtyModeWithPath\fP (int *ttys, int count, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__enterTtyModeWithPath\fP (\fBbrlapi_handle_t\fP *handle, int *ttys, int count, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_leaveTtyMode\fP (void)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__leaveTtyMode\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_setFocus\fP (int tty)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__setFocus\fP (\fBbrlapi_handle_t\fP *handle, int tty)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Before being able to write on the braille display, the application must tell the server which tty it will handle.
+.PP
+The application must also specify how braille keys will be delivered to it. Two ways are possible: key codes and commands:
+.PP
+.IP "\(bu" 2
+key codes are specific to each braille driver, since the raw key code, as defined in the driver will be given for each key press. Using them leads to building highly driver-dependent applications, which can yet sometimes be useful to mimic existing proprietary applications for instance.
+.IP "\(bu" 2
+commands means that applications will get exactly the same values as \fIbrltty\fP. This allows driver-independent clients, which will hopefully be nice to use with a lot of different terminals. 
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_readKey()\fP 
+.RE
+.PP
+
+.PP
+
+.SH "Define Documentation"
+.PP 
+.SS "#define BRLAPI_TTY_DEFAULT   -1"Select the default tty.
+.PP
+The library takes the following steps:
+.IP "1." 4
+Try to get the tty number from the \fCWINDOWID\fP environment variable (for the \fCxterm\fP case).
+.IP "2." 4
+Try to get the tty number from the \fCCONTROLVT\fP environment variable.
+.IP "3." 4
+Read \fC/proc/self/stat\fP (on \fCLinux\fP).
+.PP
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_enterTtyMode()\fP 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "int BRLAPI_STDCALL brlapi__enterTtyMode (\fBbrlapi_handle_t\fP * handle, int tty, const char * driver)"
+.SS "int BRLAPI_STDCALL brlapi__enterTtyModeWithPath (\fBbrlapi_handle_t\fP * handle, int * ttys, int count, const char * driver)"
+.SS "int BRLAPI_STDCALL brlapi__leaveTtyMode (\fBbrlapi_handle_t\fP * handle)"
+.SS "int BRLAPI_STDCALL brlapi__setFocus (\fBbrlapi_handle_t\fP * handle, int tty)"
+.SS "int BRLAPI_STDCALL brlapi_enterTtyMode (int tty, const char * driver)"Ask for some tty, with some key mechanism
+.PP
+\fBParameters:\fP
+.RS 4
+\fItty\fP 
+.IP "\(bu" 2
+If tty>=0 then take control of the specified tty.
+.IP "\(bu" 2
+If tty==\fBBRLAPI_TTY_DEFAULT\fP then take control of the default tty.
+.PP
+.br
+\fIdriver\fP tells how the application wants \fBbrlapi_readKey()\fP to return key presses. NULL or '' means BRLTTY commands are required, whereas a driver name means that raw key codes returned by this driver are expected.
+.RE
+.PP
+WINDOWPATH and WINDOWID should be propagated when running remote applications via ssh, for instance, along with BRLAPI_HOST and the authorization key (see SendEnv in ssh_config(5) and AcceptEnv in sshd_config(5))
+.PP
+\fBReturns:\fP
+.RS 4
+the used tty number on success, -1 on error
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_leaveTtyMode()\fP \fBbrlapi_readKey()\fP 
+.RE
+.PP
+
+.SS "int BRLAPI_STDCALL brlapi_enterTtyModeWithPath (int * ttys, int count, const char * driver)"Ask for some tty specified by its path in the tty tree, with some key mechanism
+.PP
+\fBParameters:\fP
+.RS 4
+\fIttys\fP points on the array of ttys representing the tty path to be got. Can be NULL if nttys is 0. 
+.br
+\fIcount\fP gives the number of elements in ttys. 
+.br
+\fIdriver\fP has the same meaning as in \fBbrlapi_enterTtyMode()\fP
+.RE
+.PP
+Providing nttys == 0 means to get the root.
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_enterTtyMode()\fP 
+.RE
+.PP
+
+.SS "int BRLAPI_STDCALL brlapi_leaveTtyMode (void)"Stop controlling the tty
+.PP
+\fBReturns:\fP
+.RS 4
+0 on success, -1 on error.
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_enterTtyMode()\fP 
+.RE
+.PP
+
+.SS "int BRLAPI_STDCALL brlapi_setFocus (int tty)"Tell the current tty to brltty
+.PP
+This is intended for focus tellers, such as brltty, xbrlapi, screen, ... \fBbrlapi_enterTtyMode()\fP must have been called beforehand to tell where this focus applies in the tty tree.
+.PP
+\fBReturns:\fP
+.RS 4
+0 on success, -1 on error.
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_enterTtyMode()\fP \fBbrlapi_leaveTtyMode()\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

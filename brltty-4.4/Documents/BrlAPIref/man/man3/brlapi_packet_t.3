@@ -1,0 +1,55 @@
+.TH "brlapi_packet_t" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brlapi_packet_t \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <brlapi_protocol.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "unsigned char \fBdata\fP [BRLAPI_MAXPACKETSIZE]"
+.br
+.ti -1c
+.RI "\fBbrlapi_versionPacket_t\fP \fBversion\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_authClientPacket_t\fP \fBauthClient\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_authServerPacket_t\fP \fBauthServer\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_errorPacket_t\fP \fBerror\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_getDriverSpecificModePacket_t\fP \fBgetDriverSpecificMode\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_writeArgumentsPacket_t\fP \fBwriteArguments\fP"
+.br
+.ti -1c
+.RI "uint32_t \fBuint32\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Type for packets. Should be used instead of a mere char[], since it has correct alignment requirements. 
+.SH "Field Documentation"
+.PP 
+.SS "\fBbrlapi_authClientPacket_t\fP \fBbrlapi_packet_t::authClient\fP"
+.SS "\fBbrlapi_authServerPacket_t\fP \fBbrlapi_packet_t::authServer\fP"
+.SS "unsigned char \fBbrlapi_packet_t::data\fP[BRLAPI_MAXPACKETSIZE]"
+.SS "\fBbrlapi_errorPacket_t\fP \fBbrlapi_packet_t::error\fP"
+.SS "\fBbrlapi_getDriverSpecificModePacket_t\fP \fBbrlapi_packet_t::getDriverSpecificMode\fP"
+.SS "uint32_t \fBbrlapi_packet_t::uint32\fP"
+.SS "\fBbrlapi_versionPacket_t\fP \fBbrlapi_packet_t::version\fP"
+.SS "\fBbrlapi_writeArgumentsPacket_t\fP \fBbrlapi_packet_t::writeArguments\fP"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

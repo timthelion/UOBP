@@ -1,0 +1,186 @@
+.TH "brlapi_protocol.h" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brlapi_protocol.h \- 
+.PP
+types and constants for \fIBrlAPI's\fP protocol  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'brlapi.h'\fP
+.br
+\fC#include <inttypes.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <pthread.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbrlapi_header_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_versionPacket_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_authClientPacket_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_authServerPacket_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_errorPacket_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_getDriverSpecificModePacket_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_writeArgumentsPacket_t\fP"
+.br
+.ti -1c
+.RI "union \fBbrlapi_packet_t\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBUINT32_MAX\fP   (4294967295U)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PROTOCOL_VERSION\fP   ((uint32_t) 8)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_MAXPACKETSIZE\fP   512"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_VERSION\fP   'v'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_AUTH\fP   'a'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_GETDRIVERNAME\fP   'n'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_GETDISPLAYSIZE\fP   's'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_ENTERTTYMODE\fP   't'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_SETFOCUS\fP   'F'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_LEAVETTYMODE\fP   'L'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_KEY\fP   'k'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_IGNOREKEYRANGES\fP   'm'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_ACCEPTKEYRANGES\fP   'u'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_WRITE\fP   'w'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_ENTERRAWMODE\fP   '*'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_LEAVERAWMODE\fP   '#'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_PACKET\fP   'p'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_ACK\fP   'A'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_ERROR\fP   'e'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_EXCEPTION\fP   'E'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_SUSPENDDRIVER\fP   'S'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_PACKET_RESUMEDRIVER\fP   'R'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DEVICE_MAGIC\fP   (0xdeadbeefL)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_HEADERSIZE\fP   sizeof(\fBbrlapi_header_t\fP)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_AUTH_NONE\fP   'N'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_AUTH_KEY\fP   'K'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_AUTH_CRED\fP   'C'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_DISPLAYNUMBER\fP   0X01"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_REGION\fP   0X02"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_TEXT\fP   0X04"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_ATTR_AND\fP   0X08"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_ATTR_OR\fP   0X10"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_CURSOR\fP   0X20"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WF_CHARSET\fP   0X40"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "ssize_t \fBbrlapi_writePacket\fP (\fBbrlapi_fileDescriptor\fP fd, \fBbrlapi_packetType_t\fP type, const void *buf, size_t size)"
+.br
+.ti -1c
+.RI "ssize_t \fBbrlapi_readPacketHeader\fP (\fBbrlapi_fileDescriptor\fP fd, \fBbrlapi_packetType_t\fP *packetType)"
+.br
+.ti -1c
+.RI "ssize_t \fBbrlapi_readPacketContent\fP (\fBbrlapi_fileDescriptor\fP fd, size_t packetSize, void *buf, size_t bufSize)"
+.br
+.ti -1c
+.RI "ssize_t \fBbrlapi_readPacket\fP (\fBbrlapi_fileDescriptor\fP fd, \fBbrlapi_packetType_t\fP *type, void *buf, size_t size)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "pthread_mutex_t \fBbrlapi_fd_mutex\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SH "Define Documentation"
+.PP 
+.SS "#define UINT32_MAX   (4294967295U)"
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

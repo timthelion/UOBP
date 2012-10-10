@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.65">
+ <TITLE>BrlAPI Reference manual: Concurrency management between BrlAPI clients</TITLE>
+ <LINK HREF="BrlAPI-4.html" REL=next>
+ <LINK HREF="BrlAPI-2.html" REL=previous>
+ <LINK HREF="BrlAPI.html#toc3" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="BrlAPI-4.html">Next</A>
+<A HREF="BrlAPI-2.html">Previous</A>
+<A HREF="BrlAPI.html#toc3">Contents</A>
+<HR>
+<H2><A NAME="sec-concurrency"></A> <A NAME="s3">3.</A> <A HREF="BrlAPI.html#toc3">Concurrency management between <EM>BrlAPI</EM> clients</A></H2>
+
+<P>An essential purpose of <EM>BrlAPI</EM> is to manage concurrent access to the
+braille display between the <EM>brltty</EM> daemon and applications. This
+concurrency is managed "per Tty". We first describe this with a flat view, and
+then consider Tty hierarchy.</P>
+
+<H2><A NAME="ss3.1">3.1</A> <A HREF="BrlAPI.html#toc3.1">VT switching</A>
+</H2>
+
+<P>Let's first describe how things work with the simple case of a single series of
+Virtual Ttys (VTs), the linux console for instance.</P>
+
+<P>As described in 
+<A HREF="BrlAPI-2.html#sec-general">General Description</A>, before being able
+to write output, a <EM>BrlAPI</EM> client has to "get" a tty, i.e. it sends to the
+<EM>BrlAPI</EM> server the number of the linux' Virtual Tty on which it is running.
+The <EM>BrlAPI</EM> server uses this information so as to know which client's output
+should be shown on the braille display, according to the focus teller's
+information.</P>
+
+<P>Let's say some client <EM>A</EM> is running on VT 2.  It "got" VT 2 and wrote some
+output on its <EM>BrlAPI</EM> connection.  The focus teller is <EM>brltty</EM> here: it
+always tells to the <EM>BrlAPI</EM> server which VT is currently shown on the screen
+and gets usual keyboard presses (it is "active").</P>
+
+<P>Let's say VT 1 is active, then the <EM>BrlAPI</EM> server shows <EM>brltty</EM>'s output
+on the braille display.  I.e. the usual <EM>brltty</EM> screen reading appears.
+Moreover, when braille keys are pressed, they are passed to <EM>brltty</EM>, so that
+usual screen reading can be performed.  When the user switches to VT 2,
+<EM>brltty</EM> (as focus teller) tells it to the <EM>BrlAPI</EM> server, which then
+remembers that client <EM>A</EM> has got it and has produced some output.  The
+server then displays this output on the braille display.  Note that <EM>A</EM>
+doesn't need to re-submit its output: the server had recorded it so as to be
+able to show it as soon as the focus switches to VT 2.  Whenever some key of the
+braille device is pressed, <EM>BrlAPI</EM> looks whether it is in the list of keys
+that client <EM>A</EM> said to be of his interest.  If it is, it is passed to <EM>A</EM>
+(and not to <EM>brltty</EM>). If it isn't, it is passed to <EM>brltty</EM> (and not to
+<EM>A</EM>).</P>
+
+<P>As a consequence, whenever clients get and release Ttys and the user switches
+between Ttys, either the <EM>brltty</EM> screen reading or the client's output is
+automatically shown according to rather natural rules.</P>
+
+<H2><A NAME="ss3.2">3.2</A> <A HREF="BrlAPI.html#toc3.2">A pile of "paper sheets"</A>
+</H2>
+
+<P>Let's look at VT 2 by itself. What is shown on the braille display can be seen
+as the result of a pile of two paper sheets.  <EM>brltty</EM> is represented by the
+bottom sheet on which its screen reading is written, and client <EM>A</EM> by the
+top sheet on which its output is written. <EM>A</EM>'s sheet hence "covers"
+<EM>brltty</EM>'s sheet: <EM>A</EM>'s output "mask" <EM>brltty</EM>'s screen reading.</P>
+
+<P><EM>A</EM> may yet want to temporarily let <EM>brltty</EM>'s screen reading appear on VT
+2, while still receiving some key presses, for instance.  For this, it sends a
+"void" write.  The server then clears the recorded output for this connection
+(in the sheet representation, the sheet becomes "transparent").  As a
+consequence, <EM>brltty</EM>'s output is automatically shown (by transparency in the
+sheet representation), just like if <EM>A</EM> had released the Tty.</P>
+
+<P>Keypresses are handled in a similar way: <EM>A</EM>'s desire to get key presses is
+satisfied first before <EM>brltty</EM>.</P>
+
+<P>Let's say some other client <EM>B</EM> (probably launched by <EM>A</EM>) also gets VT 2
+and outputs some text on its <EM>BrlAPI</EM> connection.  This adds a third sheet,
+on top of the two previous ones.  It means that the <EM>BrlAPI</EM> server will show
+<EM>B</EM>'s output on the braille device.  If <EM>A</EM> then outputs some text, the
+server will record it (on <EM>A</EM>'s sheet which hence becomes opaque again), but
+it won't be displayed on the braille device, since <EM>B</EM>'s sheet is still at
+the top and opaque (i.e. with some text on it).  But if <EM>B</EM> issues a void
+write, the server clears its ouput buffer (i.e. <EM>B</EM>'s sheet becomes
+transparent), and as a result <EM>A</EM>'s output appear on the braille display (by
+transparency through <EM>B</EM>'s sheet).</P>
+
+<P>The sheet order is determined by the Tty "get"ting order. Some mecanism will be
+added in near future for clients to precise "at which level its sheet should be
+inserted" so as to avoid race conditions on the "get"ting order.</P>
+
+<H2><A NAME="ss3.3">3.3</A> <A HREF="BrlAPI.html#toc3.3">Hierarchy</A>
+</H2>
+
+<P>Now, what happens when running some <EM>screen</EM> program on, say, VT 3?  It
+emulates a series of Ttys, whose output actually appear on the same VT 3.
+That's where a hierarchy level appears: the focus information is not only the VT
+number but also, in the case of VT 3, which <EM>screen</EM> window is active.  This
+hence forms a <EM>tree</EM> of Ttys: the "root" being the vga driver's output, whose
+sons are VTs, and VT 3 has the <EM>screen</EM> windows as sons.  <EM>Brltty</EM> is a
+focus teller for the root, <EM>screen</EM> will have to be a focus teller for VT 3.
+<EM>Screen</EM> should then get VT 3, not display anything (so that the usual
+<EM>brltty</EM> screen reading will be shown by transparency), and tell the
+<EM>BrlAPI</EM> server which <EM>screen</EM> window is active (at startup and at each
+window switch).  This is not implemented directly in <EM>screen</EM> yet, but this
+may be achieved via a second <EM>brltty</EM> daemon running the Screen driver (but
+it isn't yet able to get the current window number though) and the <EM>BrlAPI</EM>
+driver.</P>
+
+<P>A <EM>BrlAPI</EM> client <EM>C</EM> running in some <EM>screen</EM> window number 1 would
+then have to get the Tty path "VT 3 then window 1", which is merely expressed
+as "3 1".  The window number is available in the <CODE>WINDOW</CODE> environment
+variable, set by <EM>screen</EM>. The VT number, which actually represents the "path
+to screen's output" should be available in the <CODE>WINDOWPATH</CODE> environment
+variable, also set by <EM>screen</EM>.  The client can thus merely concatenate the
+content of <CODE>WINDOWPATH</CODE> (which could hold many levels of window numbers) and
+of <CODE>WINDOW</CODE> and give the result as tty path to the <EM>BrlAPI</EM> server, which
+then knows precisely where the client's usual output resides.  In practice,
+applications just need to call <CODE>brlapi_enterTtyMode(BRLAPI_TTY_DEFAULT)</CODE>, and
+the the <EM>BrlAPI</EM> client library will automatically perform all that.</P>
+
+<P>Whenever the user switches to VT 3, the <EM>BrlAPI</EM> server remembers the window
+that <EM>screen</EM> told to be active.  If it was window 1, it then displays
+<EM>C</EM>'s output (if any).  Else <EM>brltty</EM>'s usual screen reading is shown.
+Of course, several clients may be run in window 1 as well, and the "sheet pile"
+mecanism applies: <EM>brltty</EM>'s sheet first (at the root of the Ttys tree), then
+<EM>screen</EM>'s sheet (which is transparent, on VT 3), then <EM>C</EM>'s sheet (on
+window 1 of VT 3), then other clients' sheets (on the same window).</P>
+
+<P>Ttys are hence organized in a tree, each client adding its sheet at some tty in
+the tree.</P>
+
+<H2><A NAME="ss3.4">3.4</A> <A HREF="BrlAPI.html#toc3.4">The X-window case</A>
+</H2>
+
+<P>Let's say some X server is running on VT 7 of a Linux system. Xorg's <EM>xinit</EM>
+and <EM>xdm</EM> commands automatically set the X session's <CODE>WINDOWPATH</CODE>
+environment variable to "7", so that X11 <EM>BrlAPI</EM> clients started from
+the session just need to call <EM>brlapi_enterTtyMode(xid)</EM> where <EM>xid</EM>
+is the X-window ID of the window of the client. The <EM>BrlAPI</EM> library
+will automatically prepend the content of <CODE>WINDOWPATH</CODE> to it.</P>
+
+<P>For text-based <EM>BrlAPI</EM> clients running in an xterm (which should just call
+<CODE>brlapi_enterTtyMode(BRLAPI_TTY_DEFAULT)</CODE> as explained in the previous
+section), <EM>BrlAPI</EM> detects the window id thanks to the <CODE>WINDOWID</CODE> variable
+set by xterm.</P>
+
+<P>Screen readers are not bound to a particular window, so they should call
+<EM>brlapi_enterTtyModeWithPath(NULL, 0)</EM> to let the <EM>BrlAPI</EM> library only
+send the content of <CODE>WINDOWPATH</CODE>, expressing that screen readers take the
+whole tty.  The user should notably launch <EM>xbrlapi</EM>, which is a focus
+teller for X-window as well as a keyboard simulator (<EM>brltty</EM> can't reliably
+simulate them at the kernel level in such situation).  For accessing AT-SPI
+contents (like gnome or kde applications), Orca should also be launched.  For
+accessing AT-SPI terminals (like gnome-terminal) in the same way as in the
+console, a second <EM>brltty</EM> daemon running the at-spi screen driver and the
+<EM>BrlAPI</EM> driver can also be launched.  All three would get the VT of the
+X session, in that order (for now): <EM>xbrlapi</EM> first, then <EM>orca</EM> and
+<EM>brltty</EM> at last.  When the X focus is on an AT-SPI terminal, <EM>brltty</EM>
+will hence be able to grab the braille display and key presses.  Else <EM>orca</EM>
+would get them.  And <EM>xbrlapi</EM> would finally get remaining key presses and
+simulate them.</P>
+
+<P>Note: old versions of <CODE>xinit</CODE>, <CODE>xdm</CODE>, <CODE>kdm</CODE> or <CODE>gdm</CODE> do not
+automatically set the <CODE>WINDOWPATH</CODE> variable. The user can set it by hand in
+his <CODE>~/.xsession</CODE>, <CODE>~/.xinitrc</CODE>, <CODE>~/.gdmrc</CODE>... to "7"</P>
+
+<P>Note: some Operating Systems like Solaris do not have VTs. In that case
+<CODE>WINDOWPATH</CODE> is empty or not even set.  Everything explained above still
+work fine.</P>
+
+<H2><A NAME="ss3.5">3.5</A> <A HREF="BrlAPI.html#toc3.5">Detaching</A>
+</H2>
+
+<P>Several programs allow detaching: <EM>screen</EM> and <EM>VNC</EM> for instance. In such
+situation, an intermediate <EM>BrlAPI</EM> server should be run for each such
+session. Clients would connect to it, and it would prepend the "current tty"
+path on the fly while forwarding things to the root <EM>BrlAPI</EM> server. This
+intermediate server is yet to be written (but it is actually relatively close to
+be).</P>
+
+
+<HR>
+<A HREF="BrlAPI-4.html">Next</A>
+<A HREF="BrlAPI-2.html">Previous</A>
+<A HREF="BrlAPI.html#toc3">Contents</A>
+</BODY>
+</HTML>

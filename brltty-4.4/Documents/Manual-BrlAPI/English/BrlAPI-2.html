@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.65">
+ <TITLE>BrlAPI Reference manual: General description of BrlAPI</TITLE>
+ <LINK HREF="BrlAPI-3.html" REL=next>
+ <LINK HREF="BrlAPI-1.html" REL=previous>
+ <LINK HREF="BrlAPI.html#toc2" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="BrlAPI-3.html">Next</A>
+<A HREF="BrlAPI-1.html">Previous</A>
+<A HREF="BrlAPI.html#toc2">Contents</A>
+<HR>
+<H2><A NAME="sec-general"></A> <A NAME="s2">2.</A> <A HREF="BrlAPI.html#toc2">General description of <EM>BrlAPI</EM></A></H2>
+
+<P>Here is explained what <EM>BrlAPI</EM> is, and what it precisely does.
+These explanations should be simple enough to be accessible to every user.
+For a more technical review of <EM>BrlAPI</EM>'s functionalities, please see chapter
+<A HREF="BrlAPI-5.html#sec-library">Libary description</A>.</P>
+
+<H2><A NAME="ss2.1">2.1</A> <A HREF="BrlAPI.html#toc2.1">Historical notes.</A>
+</H2>
+
+<P>Originally, <EM>brltty</EM> was designed to give access to the Linux
+console to visually impaired people, through a braille terminal
+or a speech synthetizer. At that time, applications running in the
+console were not taking care of the presence of a braille
+terminal (most applications didn't even know what a braille
+terminal was).</P>
+<P>This situation where applications are not aware of the presence of a
+special device is elegant of course, since it lets use an
+unlimited number of applications which don't need to be specially
+designed for visually impaired people.</P>
+<P>However, it appeared that applications specially designed to take
+advantage of a braille terminal could be wanted, to
+provide the suitable information to blind users, for instance.
+The idea of <EM>BrlAPI</EM> is to propose an efficient communication
+mechanism, to control the braille display, read keys from the
+braille keyboard, or to exchange data with the braille terminal at
+a lower level (e.g. to write file transfer protocols between
+braille terminals and Linux systems).</P>
+
+<H2><A NAME="ss2.2">2.2</A> <A HREF="BrlAPI.html#toc2.2">Why <EM>BrlAPI</EM> is part of <EM>brltty</EM>.</A>
+</H2>
+
+<P>Instead of rewriting a whole communication program from
+scratch, we chose to add communication
+mechanisms to <EM>brltty</EM>. This choice has two main justifications.</P>
+<P>On the one hand, integration to <EM>brltty</EM> allows us to use the
+increasing number of drivers written for <EM>brltty</EM>, thus handling
+a large number of braille terminals without having to rewrite any
+piece of existing code.</P>
+<P>On the other hand, if an application chooses to send its own
+information to the braille display, and to process braille keys,
+<EM>brltty</EM> has to be warned, so that it won't try to communicate
+with the braille terminal while the application already does.
+To make this synchronzation between <EM>brltty</EM>
+and client applications possible, it seemed easier to add the
+communication mechanisms to <EM>brltty</EM>'s core, instead of writing an
+external program providing them.</P>
+
+<H2><A NAME="ss2.3">2.3</A> <A HREF="BrlAPI.html#toc2.3">How it works.</A>
+</H2>
+
+<P>We are now going to describe the steps an application should
+go through to get control of the braille terminal, and what
+happens on <EM>brltty</EM>'s side at each step. This step-by-step
+description will let us introduce more precisely some
+concepts that are useful for every <EM>BrlAPI</EM> user.</P>
+
+<H3>Connection.</H3>
+
+<P>The first thing any client application has to do is to
+connect (in the Unix sense of the word) to <EM>BrlAPI</EM> which is
+an mere application server. If this is not
+clear, the only thing to be remembered is that this
+step allows the client application to let the server know about its
+presence. At this stage, nothing special is done on <EM>brltty</EM>'s
+side.</P>
+
+<H3>Authorization.</H3>
+
+<P>Since Unix is designed to allow many users to work on the
+same machine, it's quite possible that there are more than one
+user accounts on the system. Most probably, one doesn't want
+any user with an account on the machine to be able to communicate
+with the braille terminal (just imagine what would happen if,
+while somebody was working with the braille terminal, another user
+connected to the system began to communicate with it,
+preventing the first one from doing his job...). That's why <EM>BrlAPI</EM> has to
+provide a way to determine whether a user who established a
+connection is really allowed to communicate with the braille
+terminal. To achieve this, <EM>BrlAPI</EM> requires that each
+application that wants to control a braille terminal sends an
+authorization key before doing anything else. The control of
+the braille terminal will only be possible for the client once
+it has sent the proper authorization key. What is called
+authorization key is in fact a Unix file containing data (it
+must be non-empty) on your system. All the things you have to do is to give
+read permissions on this file to users that are allowed to
+communicate with the braille terminal, and only to them. This
+way, only authorized users will have access to the
+authorization key and then be able to send it to <EM>BrlAPI</EM>.
+To see how to do that, please see chapter 
+<A HREF="BrlAPI-4.html#sec-install">Installation and configuration</A>.</P>
+<P>At the end of this step, the user is authorized to take
+control of the braille terminal. On <EM>brltty</EM>'s side, some data
+structures are allocated to store information on the client,
+but this has no user-level side-effect.</P>
+
+<H3>Real use of the braille terminal.</H3>
+
+<P>Once the client is properly connected and authorized,
+there are two possible types of communication with the braille
+terminal. The chosen type of communication depends on what the
+client plans to do. If its purpose is to display information on
+the braille display or to process braille keys, it will have to
+take control of the Linux tty on which it is running. If its
+purpose is to exchange data with the braille terminal (e.g. for
+file transfer), it will enter what is called "raw mode".</P>
+
+<H3>Braille display and braille key presses processing.</H3>
+
+<P>If the client wants to display something on the braille
+display or to process braille keys itself, rather than letting
+<EM>brltty</EM> process them, it has to take control of the Linux
+terminal it is running on.</P>
+<P>Once a client has obtained the control of his tty, <EM>BrlAPI</EM>
+will completely discard <EM>brltty</EM>'s display on this tty (and only
+this one), leaving the braille display free for the client.</P>
+<P>At the same time, if a key is pressed on the braille
+keyboard, <EM>BrlAPI</EM> checks whether the client application is
+interested in this key or not. If it is, the key is passed to
+it, either as a key code or as a <EM>brltty</EM> command. If it is not, the
+key code is converted into a <EM>brltty</EM> command and returned to
+<EM>brltty</EM>.</P>
+<P>Once the client is not interested in displaying text
+or reading braille keys any more, it has to leave the tty, so
+that either <EM>brltty</EM> can continue its job, or another client can
+take control of it.</P>
+
+<H3>Raw mode.</H3>
+
+<P>Only one client can be in raw mode at the same time. In
+this mode, data coming from the braille terminal are checked
+by the driver (to ensure they are valid), but instead of being processed,
+they are delivered "as-is" to the client that is in raw mode.</P>
+<P>In the other direction, packets sent to <EM>BrlAPI</EM> by the
+client that is in raw mode are passed to the driver which is
+expected to deliver them to the braille terminal without any
+modification.</P>
+
+<H3>Suspend Mode.</H3>
+
+<P>Only one client can be in suspend mode at the same time. This mode is also
+exclusive with raw mode. In this mode, the server keeps the device driver
+closed, and thus the client can open the device directly by itself.</P>
+
+<P><B>This mode is not recommended</B>, since the client will then have to
+reimplement device access. Raw mode should really be preferred, since it lets
+the client take advantage of server's ability to talk with the device
+(USB/bluetooth support for instance).</P>
+
+<H3>Remarks.</H3>
+
+
+<P>
+<UL>
+<LI>The operations described in the three previous
+subsections are not completely mutually exclusive. An
+application that controls its current tty can enter raw or suspend
+mode, provided that no other application already is in this
+mode.
+</LI>
+<LI>Not every braille driver supports raw mode. It has
+to be specially (re)written to support it, since it has
+to provide special functions to process incoming and outgoing
+packets. The same restriction is true (but less strong)
+concerning the ability to deliver/convert keycodes into
+commands: not every driver has this ability, it has to be
+modified to get it.
+</LI>
+<LI>Operations previously described can be repeated.
+You can, for instance, use raw mode to transfer data onto
+your braille terminal, display text in braille, return to raw
+mode..., all that without having to reconnect to <EM>BrlAPI</EM> before
+each operation.
+</LI>
+</UL>
+</P>
+
+<H3>Disconnection.</H3>
+
+<P>Once the client has finished using the braille terminal, it
+has to disconnect from the API, so that the memory structures
+allocated for the connection can be freed and eventually used by
+another client. This step is transparent for the user, in the
+sense that it involves no change on the braille display.</P>
+
+
+<HR>
+<A HREF="BrlAPI-3.html">Next</A>
+<A HREF="BrlAPI-1.html">Previous</A>
+<A HREF="BrlAPI.html#toc2">Contents</A>
+</BODY>
+</HTML>

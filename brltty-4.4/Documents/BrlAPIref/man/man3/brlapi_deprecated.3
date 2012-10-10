@@ -1,0 +1,158 @@
+.TH "Deprecated names" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Deprecated names \- 
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbrlapi_writeStruct\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBbrlapi_settings_t\fP   \fBbrlapi_connectionSettings_t\fP"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WRITESTRUCT_INITIALIZER\fP   BRLAPI_WRITEARGUMENTS_INITIALIZER"
+.br
+.ti -1c
+.RI "#define \fBbrl_keycode_t\fP   \fBbrlapi_keyCode_t\fP"
+.br
+.ti -1c
+.RI "#define \fBbrl_type_t\fP   \fBbrlapi_packetType_t\fP"
+.br
+.ti -1c
+.RI "#define \fBBRLCOMMANDS\fP   NULL"
+.br
+.ti -1c
+.RI "#define \fBBRL_KEYCODE_MAX\fP   BRLAPI_KEY_MAX"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_initializeConnection\fP   brlapi_openConnection"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getTty\fP   brlapi_enterTtyMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getTtyPath\fP   brlapi_enterTtyModeWithPath"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_leaveTty\fP   brlapi_leaveTtyMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_unignoreKeyRange\fP   brlapi_acceptKeyRange"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_unignoreKeySet\fP   brlapi_acceptKeySet"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getRaw\fP   brlapi_enterRawMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_leaveRaw\fP   brlapi_leaveRawMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_suspend\fP   brlapi_suspendDriver"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_resume\fP   brlapi_resumeDriver"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_SUCCESS\fP   BRLAPI_ERROR_SUCCESS"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_NOMEM\fP   BRLAPI_ERROR_NOMEM"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_TTYBUSY\fP   BRLAPI_ERROR_TTYBUSY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_DEVICEBUSY\fP   BRLAPI_ERROR_DEVICEBUSY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_UNKNOWN_INSTRUCTION\fP   BRLAPI_ERROR_UNKNOWN_INSTRUCTION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_ILLEGAL_INSTRUCTION\fP   BRLAPI_ERROR_ILLEGAL_INSTRUCTION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_INVALID_PARAMETER\fP   BRLAPI_ERROR_INVALID_PARAMETER"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_INVALID_PACKET\fP   BRLAPI_ERROR_INVALID_PACKET"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_CONNREFUSED\fP   BRLAPI_ERROR_CONNREFUSED"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_OPNOTSUPP\fP   BRLAPI_ERROR_OPNOTSUPP"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_GAIERR\fP   BRLAPI_ERROR_GAIERR"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_LIBCERR\fP   BRLAPI_ERROR_LIBCERR"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_UNKNOWNTTY\fP   BRLAPI_ERROR_UNKNOWNTTY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_PROTOCOL_VERSION\fP   BRLAPI_ERROR_PROTOCOL_VERSION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_EOF\fP   BRLAPI_ERROR_EOF"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_EMPTYKEY\fP   BRLAPI_ERROR_EMPTYKEY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_DRIVERERROR\fP   BRLAPI_ERROR_DRIVERERROR"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+With version 0.5.0, BrlAPI is now provided through including <\fBbrlapi.h\fP> and got a big renaming pass. Old names are still available through macros, but they are deprecated since they will get dropped in the next release. This documentation is for you to know the new names.
+.PP
+For checking that you have completely switched to new names, just define BRLAPI_NO_DEPRECATED: that will disable compatibility macros. 
+.SH "Define Documentation"
+.PP 
+.SS "#define BRL_KEYCODE_MAX   BRLAPI_KEY_MAX"
+.SS "#define brl_keycode_t   \fBbrlapi_keyCode_t\fP"
+.SS "#define brl_type_t   \fBbrlapi_packetType_t\fP"
+.SS "#define brlapi_getRaw   brlapi_enterRawMode"
+.SS "#define brlapi_getTty   brlapi_enterTtyMode"
+.SS "#define brlapi_getTtyPath   brlapi_enterTtyModeWithPath"
+.SS "#define brlapi_initializeConnection   brlapi_openConnection"
+.SS "#define brlapi_leaveRaw   brlapi_leaveRawMode"
+.SS "#define brlapi_leaveTty   brlapi_leaveTtyMode"
+.SS "#define brlapi_resume   brlapi_resumeDriver"
+.SS "#define brlapi_settings_t   \fBbrlapi_connectionSettings_t\fP"
+.SS "#define brlapi_suspend   brlapi_suspendDriver"
+.SS "#define brlapi_unignoreKeyRange   brlapi_acceptKeyRange"
+.SS "#define brlapi_unignoreKeySet   brlapi_acceptKeySet"
+.SS "#define BRLAPI_WRITESTRUCT_INITIALIZER   BRLAPI_WRITEARGUMENTS_INITIALIZER"
+.SS "#define BRLCOMMANDS   NULL"
+.SS "#define BRLERR_CONNREFUSED   BRLAPI_ERROR_CONNREFUSED"
+.SS "#define BRLERR_DEVICEBUSY   BRLAPI_ERROR_DEVICEBUSY"
+.SS "#define BRLERR_DRIVERERROR   BRLAPI_ERROR_DRIVERERROR"
+.SS "#define BRLERR_EMPTYKEY   BRLAPI_ERROR_EMPTYKEY"
+.SS "#define BRLERR_EOF   BRLAPI_ERROR_EOF"
+.SS "#define BRLERR_GAIERR   BRLAPI_ERROR_GAIERR"
+.SS "#define BRLERR_ILLEGAL_INSTRUCTION   BRLAPI_ERROR_ILLEGAL_INSTRUCTION"
+.SS "#define BRLERR_INVALID_PACKET   BRLAPI_ERROR_INVALID_PACKET"
+.SS "#define BRLERR_INVALID_PARAMETER   BRLAPI_ERROR_INVALID_PARAMETER"
+.SS "#define BRLERR_LIBCERR   BRLAPI_ERROR_LIBCERR"
+.SS "#define BRLERR_NOMEM   BRLAPI_ERROR_NOMEM"
+.SS "#define BRLERR_OPNOTSUPP   BRLAPI_ERROR_OPNOTSUPP"
+.SS "#define BRLERR_PROTOCOL_VERSION   BRLAPI_ERROR_PROTOCOL_VERSION"
+.SS "#define BRLERR_SUCCESS   BRLAPI_ERROR_SUCCESS"
+.SS "#define BRLERR_TTYBUSY   BRLAPI_ERROR_TTYBUSY"
+.SS "#define BRLERR_UNKNOWN_INSTRUCTION   BRLAPI_ERROR_UNKNOWN_INSTRUCTION"
+.SS "#define BRLERR_UNKNOWNTTY   BRLAPI_ERROR_UNKNOWNTTY"
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

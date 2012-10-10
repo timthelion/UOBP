@@ -1,0 +1,64 @@
+.TH "Getting Terminal information" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Getting Terminal information \- 
+.PP
+How to get information about the connected Terminal.  
+
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_MAXNAMELENGTH\fP   31"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_getDriverName\fP (char *buffer, size_t size)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__getDriverName\fP (\fBbrlapi_handle_t\fP *handle, char *buffer, size_t size)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_getDisplaySize\fP (unsigned int *x, unsigned int *y)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__getDisplaySize\fP (\fBbrlapi_handle_t\fP *handle, unsigned int *x, unsigned int *y)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Before using Raw mode or key codes, the application should always check the type of the connected terminal, to be sure it is really the one it expects.
+.PP
+One should also check for display size, so as to adjust further displaying on it. 
+.SH "Define Documentation"
+.PP 
+.SS "#define BRLAPI_MAXNAMELENGTH   31"Maximum name length for names embeded in BrlAPI packets, not counting any termination \\0 character 
+.SH "Function Documentation"
+.PP 
+.SS "int BRLAPI_STDCALL brlapi__getDisplaySize (\fBbrlapi_handle_t\fP * handle, unsigned int * x, unsigned int * y)"
+.SS "int BRLAPI_STDCALL brlapi__getDriverName (\fBbrlapi_handle_t\fP * handle, char * buffer, size_t size)"
+.SS "int BRLAPI_STDCALL brlapi_getDisplaySize (unsigned int * x, unsigned int * y)"Return the size of the braille display 
+.SS "int BRLAPI_STDCALL brlapi_getDriverName (char * buffer, size_t size)"Return the complete name of the driver used by \fIbrltty\fP 
+.PP
+This function fills its argument with the whole name of the braille terminal if available, terminated with a '\\0'.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIbuffer\fP is the buffer given by the application; 
+.br
+\fIsize\fP is the maximum size for the name buffer.
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+-1 on error, or a positive value giving the size of the needed buffer, if the supplied one is to small (same as snprintf()). 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

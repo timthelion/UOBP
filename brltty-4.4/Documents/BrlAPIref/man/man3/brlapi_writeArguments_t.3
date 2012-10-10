@@ -1,0 +1,59 @@
+.TH "brlapi_writeArguments_t" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brlapi_writeArguments_t \- 
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <brlapi.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "int \fBdisplayNumber\fP"
+.br
+.ti -1c
+.RI "unsigned int \fBregionBegin\fP"
+.br
+.ti -1c
+.RI "unsigned int \fBregionSize\fP"
+.br
+.ti -1c
+.RI "char * \fBtext\fP"
+.br
+.ti -1c
+.RI "int \fBtextSize\fP"
+.br
+.ti -1c
+.RI "unsigned char * \fBandMask\fP"
+.br
+.ti -1c
+.RI "unsigned char * \fBorMask\fP"
+.br
+.ti -1c
+.RI "int \fBcursor\fP"
+.br
+.ti -1c
+.RI "char * \fBcharset\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Structure containing arguments to be given to \fBbrlapi_write()\fP 
+.SH "Field Documentation"
+.PP 
+.SS "unsigned char* \fBbrlapi_writeArguments_t::andMask\fP"And attributes; applied first 
+.SS "char* \fBbrlapi_writeArguments_t::charset\fP"Text charset. NULL means it is assumed to be 8bits, and the same as the server's. '' means current locale's charset. If no locale was selected, defaults to NULL's meaning. 
+.SS "int \fBbrlapi_writeArguments_t::cursor\fP"\fBBRLAPI_CURSOR_LEAVE\fP == don't touch, \fBBRLAPI_CURSOR_OFF\fP == turn off, 1 = 1st char of display, ... 
+.SS "int \fBbrlapi_writeArguments_t::displayNumber\fP"Display number \fBBRLAPI_DISPLAY_DEFAULT\fP == unspecified 
+.SS "unsigned char* \fBbrlapi_writeArguments_t::orMask\fP"Or attributes; applied \fIafter\fP ANDing 
+.SS "unsigned int \fBbrlapi_writeArguments_t::regionBegin\fP"Region of display to update, 1st character of display is 1 
+.SS "unsigned int \fBbrlapi_writeArguments_t::regionSize\fP"Number of characters held in text, andMask and orMask. 
+.SS "char* \fBbrlapi_writeArguments_t::text\fP"Text to display, must hold as many characters as the region fields expresses. 
+.SS "int \fBbrlapi_writeArguments_t::textSize\fP"Size of text in bytes. If -1, strlen() is used for computing it. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

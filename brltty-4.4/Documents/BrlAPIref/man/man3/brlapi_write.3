@@ -1,0 +1,157 @@
+.TH "Writing on the braille display" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Writing on the braille display \- 
+.PP
+Write text to the braille display.  
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbrlapi_writeArguments_t\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_DISPLAY_DEFAULT\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_CURSOR_LEAVE\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_CURSOR_OFF\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WRITEARGUMENTS_INITIALIZER\fP   { BRLAPI_DISPLAY_DEFAULT, 0, 0, NULL, -1, NULL, NULL, BRLAPI_CURSOR_LEAVE, NULL }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_writeText\fP (int cursor, const char *text)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__writeText\fP (\fBbrlapi_handle_t\fP *handle, int cursor, const char *text)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_writeDots\fP (const unsigned char *dots)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__writeDots\fP (\fBbrlapi_handle_t\fP *handle, const unsigned char *dots)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_write\fP (const \fBbrlapi_writeArguments_t\fP *arguments)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__write\fP (\fBbrlapi_handle_t\fP *handle, const \fBbrlapi_writeArguments_t\fP *arguments)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+After \fBbrlapi_enterTtyMode()\fP has been called, the application can call one of these functions to write things on the braille display.
+.PP
+\fBNote:\fP
+.RS 4
+Be sure to call \fBbrlapi_enterTtyMode()\fP \fIbefore\fP calling \fBbrlapi_write()\fP, or else you'll get an error. This is particularly not always trivial when writing multithreaded applications.
+.PP
+Dots are coded as described in ISO/TR 11548-1: a dot pattern is coded by a byte in which bit 0 is set iff dot 1 is up, bit 1 is set iff dot 2 is up, ... bit 7 is set iff dot 8 is up. This also corresponds to the low-order byte of the coding of unicode's braille row U+2800.
+.PP
+Text is translated by the server one to one, by just using a simple wchar_t to pattern table, i.e. no contraction/expansion is performed, because the client would then have no way to know how wide the output would be and thus the quantity of text to feed. If contraction/expansion is desired, the client should perform it itself (e.g. thanks to liblouis or gnome-braille) and send the resulting dot patterns. This is actually exactly the same problem as font rendering on a graphical display: for better control, nowadays all font rasterization is performed on the client side, and mere pixmaps are sent to the X server. 
+.RE
+.PP
+
+.SH "Define Documentation"
+.PP 
+.SS "#define BRLAPI_CURSOR_LEAVE   -1"Do not change the cursor's state or position.
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_writeText()\fP \fBbrlapi_write()\fP \fBbrlapi_writeArguments_t\fP 
+.RE
+.PP
+
+.SS "#define BRLAPI_CURSOR_OFF   0"Do not display the cursor.
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_writeText()\fP \fBbrlapi_write()\fP \fBbrlapi_writeArguments_t\fP 
+.RE
+.PP
+
+.SS "#define BRLAPI_DISPLAY_DEFAULT   -1"Write to the default display on the braille device.
+.PP
+\fBSee also:\fP
+.RS 4
+\fBbrlapi_write()\fP \fBbrlapi_writeArguments_t\fP 
+.RE
+.PP
+
+.SS "#define BRLAPI_WRITEARGUMENTS_INITIALIZER   { BRLAPI_DISPLAY_DEFAULT, 0, 0, NULL, -1, NULL, NULL, BRLAPI_CURSOR_LEAVE, NULL }"Allows to initialize a structure of type \fI\fBbrlapi_writeArguments_t\fP\fP * with default values: displayNumber = \fBBRLAPI_DISPLAY_DEFAULT\fP; (unspecified) regionBegin = regionSize = 0; (update the whole display, DEPRECATED and will be forbidden in next release. You must always express the region you wish to update) text = andMask = orMask = NULL; (no text, no attribute) cursor = \fBBRLAPI_CURSOR_LEAVE\fP; (don't touch cursor) 
+.SH "Function Documentation"
+.PP 
+.SS "int BRLAPI_STDCALL brlapi__write (\fBbrlapi_handle_t\fP * handle, const \fBbrlapi_writeArguments_t\fP * arguments)"
+.SS "int BRLAPI_STDCALL brlapi__writeDots (\fBbrlapi_handle_t\fP * handle, const unsigned char * dots)"
+.SS "int BRLAPI_STDCALL brlapi__writeText (\fBbrlapi_handle_t\fP * handle, int cursor, const char * text)"
+.SS "int BRLAPI_STDCALL brlapi_write (const \fBbrlapi_writeArguments_t\fP * arguments)"Update a specific region of the braille display and apply and/or masks
+.PP
+\fBParameters:\fP
+.RS 4
+\fIarguments\fP gives information necessary for the update
+.RE
+.PP
+regionBegin and regionSize must be filled for specifying which part of the display will be updated, as well as the size (in characters, not bytes) of the text, andMask and orMask members.
+.PP
+If given, the 'text' field holds the text that will be displayed in the region. The char string must hold exactly as many characters as the region fields express. For multibyte text, this is the number of \fImultibyte\fP caracters. Notably, combining and double-width caracters count for 1.
+.PP
+The actual length of the text in \fIbytes\fP may be specified thanks to textSize. If -1 is given, it will be computed thanks to strlen(), so 'text' must then be a NUL-terminated string.
+.PP
+The 'andMask' and 'orMask' masks, if present, are then applied on top of the text, one byte per character. This hence permits the superimposing of attributes over the text. For instance, setting an andMask mask full of \fBBRLAPI_DOTS(1,1,1,1,1,1,0,0)\fP will only keep (logical AND) dots 1-6, hence dropping dots 7 and 8. On the contrary, setting an orMask full of BRLAPI_DOT7|BRLAPI_DOT8 will add (logical OR) dots 7 and 8.
+.PP
+The 'charset' field, if present, specifies the charset of the 'text' field. If it is '', the current locale's charset (if any) is assumed. Else, the 8-bit charset of the server is assumed.
+.PP
+A special invocation is with an unmodified initialized structure: this clears the client's whole display, letting the display of other applications on the same tty or of applications 'under' the tty appear. See Concurrency management section of the BrlAPI documentation for more details.
+.PP
+\fBReturns:\fP
+.RS 4
+0 on success, -1 on error. 
+.RE
+.PP
+
+.SS "int BRLAPI_STDCALL brlapi_writeDots (const unsigned char * dots)"Write the given dots array to the display
+.PP
+\fBParameters:\fP
+.RS 4
+\fIdots\fP points on an array of dot information, one per character. Its size must hence be the same as what \fBbrlapi_getDisplaySize()\fP returns.
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+0 on success, -1 on error. 
+.RE
+.PP
+
+.SS "int BRLAPI_STDCALL brlapi_writeText (int cursor, const char * text)"Write the given \\0-terminated string to the braille display
+.PP
+If the string is too long, it is truncated. If it's too short, it is padded with spaces. The text is assumed to be in the current locale charset, or latin1 if locales have not been initialized. To initialize locales, use setlocale(3).
+.PP
+\fBParameters:\fP
+.RS 4
+\fIcursor\fP gives the cursor position; if equal to \fBBRLAPI_CURSOR_OFF\fP, no cursor is shown at all; if cursor==\fBBRLAPI_CURSOR_LEAVE\fP, the cursor is left where it is
+.br
+\fItext\fP points to the string to be displayed.
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+0 on success, -1 on error. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

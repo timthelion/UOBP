@@ -1,0 +1,269 @@
+.TH "Error handling" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Error handling \- 
+.PP
+How to handle errors.  
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbrlapi_error_t\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_SUCCESS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_NOMEM\fP   1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_TTYBUSY\fP   2"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_DEVICEBUSY\fP   3"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_UNKNOWN_INSTRUCTION\fP   4"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_ILLEGAL_INSTRUCTION\fP   5"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_INVALID_PARAMETER\fP   6"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_INVALID_PACKET\fP   7"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_CONNREFUSED\fP   8"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_OPNOTSUPP\fP   9"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_GAIERR\fP   10"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_LIBCERR\fP   11"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_UNKNOWNTTY\fP   12"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_PROTOCOL_VERSION\fP   13"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_EOF\fP   14"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_EMPTYKEY\fP   15"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_DRIVERERROR\fP   16"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_AUTHENTICATION\fP   17"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_error\fP   (*brlapi_error_location())"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_errno\fP   (brlapi_error.brlerrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_libcerrno\fP   (brlapi_error.libcerrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_gaierrno\fP   (brlapi_error.gaierrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_errfun\fP   (brlapi_error.errfun)"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef uint32_t \fBbrlapi_packetType_t\fP"
+.br
+.ti -1c
+.RI "typedef void(BRLAPI_STDCALL * \fBbrlapi_exceptionHandler_t\fP )(int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.ti -1c
+.RI "typedef void(BRLAPI_STDCALL * \fBbrlapi__exceptionHandler_t\fP )(\fBbrlapi_handle_t\fP *handle, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi_perror\fP (const char *s)"
+.br
+.ti -1c
+.RI "\fBbrlapi_error_t\fP *BRLAPI_STDCALL \fBbrlapi_error_location\fP (void)"
+.br
+.ti -1c
+.RI "const char *BRLAPI_STDCALL \fBbrlapi_strerror\fP (const \fBbrlapi_error_t\fP *error)"
+.br
+.ti -1c
+.RI "const char *BRLAPI_STDCALL \fBbrlapi_getPacketTypeName\fP (\fBbrlapi_packetType_t\fP type)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_strexception\fP (char *buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t packetSize)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__strexception\fP (\fBbrlapi_handle_t\fP *handle, char *buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t packetSize)"
+.br
+.ti -1c
+.RI "\fBbrlapi_exceptionHandler_t\fP BRLAPI_STDCALL \fBbrlapi_setExceptionHandler\fP (\fBbrlapi_exceptionHandler_t\fP handler)"
+.br
+.ti -1c
+.RI "\fBbrlapi__exceptionHandler_t\fP BRLAPI_STDCALL \fBbrlapi__setExceptionHandler\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi__exceptionHandler_t\fP handler)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi_defaultExceptionHandler\fP (int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi__defaultExceptionHandler\fP (\fBbrlapi_handle_t\fP *handle, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBbrlapi_errlist\fP []"
+.br
+.ti -1c
+.RI "const int \fBbrlapi_nerr\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_error_t\fP \fBbrlapi_error\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_errno\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_libcerrno\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_gaierrno\fP"
+.br
+.ti -1c
+.RI "const char * \fBbrlapi_errfun\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+When a function fails, \fBbrlapi_errno\fP will hold an error code to explain why it failed. It should always be reported somehow.
+.PP
+Although most errors are reported that way, some (called exceptions) are reported asynchronously for efficiency reasons, because they always just report a programming error. The affected functions are: brlapi_setFocus, brlapi_write* and brlapi_sendRaw. When they happen, the next call to brlapi_something will close the connection and call the \fIexception\fP handler. If the exception handler returns, the brlapi_something function will return an end-of-file error.
+.PP
+The default exception handler (\fBbrlapi_defaultExceptionHandler()\fP) dumps the guilty packet before abort()ing. It can be replaced by calling \fBbrlapi_setExceptionHandler()\fP. For instance, the Java and Python bindings use this for raising a Java or Python exception that may be caught. 
+.SH "Define Documentation"
+.PP 
+.SS "#define \fBbrlapi_errfun\fP   (brlapi_error.errfun)"Cheat about the brlapi_errfun C token 
+.SS "#define \fBbrlapi_errno\fP   (brlapi_error.brlerrno)"Cheat about the brlapi_errno C token 
+.SS "#define \fBbrlapi_error\fP   (*brlapi_error_location())"Cheat about the brlapi_error C token 
+.SS "#define BRLAPI_ERROR_AUTHENTICATION   17"Authentication failed 
+.SS "#define BRLAPI_ERROR_CONNREFUSED   8"Connection refused 
+.SS "#define BRLAPI_ERROR_DEVICEBUSY   3"A connection is already using RAW or suspend mode 
+.SS "#define BRLAPI_ERROR_DRIVERERROR   16"Packet returned by driver too large 
+.SS "#define BRLAPI_ERROR_EMPTYKEY   15"Key file empty 
+.SS "#define BRLAPI_ERROR_EOF   14"Unexpected end of file 
+.SS "#define BRLAPI_ERROR_GAIERR   10"Getaddrinfo error 
+.SS "#define BRLAPI_ERROR_ILLEGAL_INSTRUCTION   5"Forbiden in current mode 
+.SS "#define BRLAPI_ERROR_INVALID_PACKET   7"Invalid size 
+.SS "#define BRLAPI_ERROR_INVALID_PARAMETER   6"Out of range or have no sense 
+.SS "#define BRLAPI_ERROR_LIBCERR   11"Libc error 
+.SS "#define BRLAPI_ERROR_NOMEM   1"Not enough memory 
+.SS "#define BRLAPI_ERROR_OPNOTSUPP   9"Operation not supported 
+.SS "#define BRLAPI_ERROR_PROTOCOL_VERSION   13"Bad protocol version 
+.SS "#define BRLAPI_ERROR_SUCCESS   0"Success 
+.SS "#define BRLAPI_ERROR_TTYBUSY   2"A connection is already running in this tty 
+.SS "#define BRLAPI_ERROR_UNKNOWN_INSTRUCTION   4"Not implemented in protocol 
+.SS "#define BRLAPI_ERROR_UNKNOWNTTY   12"Couldn't find out the tty number 
+.SS "#define \fBbrlapi_gaierrno\fP   (brlapi_error.gaierrno)"Cheat about the brlapi_gaierrno C token 
+.SS "#define \fBbrlapi_libcerrno\fP   (brlapi_error.libcerrno)"Cheat about the brlapi_libcerrno C token 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef void(BRLAPI_STDCALL * \fBbrlapi__exceptionHandler_t\fP)(\fBbrlapi_handle_t\fP *handle, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.SS "typedef void(BRLAPI_STDCALL * \fBbrlapi_exceptionHandler_t\fP)(int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"Types for exception handlers
+.PP
+Types of exception handlers which are to be given to \fBbrlapi_setExceptionHandler()\fP and \fBbrlapi__setExceptionHandler()\fP.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIhandle\fP is the handle corresponding to the guilty connection; 
+.br
+\fIerror\fP is a BRLAPI_ERROR_ error code; 
+.br
+\fItype\fP is the type of the guilty packet; 
+.br
+\fIpacket\fP points to the content of the guilty packet (might be a little bit truncated); 
+.br
+\fIsize\fP gives the guilty packet's size. 
+.RE
+.PP
+
+.SS "typedef uint32_t \fBbrlapi_packetType_t\fP"Type for packet type. Only unsigned can cross networks, 32bits 
+.SH "Function Documentation"
+.PP 
+.SS "void BRLAPI_STDCALL brlapi__defaultExceptionHandler (\fBbrlapi_handle_t\fP * handle, int error, \fBbrlapi_packetType_t\fP type, const void * packet, size_t size)"
+.SS "\fBbrlapi__exceptionHandler_t\fP BRLAPI_STDCALL brlapi__setExceptionHandler (\fBbrlapi_handle_t\fP * handle, \fBbrlapi__exceptionHandler_t\fP handler)"
+.SS "int BRLAPI_STDCALL brlapi__strexception (\fBbrlapi_handle_t\fP * handle, char * buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void * packet, size_t packetSize)"
+.SS "void BRLAPI_STDCALL brlapi_defaultExceptionHandler (int error, \fBbrlapi_packetType_t\fP type, const void * packet, size_t size)"
+.SS "\fBbrlapi_error_t\fP* BRLAPI_STDCALL brlapi_error_location (void)"Get per-thread error location
+.PP
+In multithreaded software, \fBbrlapi_error\fP is thread-specific, so api.h cheats about the brlapi_error token and actually calls \fBbrlapi_error_location()\fP.
+.PP
+This gets the thread specific location of global variable \fBbrlapi_error\fP 
+.SS "const char* BRLAPI_STDCALL brlapi_getPacketTypeName (\fBbrlapi_packetType_t\fP type)"Get plain packet type
+.PP
+\fBbrlapi_getPacketTypeName()\fP returns the plain packet type name corresponding to its argument. 
+.SS "void BRLAPI_STDCALL brlapi_perror (const char * s)"Print a BrlAPI error message
+.PP
+\fBbrlapi_perror()\fP reads \fBbrlapi_error\fP, and acts just like perror(). 
+.SS "\fBbrlapi_exceptionHandler_t\fP BRLAPI_STDCALL brlapi_setExceptionHandler (\fBbrlapi_exceptionHandler_t\fP handler)"Set a new exception handler
+.PP
+\fBbrlapi_setExceptionHandler()\fP replaces the previous exception handler with the handler parameter. The previous exception handler is returned to make chaining error handlers possible.
+.PP
+The default handler just prints the exception and abort()s. 
+.SS "const char* BRLAPI_STDCALL brlapi_strerror (const \fBbrlapi_error_t\fP * error)"Get plain error message
+.PP
+\fBbrlapi_strerror()\fP returns the plain error message corresponding to its argument. 
+.SS "int BRLAPI_STDCALL brlapi_strexception (char * buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void * packet, size_t packetSize)"Describes an exception
+.PP
+\fBbrlapi_strexception()\fP puts a text describing the given exception in buffer.
+.PP
+The beginning of the guilty packet is dumped as a sequence of hex bytes.
+.PP
+\fBReturns:\fP
+.RS 4
+the size of the text describing the exception, following snprintf()'s semantics. 
+.RE
+.PP
+
+.SH "Variable Documentation"
+.PP 
+.SS "const char* \fBbrlapi_errfun\fP"Shorthand for brlapi_error.errfun 
+.SS "const char* \fBbrlapi_errlist\fP[]"Error message list
+.PP
+These are the string constants used by \fBbrlapi_perror()\fP. 
+.SS "int \fBbrlapi_errno\fP"Shorthand for brlapi_error.errno 
+.SS "\fBbrlapi_error_t\fP \fBbrlapi_error\fP"Global variable brlapi_error
+.PP
+\fBbrlapi_error\fP is a global left-value containing the last error information. Its errno field is not reset to BRLAPI_ERROR_SUCCESS on success.
+.PP
+This information may be copied in \fBbrlapi_error_t\fP variables for later use with the brlapi_strerror function. 
+.SS "int \fBbrlapi_gaierrno\fP"Shorthand for brlapi_error.gaierrno 
+.SS "int \fBbrlapi_libcerrno\fP"Shorthand for brlapi_error.libcerrno 
+.SS "const int \fBbrlapi_nerr\fP"Number of error messages 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.

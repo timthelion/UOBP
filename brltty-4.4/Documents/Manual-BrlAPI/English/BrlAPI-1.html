@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.65">
+ <TITLE>BrlAPI Reference manual: Introduction</TITLE>
+ <LINK HREF="BrlAPI-2.html" REL=next>
+
+ <LINK HREF="BrlAPI.html#toc1" REL=contents>
+</HEAD>
+<BODY>
+<A HREF="BrlAPI-2.html">Next</A>
+Previous
+<A HREF="BrlAPI.html#toc1">Contents</A>
+<HR>
+<H2><A NAME="sec-intro"></A> <A NAME="s1">1.</A> <A HREF="BrlAPI.html#toc1">Introduction</A></H2>
+
+<P><EM>BrlAPI</EM> is a service provided by the <EM>brltty</EM> daemon.</P>
+<P>Its purpose is to allow programmers to write applications that take advantage
+of a braille terminal in order to deliver a blind user suitable information
+for his/her specific needs.</P>
+<P>While an application communicates with the braille terminal, everything
+<EM>brltty</EM> sends to the braille terminal in the application's console is
+ignored, whereas each piece of data coming from the braille terminal is sent to
+the application, rather than to <EM>brltty</EM>.</P>
+
+<H2><A NAME="ss1.1">1.1</A> <A HREF="BrlAPI.html#toc1.1">Concepts</A>
+</H2>
+
+<P> All throughout this manual, a few terms will be used which are either
+specific to braille terminals, or introduced because of <EM>BrlAPI</EM>. They are defined
+below. Taking a few minutes to go through this glossary will save a lot
+of time and questions later.</P>
+<P>
+<DL>
+
+<DT><B>Authorization key</B><DD>
+<P>A file containing arbitrary data, that has to be sent to the server by the
+client, to prove it is allowed to establish a connection and then control
+the braille terminal.</P>
+
+<DT><B>Braille display</B><DD>
+<P>The small screen on the braille terminal that is able to display braille text.</P>
+
+<DT><B>Braille keyboard</B><DD>
+<P>The keyboard of the braille terminal.</P>
+
+<DT><B>Braille terminal</B><DD>
+<P>A computer designed to display text in braille. In this case, the text is
+supposed to come from another computer running Linux or any other Unix system.</P>
+
+<DT><B>Brltty</B><DD>
+<P>The background process that gives a blind person access to the console screen
+thanks to a braille terminal or speech synthetizer.</P>
+
+<DT><B>Client</B><DD>
+<P>An application designed to handle a braille terminal thanks to <EM>BrlAPI</EM>.</P>
+
+<DT><B>Command</B><DD>
+<P>A code returned by the driver, indicating an action to do, for instance
+"go to previous line", "go to next line", etc.</P>
+
+<DT><B>Driver</B><DD>
+<P>A library that has functions to communicate with a braille terminal.
+Basically, a driver has functions to open communication with the
+braille terminal, close the communication, write on the braille
+display, and read keypresses from the braille keyboard, plus some special
+functions that will be described in detail in this manual.</P>
+
+<DT><B>Key</B><DD>
+<P>A code that is returned by the driver when a key is pressed. This is
+different from a command, because the command concept is driver-independent
+(all drivers use the same command codes - those defined by <EM>brltty</EM>), whereas
+codes used for returning keypresses may vary between drivers.</P>
+
+<DT><B>BrlAPI's Library</B><DD>
+<P>This library helps clients to connect and use <EM>BrlAPI</EM>'s
+server thanks to a series of <CODE>brlapi_</CODE>-prefixed functions.</P>
+
+<DT><B>Packet</B><DD>
+<P>A sequence of bytes making up the atomic unit in communications, either between
+braille drivers and braille terminals or between the server and clients.</P>
+
+<DT><B>Raw mode</B><DD>
+<P>Mode in which the client application exchanges packets with the driver.
+Normal operations like sending text for display or reading keypresses are
+not available in this mode. It lets applications take advantage of advanced
+functionalities of the driver's communication protocol.</P>
+
+<DT><B>Server</B><DD>
+<P>The part of <EM>brltty</EM> that controls incoming connections and communication
+between clients and braille drivers.</P>
+
+<DT><B>Suspend mode</B><DD>
+<P>Mode in which the server keeps the device driver closed, so that the client
+can connect directly to the device.</P>
+
+<DT><B>Tty</B><DD>
+<P>Synonym for console, terminal, ...  Linux' console consist of several Virtual
+Ttys (VTs).  The screen program's windows also are Ttys.  X-window system's
+xterms emulate Ttys as well.</P>
+
+</DL>
+</P>
+
+<H2><A NAME="ss1.2">1.2</A> <A HREF="BrlAPI.html#toc1.2">How to read this manual</A>
+</H2>
+
+<P>This manual is split in five parts.</P>
+<P>
+<DL>
+
+<DT><B>
+<A HREF="BrlAPI-2.html#sec-general">General description</A></B><DD>
+<P>Describes more precisely what <EM>BrlAPI</EM>
+is and how it works in collaboration with <EM>brltty</EM>'s core, the braille driver
+and clients. In this part, a "connection-use-disconnection" scenario
+will be described step by step, explaining for each step what <EM>BrlAPI</EM> does in
+reaction to client instructions. These explanations will take place at a
+user level.</P>
+
+<DT><B>
+<A HREF="BrlAPI-3.html#sec-concurrency">Concurrency management</A></B><DD>
+<P>This part explains how concurrency between <EM>BrlAPI</EM> clients is handled
+thanks to focus tellers.</P>
+
+<DT><B>
+<A HREF="BrlAPI-4.html#sec-install">Installation and configuration</A></B><DD>
+<P>This part explains in detail how to install and configure the API. For
+instructions on how to install and configure <EM>brltty</EM>, please report to
+the <EM>brltty</EM> documentation.</P>
+
+<DT><B>
+<A HREF="BrlAPI-5.html#sec-library">Library description</A></B><DD>
+<P>This part describes how client applications
+can communicate with the server using the <EM>BrlAPI</EM> library that
+comes with <EM>brltty</EM>. Each function will be briefly described,
+classified by categories. More exhaustive descriptions of every
+function are available in the corresponding online manual pages.</P>
+
+<DT><B>
+<A HREF="BrlAPI-6.html#sec-drivers">Writing braille drivers</A></B><DD>
+<P>This part describes how the braille drivers included in <EM>brltty</EM> should be
+written in order to take advantage of <EM>BrlAPI</EM>'s services.</P>
+
+<DT><B>
+<A HREF="BrlAPI-7.html#sec-protocol">Protocol reference</A></B><DD>
+<P>This part describes in detail the communication
+protocol that is used to communicate between server and clients.</P>
+
+</DL>
+</P>
+<P>What should be read probably depends on what should be done by applications with
+<EM>BrlAPI</EM>.</P>
+<P>Reading chapters 
+<A HREF="BrlAPI-2.html#sec-general">General description</A>, 
+<A HREF="BrlAPI-3.html#sec-concurrency">Concurrency management</A> and 
+<A HREF="BrlAPI-4.html#sec-install">Installation and configuration</A> is recommended, since they provide
+useful information and (hopefully) lead to a good understanding of <EM>BrlAPI</EM>,
+for an efficient use.</P>
+<P>Chapter 
+<A HREF="BrlAPI-5.html#sec-library">Library description</A> concerns writing
+applications that take advantage of braille terminals so as to bring specific
+(and more useful) information to blind people.</P>
+<P>Chapter 
+<A HREF="BrlAPI-6.html#sec-drivers">Drivers</A> is for braille driver implementation: either adding a braille driver
+to <EM>brltty</EM> or modifying an existing one so that it can benefit from
+<EM>BrlAPI</EM>'s features, this chapter will be of interest, since it describes
+exactly what is needed to write a driver for <EM>brltty</EM>: the core
+of drivers interface for instance.</P>
+<P>Finally, chapter 
+<A HREF="BrlAPI-7.html#sec-protocol">Protocol reference</A> is for <EM>not using</EM> the library, but using the <EM>BrlAPI</EM>
+server directly, when the library might not be sufficient: it describes the
+underlying protocol that will have to be used to do so.</P>
+
+<HR>
+<A HREF="BrlAPI-2.html">Next</A>
+Previous
+<A HREF="BrlAPI.html#toc1">Contents</A>
+</BODY>
+</HTML>

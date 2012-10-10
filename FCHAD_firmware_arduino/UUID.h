@@ -1,0 +1,16 @@
+#define UUID0  0x0 //8 bits
+#define UUID1  0x0 //8 bits
+#define UUID2  0x0 //8 bits
+#define UUID3  0x0 //8 bits
+#define UUID4  0x0 //8 bits
+#define UUID5  0x0 //8 bits
+#define UUID6  0x0 //8 bits
+#define UUID7  0x0 //8 bits
+#define UUID8  0x0 //8 bits
+#define UUID9  0x0 //8 bits
+#define UUID10 0x0 //8 bits
+#define UUID11 0x0 //8 bits
+#define UUID12 0x0 //8 bits
+#define UUID13 0x0 //8 bits
+#define UUID14 0x0 //8 bits
+#define UUID15 0x0 //8 bits

@@ -1,0 +1,530 @@
+.TH "brlapi.h" 3 "Thu Jun 7 2012" "Version 1.0" "BrlAPI" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+brlapi.h \- 
+.PP
+Types, defines and functions prototypes for \fIBrlAPI's\fP library.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <sys/types.h>\fP
+.br
+\fC#include <stdint.h>\fP
+.br
+\fC#include <unistd.h>\fP
+.br
+\fC#include <inttypes.h>\fP
+.br
+\fC#include 'brlapi_keycodes.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBbrlapi_connectionSettings_t\fP"
+.br
+.RI "\fISettings structure for \fIBrlAPI\fP connection. \fP"
+.ti -1c
+.RI "struct \fBbrlapi_writeArguments_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_expandedKeyCode_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_describedKeyCode_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_range_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_error_t\fP"
+.br
+.ti -1c
+.RI "struct \fBbrlapi_writeStruct\fP"
+.br
+.in -1c
+.SS "Defines"
+
+.in +1c
+.ti -1c
+.RI "#define \fBBRLAPI_RELEASE\fP   '0.5.7'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_MAJOR\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_MINOR\fP   5"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_REVISION\fP   7"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_STDCALL\fP"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_SOCKETPORTNUM\fP   4101"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_SOCKETPORT\fP   '4101'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_SOCKETPATH\fP   '/var/lib/BrlAPI'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ETCDIR\fP   '/etc'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_AUTHKEYFILE\fP   'brlapi.key'"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DEFAUTH\fP   BRLAPI_ETCDIR '/' BRLAPI_AUTHKEYFILE"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_SETTINGS_INITIALIZER\fP   { NULL, NULL }"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_MAXNAMELENGTH\fP   31"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_TTY_DEFAULT\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_DISPLAY_DEFAULT\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_CURSOR_LEAVE\fP   -1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_CURSOR_OFF\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WRITEARGUMENTS_INITIALIZER\fP   { BRLAPI_DISPLAY_DEFAULT, 0, 0, NULL, -1, NULL, NULL, BRLAPI_CURSOR_LEAVE, NULL }"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_UC_ROW\fP   0x2800UL"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_ignoreAllKeys\fP()   brlapi_ignoreKeys(brlapi_rangeType_all, NULL, 0)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi__ignoreAllKeys\fP(handle)   brlapi__ignoreKeys(handle, brlapi_rangeType_all, NULL, 0)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_acceptAllKeys\fP()   brlapi_acceptKeys(brlapi_rangeType_all, NULL, 0)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi__acceptAllKeys\fP(handle)   brlapi__acceptKeys(handle, brlapi_rangeType_all, NULL, 0)"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_SUCCESS\fP   0"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_NOMEM\fP   1"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_TTYBUSY\fP   2"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_DEVICEBUSY\fP   3"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_UNKNOWN_INSTRUCTION\fP   4"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_ILLEGAL_INSTRUCTION\fP   5"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_INVALID_PARAMETER\fP   6"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_INVALID_PACKET\fP   7"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_CONNREFUSED\fP   8"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_OPNOTSUPP\fP   9"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_GAIERR\fP   10"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_LIBCERR\fP   11"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_UNKNOWNTTY\fP   12"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_PROTOCOL_VERSION\fP   13"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_EOF\fP   14"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_EMPTYKEY\fP   15"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_DRIVERERROR\fP   16"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_ERROR_AUTHENTICATION\fP   17"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_error\fP   (*brlapi_error_location())"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_errno\fP   (brlapi_error.brlerrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_libcerrno\fP   (brlapi_error.libcerrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_gaierrno\fP   (brlapi_error.gaierrno)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_errfun\fP   (brlapi_error.errfun)"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_settings_t\fP   \fBbrlapi_connectionSettings_t\fP"
+.br
+.ti -1c
+.RI "#define \fBBRLAPI_WRITESTRUCT_INITIALIZER\fP   BRLAPI_WRITEARGUMENTS_INITIALIZER"
+.br
+.ti -1c
+.RI "#define \fBbrl_keycode_t\fP   \fBbrlapi_keyCode_t\fP"
+.br
+.ti -1c
+.RI "#define \fBbrl_type_t\fP   \fBbrlapi_packetType_t\fP"
+.br
+.ti -1c
+.RI "#define \fBBRLCOMMANDS\fP   NULL"
+.br
+.ti -1c
+.RI "#define \fBBRL_KEYCODE_MAX\fP   BRLAPI_KEY_MAX"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_initializeConnection\fP   brlapi_openConnection"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getTty\fP   brlapi_enterTtyMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getTtyPath\fP   brlapi_enterTtyModeWithPath"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_leaveTty\fP   brlapi_leaveTtyMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_unignoreKeyRange\fP   brlapi_acceptKeyRange"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_unignoreKeySet\fP   brlapi_acceptKeySet"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_getRaw\fP   brlapi_enterRawMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_leaveRaw\fP   brlapi_leaveRawMode"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_suspend\fP   brlapi_suspendDriver"
+.br
+.ti -1c
+.RI "#define \fBbrlapi_resume\fP   brlapi_resumeDriver"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_SUCCESS\fP   BRLAPI_ERROR_SUCCESS"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_NOMEM\fP   BRLAPI_ERROR_NOMEM"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_TTYBUSY\fP   BRLAPI_ERROR_TTYBUSY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_DEVICEBUSY\fP   BRLAPI_ERROR_DEVICEBUSY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_UNKNOWN_INSTRUCTION\fP   BRLAPI_ERROR_UNKNOWN_INSTRUCTION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_ILLEGAL_INSTRUCTION\fP   BRLAPI_ERROR_ILLEGAL_INSTRUCTION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_INVALID_PARAMETER\fP   BRLAPI_ERROR_INVALID_PARAMETER"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_INVALID_PACKET\fP   BRLAPI_ERROR_INVALID_PACKET"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_CONNREFUSED\fP   BRLAPI_ERROR_CONNREFUSED"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_OPNOTSUPP\fP   BRLAPI_ERROR_OPNOTSUPP"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_GAIERR\fP   BRLAPI_ERROR_GAIERR"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_LIBCERR\fP   BRLAPI_ERROR_LIBCERR"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_UNKNOWNTTY\fP   BRLAPI_ERROR_UNKNOWNTTY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_PROTOCOL_VERSION\fP   BRLAPI_ERROR_PROTOCOL_VERSION"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_EOF\fP   BRLAPI_ERROR_EOF"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_EMPTYKEY\fP   BRLAPI_ERROR_EMPTYKEY"
+.br
+.ti -1c
+.RI "#define \fBBRLERR_DRIVERERROR\fP   BRLAPI_ERROR_DRIVERERROR"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBbrlapi_handle_t\fP \fBbrlapi_handle_t\fP"
+.br
+.ti -1c
+.RI "typedef int \fBbrlapi_fileDescriptor\fP"
+.br
+.ti -1c
+.RI "typedef uint32_t \fBbrlapi_packetType_t\fP"
+.br
+.ti -1c
+.RI "typedef void(BRLAPI_STDCALL * \fBbrlapi_exceptionHandler_t\fP )(int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.ti -1c
+.RI "typedef void(BRLAPI_STDCALL * \fBbrlapi__exceptionHandler_t\fP )(\fBbrlapi_handle_t\fP *handle, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.in -1c
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum \fBbrlapi_rangeType_t\fP { \fBbrlapi_rangeType_all\fP, \fBbrlapi_rangeType_type\fP, \fBbrlapi_rangeType_command\fP, \fBbrlapi_rangeType_key\fP, \fBbrlapi_rangeType_code\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "size_t BRLAPI_STDCALL \fBbrlapi_getHandleSize\fP (void)"
+.br
+.ti -1c
+.RI "\fBbrlapi_fileDescriptor\fP BRLAPI_STDCALL \fBbrlapi_openConnection\fP (const \fBbrlapi_connectionSettings_t\fP *desiredSettings, \fBbrlapi_connectionSettings_t\fP *actualSettings)"
+.br
+.ti -1c
+.RI "\fBbrlapi_fileDescriptor\fP BRLAPI_STDCALL \fBbrlapi__openConnection\fP (\fBbrlapi_handle_t\fP *handle, const \fBbrlapi_connectionSettings_t\fP *desiredSettings, \fBbrlapi_connectionSettings_t\fP *actualSettings)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi_closeConnection\fP (void)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi__closeConnection\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_getDriverName\fP (char *buffer, size_t size)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__getDriverName\fP (\fBbrlapi_handle_t\fP *handle, char *buffer, size_t size)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_getDisplaySize\fP (unsigned int *x, unsigned int *y)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__getDisplaySize\fP (\fBbrlapi_handle_t\fP *handle, unsigned int *x, unsigned int *y)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_enterTtyMode\fP (int tty, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__enterTtyMode\fP (\fBbrlapi_handle_t\fP *handle, int tty, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_enterTtyModeWithPath\fP (int *ttys, int count, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__enterTtyModeWithPath\fP (\fBbrlapi_handle_t\fP *handle, int *ttys, int count, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_leaveTtyMode\fP (void)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__leaveTtyMode\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_setFocus\fP (int tty)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__setFocus\fP (\fBbrlapi_handle_t\fP *handle, int tty)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_writeText\fP (int cursor, const char *text)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__writeText\fP (\fBbrlapi_handle_t\fP *handle, int cursor, const char *text)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_writeDots\fP (const unsigned char *dots)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__writeDots\fP (\fBbrlapi_handle_t\fP *handle, const unsigned char *dots)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_write\fP (const \fBbrlapi_writeArguments_t\fP *arguments)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__write\fP (\fBbrlapi_handle_t\fP *handle, const \fBbrlapi_writeArguments_t\fP *arguments)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_expandKeyCode\fP (\fBbrlapi_keyCode_t\fP code, \fBbrlapi_expandedKeyCode_t\fP *expansion)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_describeKeyCode\fP (\fBbrlapi_keyCode_t\fP code, \fBbrlapi_describedKeyCode_t\fP *description)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_readKey\fP (int wait, \fBbrlapi_keyCode_t\fP *code)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__readKey\fP (\fBbrlapi_handle_t\fP *handle, int wait, \fBbrlapi_keyCode_t\fP *code)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_ignoreKeys\fP (\fBbrlapi_rangeType_t\fP type, const \fBbrlapi_keyCode_t\fP keys[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__ignoreKeys\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi_rangeType_t\fP type, const \fBbrlapi_keyCode_t\fP keys[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_acceptKeys\fP (\fBbrlapi_rangeType_t\fP type, const \fBbrlapi_keyCode_t\fP keys[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__acceptKeys\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi_rangeType_t\fP type, const \fBbrlapi_keyCode_t\fP keys[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__ignoreAllKeys\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__acceptAllKeys\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_ignoreKeyRanges\fP (\fBbrlapi_range_t\fP ranges[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__ignoreKeyRanges\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi_range_t\fP ranges[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_acceptKeyRanges\fP (\fBbrlapi_range_t\fP ranges[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__acceptKeyRanges\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi_range_t\fP ranges[], unsigned int count)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_enterRawMode\fP (const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__enterRawMode\fP (\fBbrlapi_handle_t\fP *handle, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_leaveRawMode\fP (void)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__leaveRawMode\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "ssize_t BRLAPI_STDCALL \fBbrlapi_sendRaw\fP (const void *buffer, size_t size)"
+.br
+.ti -1c
+.RI "ssize_t BRLAPI_STDCALL \fBbrlapi__sendRaw\fP (\fBbrlapi_handle_t\fP *handle, const void *buffer, size_t size)"
+.br
+.ti -1c
+.RI "ssize_t BRLAPI_STDCALL \fBbrlapi_recvRaw\fP (void *buffer, size_t size)"
+.br
+.ti -1c
+.RI "ssize_t BRLAPI_STDCALL \fBbrlapi__recvRaw\fP (\fBbrlapi_handle_t\fP *handle, void *buffer, size_t size)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_suspendDriver\fP (const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__suspendDriver\fP (\fBbrlapi_handle_t\fP *handle, const char *driver)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_resumeDriver\fP (void)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__resumeDriver\fP (\fBbrlapi_handle_t\fP *handle)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi_perror\fP (const char *s)"
+.br
+.ti -1c
+.RI "\fBbrlapi_error_t\fP *BRLAPI_STDCALL \fBbrlapi_error_location\fP (void)"
+.br
+.ti -1c
+.RI "const char *BRLAPI_STDCALL \fBbrlapi_strerror\fP (const \fBbrlapi_error_t\fP *error)"
+.br
+.ti -1c
+.RI "const char *BRLAPI_STDCALL \fBbrlapi_getPacketTypeName\fP (\fBbrlapi_packetType_t\fP type)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi_strexception\fP (char *buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t packetSize)"
+.br
+.ti -1c
+.RI "int BRLAPI_STDCALL \fBbrlapi__strexception\fP (\fBbrlapi_handle_t\fP *handle, char *buffer, size_t bufferSize, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t packetSize)"
+.br
+.ti -1c
+.RI "\fBbrlapi_exceptionHandler_t\fP BRLAPI_STDCALL \fBbrlapi_setExceptionHandler\fP (\fBbrlapi_exceptionHandler_t\fP handler)"
+.br
+.ti -1c
+.RI "\fBbrlapi__exceptionHandler_t\fP BRLAPI_STDCALL \fBbrlapi__setExceptionHandler\fP (\fBbrlapi_handle_t\fP *handle, \fBbrlapi__exceptionHandler_t\fP handler)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi_defaultExceptionHandler\fP (int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.ti -1c
+.RI "void BRLAPI_STDCALL \fBbrlapi__defaultExceptionHandler\fP (\fBbrlapi_handle_t\fP *handle, int error, \fBbrlapi_packetType_t\fP type, const void *packet, size_t size)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "const char * \fBbrlapi_errlist\fP []"
+.br
+.ti -1c
+.RI "const int \fBbrlapi_nerr\fP"
+.br
+.ti -1c
+.RI "\fBbrlapi_error_t\fP \fBbrlapi_error\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_errno\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_libcerrno\fP"
+.br
+.ti -1c
+.RI "int \fBbrlapi_gaierrno\fP"
+.br
+.ti -1c
+.RI "const char * \fBbrlapi_errfun\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+
+.SH "Define Documentation"
+.PP 
+.SS "#define BRLAPI_STDCALL"
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for BrlAPI from the source code.
