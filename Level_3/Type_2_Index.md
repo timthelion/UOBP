@@ -1,13 +1,13 @@
 Key presses and other events sent from braille device.
 
-* Type 2 subType 0
+## Type 2 subType 0
 Standard PC keyboard key-press.
 LEN=2
 TYPE=2
 SUBTYPE=0
 INFO=node (1 octet) + keycode(1 octet)
 
-* Type 2 subType 1
+## Type 2 subType 1
 Braille key chord(chording is done within the device!).
 LEN=2
 TYPE=2
@@ -21,7 +21,7 @@ INFO=node(1 octet) + key(1 octet).  Bits represent braille dots in standard brai
 78
 [/src]
 
-* Type 2 subType 2
+## Type 2 subType 2
 
 Braille routing key key-press.
 LEN=4
@@ -29,20 +29,20 @@ TYPE=2
 SUBTYPE=2
 INFO=node(1 octet) + Routing key row(2 octets).  Routing key column(2 octets).
 
-* FCHAD touch sensors.
+## FCHAD touch sensors.
 
 depending on whether response time or detail are more important to the driver, we can specify in the settings whether we want to receive raw events or condesed events.  With condensed events, only the extreme touches will be sent.  Otherwise, every touch and release is sent.
 
-* Type 2 subType 3
+## Type 2 subType 3
 FCHAD touch sensor down.
 LEN=5
 TYPE=2
 subType=3
 INFO=node (1 octet) + sensor row(2 octets) + sensor column (2 octets)
 
-* Type 2 subType 4
+## Type 2 subType 4
 FCHAD touch sensor up. Same as subtype 3 but for an up signal.
-* Type 2 subType 5
+## Type 2 subType 5
 
 FCHAD touch sensor pressed extremes. This signal gets sent every time these extremes change.
 
