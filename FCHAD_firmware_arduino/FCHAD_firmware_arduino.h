@@ -1,3 +1,7 @@
+#define ARDUINO
+#include "level2.h"
+#include "mpr121.h"
+#include <stdlib.h>
 #include "UUID.h"
 #define IRQ_PIN 2
 #define NULL 0
@@ -14,26 +18,26 @@ void * getHandler (unsigned char frameType, unsigned char frameSubType);
 
 void initializeFrameHandlers();
 
-void handleFrame(uint16_t length,unsigned char type, unsigned char subType, unsigned char * information);
+void handleFrame(unsigned int length,unsigned char type, unsigned char subType, unsigned char * information,void*callerParameter);
 
 //////////////////////////////////////////
 ///Initialization Frame///////////////////
 //////////////////////////////////////////
-void sendInitializationFrame(uint16_t length,unsigned char * information);
+void sendInitializationFrame(unsigned int length,unsigned char * information);
 
 //////////////////////////////////////////
 ///Display functions//////////////////////
 //////////////////////////////////////////
 void dot_display_init();
-void displayChar(uint16_t length, unsigned char * information);
+void displayChar(unsigned int length, unsigned char * information);
 
 //////////////////////////////////////////////
 ////Send sensor touch signals/////////////////
 //////////////////////////////////////////////
-sendOnDown(unsigned char sensor);
-sendOnUp(unsigned char sensor);
+void sendOnDown(unsigned char sensor);
+void sendOnUp(unsigned char sensor);
 //////////////////////////////////////////////
 ////Standard initializers/////////////////////
 //////////////////////////////////////////////
-void setup();
-void loop();
+//void setup();
+//void loop();

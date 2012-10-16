@@ -19,21 +19,19 @@
  *
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>
  */
-#include "mpr121/mpr121.h"
-#include "FCHAD_firmware.h"
-#include "level2.h"
+#include "FCHAD_firmware_arduino.h"
+#include <Wire.h>
 
 ///////////////////////////////////////////////////
 //Frame Handlers///////////////////////////////////
 ///////////////////////////////////////////////////
+void (*frameHandlers[NUM_FRAME_TYPES][MAX_NUM_FRAME_SUBTYPES])(unsigned int,unsigned char *);
 
 void * getHandler (unsigned char frameType, unsigned char frameSubType){
  if(frameType >= NUM_FRAME_TYPES)return NULL;
  if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) return NULL;
- return frameHandlers[frameType][frameSubType];
+ return (void *)frameHandlers[frameType][frameSubType];
 }
-
-void (*frameHandlers[NUM_FRAME_TYPES][MAX_NUM_FRAME_SUBTYPES])(uint16_t,unsigned char *);
 
 void initializeFrameHandlers(){
  int i, j;
@@ -45,21 +43,30 @@ void initializeFrameHandlers(){
  frameHandlers[1][1]=&displayChar;
 }
 
-void handleFrame(uint16_t length,unsigned char type, unsigned char subType, unsigned char * information){
- void * handler = getHandler(type,subType);
- if(handler){
-  *handler(length,information);
- }
+void handleFrame(
+ unsigned int  length,
+ unsigned char type,
+ unsigned char subType,
+ unsigned char * information,
+ void * callerParameter)
+ /*We ignore the callerParameter.
+   It is not needed for FCHAD code.
+   It is used in the BRLTTY driver.*/{
+// digitalWrite(13,LOW);
+ void (*handler)(unsigned int,unsigned char *) = 
+  (void (*)(unsigned int, unsigned char*))getHandler(type,subType);
+ if(handler)(handler)(length,information);
  free(information);
 }
 
 //////////////////////////////////////////
 ///Initialization Frame///////////////////
 //////////////////////////////////////////
-void sendInitializationFrame(uint16_t length,unsigned char * information){
+void sendInitializationFrame(unsigned int length,unsigned char * information){
   int i = 0;
-  uint16_t initializerLength=52;
-  unsigned char initializer[initializerLength]{
+  #define INITIALIZER_LENGTH 52
+  unsigned int initializerLength=INITIALIZER_LENGTH;
+  unsigned char initializer[INITIALIZER_LENGTH]={
     UUID0,
     UUID1,
     UUID2,
@@ -111,8 +118,8 @@ void sendInitializationFrame(uint16_t length,unsigned char * information){
     0,                            //Sensor columns
     12,                           //Number of extended capabilities
     0,
-    0}
-  sendFrame(initializerLength,0,1,initializer);
+    0};
+  sendFrame(initializerLength,0,1,initializer,NULL);
 }
 //////////////////////////////////////////
 ///Display functions//////////////////////
@@ -146,8 +153,8 @@ void displayChar(uint16_t length, unsigned char * information)
 //////////////////////////////////////////////
 ////Send sensor touch signals/////////////////
 //////////////////////////////////////////////
-sendOnDown(unsigned char sensor){
- unsigned char information [5] = {
+void sendOnDown(unsigned char sensor){
+  unsigned char information [5] = {
   //Node
   0,
   //Row
@@ -156,9 +163,9 @@ sendOnDown(unsigned char sensor){
   //Column
   0,
   sensor};
- sendFrame(5, 2, 3, information);
+ sendFrame(5, 2, 3, information,NULL);
 }
-sendOnUp(unsigned char sensor){
+void sendOnUp(unsigned char sensor){
  unsigned char information [5] = {
   //Node
   0,
@@ -168,7 +175,7 @@ sendOnUp(unsigned char sensor){
   //Column
   0,
   sensor};
- sendFrame(5, 2, 4, information);
+ sendFrame(5, 2, 4, information,NULL);
 }
 
 
@@ -184,9 +191,10 @@ void setup()
   // initialize the touch sensors:
   setupMPR121(IRQ_PIN);
   initializeFrameHandlers();
+  digitalWrite(13,HIGH);
 }
 
 void loop() {
- checkForFrameAndReact(&handleFrame);
- readToucInputs(&sendOnDown,&sendOnUp);
+ readTouchInputs(&sendOnDown,&sendOnUp,IRQ_PIN);
+ checkForFrameAndReact(&handleFrame,START_OF_FRAME,NULL,NULL);
 }

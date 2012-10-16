@@ -1,17 +1,14 @@
 #include "mpr121.h"
 #include <Wire.h>
+#include <Arduino.h>
 
 unsigned char touchStates[12]; //to keep track of the previous touch states
 
-void setupMPR121(unsigned int irqPin){
-  pinMode(irqPin, INPUT);
-  digitalWrite(irqPin, HIGH); //enable pullup resistor
-  Wire.begin();
-  mpr121_setup();
-}
-
-void readTouchInputs(void * onDown, void * onUp){
-  if(!checkInterrupt()){
+void readTouchInputs(
+ void (*onDown)(unsigned char),
+ void (*onUp)  (unsigned char),
+ unsigned char irqPin){
+  if(!checkInterrupt(irqPin)){
 
     //read the touch state from the MPR121
     Wire.requestFrom(0x5A,2); 
@@ -19,18 +16,25 @@ void readTouchInputs(void * onDown, void * onUp){
     unsigned char LSB = Wire.read();
     unsigned char MSB = Wire.read();
 
-    uint16_t touched = ((MSB << 8) | LSB); //16bits that make up the touch states
+    unsigned int touched = ((MSB << 8) | LSB); //16bits that make up the touch states
 
     for (unsigned char i=0; i < 12; i++){  // Check what electrodes were pressed
       if(touched & (1<<i)){
-        if(!touchStates[i])*onDown(i);
+        if(!touchStates[i])(onDown)(i);
         touchStates[i] = 1;
       }else{
-        if(touchStates[i])*onUp(i);
+        if(touchStates[i])(onUp)(i);
         touchStates[i] = 0;
       }
     }
   }
+}
+
+void setupMPR121(unsigned int irqPin){
+  pinMode(irqPin, INPUT);
+  digitalWrite(irqPin, HIGH); //enable pullup resistor
+  Wire.begin();
+  mpr121_setup();
 }
 
 void mpr121_setup(void){
@@ -103,12 +107,11 @@ void mpr121_setup(void){
   set_register(0x5A, ATO_CFGU, 0xC9);  // USL = (Vdd-0.7)/vdd*256 = 0xC9 @3.3V   set_register(0x5A, ATO_CFGL, 0x82);  // LSL = 0.65*USL = 0x82 @3.3V
   set_register(0x5A, ATO_CFGT, 0xB5);*/  // Target = 0.9*USL = 0xB5 @3.3V
   
-  set_register(0x5A, ELE_CFG, 0x0C);
-  
+  set_register(0x5A, ELE_CFG, 0x0C); 
 }
 
 
-boolean checkInterrupt(void){
+unsigned char checkInterrupt(unsigned int irqpin){
   return digitalRead(irqpin);
 }
 

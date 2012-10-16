@@ -1,7 +1,7 @@
 #include "level2.h"
 
 void checkForFrameAndReact(
- void * handleFrame(
+ void handleFrame(
    uint16_t length,
    unsigned char type,
    unsigned char subType,
@@ -85,7 +85,7 @@ void checkForFrameAndReact(
 
 unsigned char continueReading(
  ReadEscapedByteExitStatus status
- ,void * handleFrame(
+ ,void handleFrame(
    uint16_t length,
    unsigned char type,
    unsigned char subType,
@@ -215,6 +215,6 @@ void serialWrite(
  gioWriteData(gioEndpoint, &byte, 1);
  #endif
  #ifdef ARDUINO
- return Serial.write(byte);
+ Serial.write(byte);
  #endif
 }

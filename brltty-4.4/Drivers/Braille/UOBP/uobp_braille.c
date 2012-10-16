@@ -17,21 +17,10 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
-#include "prologue.h"
-#include "io_generic.h"
-#include "level2.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "brl_driver.h"
-
 #include "uobp_braille.h"
 
-
+unsigned char initializationStatus = BUFFER_UNINITIALIZED;
 static unsigned char *previousCells = NULL; /* previous pattern displayed */
-BrailleDisplay * thisBrl;
 unsigned char leftHanded=0;
 
 ///////////////////////////////////////////////////////
@@ -74,7 +63,7 @@ void (*frameHandlers
       [MAX_NUM_FRAME_SUBTYPES]
       [MAX_NUM_HANDLERS])();
 
-void * getHandler (unsigned char frameType,
+void * getFrameHandler (unsigned char frameType,
                    unsigned char frameSubType){
  if(frameType >= NUM_FRAME_TYPES)return NULL;
  if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) return NULL;
@@ -101,9 +90,18 @@ void initializeFrameHandlers(){
  #endif
 }
 
-void handleFrame(uint16_t length,unsigned char type, unsigned char subType, unsigned char * information){
- void * handler = getHandler(type,subType);
- callHandler(handler,information);
+void handleFrame(
+ uint16_t length
+ ,unsigned char type
+ ,unsigned char subType
+ ,unsigned char * information
+ ,void * brl){
+ void * handler = getFrameHandler(type,subType);
+ //printf("Frame recieved of type %d, subtype %d\n",type,subType);
+ FrameInfo infoForHandler =
+  {.brl  = brl,
+   .info = information};
+ callHandler(handler,&infoForHandler);
  free(information);
 }
 
@@ -137,7 +135,7 @@ Capability * capabilities[NUM_CAPABILITIES];
 
 void initializeCapabilityInitializersArray(){
   #ifdef LOG_EVERYTHING
-  printf("Initialization packet recieved from device.");
+  logMessage(LOG_INFO,"Initialization packet recieved from device.");
   #endif
   int i;
   for(i=0;i<NUM_CAPABILITIES;i++)
@@ -162,7 +160,9 @@ struct capabilityState * capabilityStates
  [MAX_NUM_NODES];
 
 /* Initialize the nodes based on the information passed(via frame type 0_1) by the braille device.*/
-void initializeCapabilityNodes(uint16_t length, unsigned char * information){
+void initializeCapabilityNodes(uint16_t length, FrameInfo * frameInfo){
+  unsigned char * information = frameInfo->info;
+  BrailleDisplay * brl = frameInfo->brl;
   int i,j;
   for(i=0;i<NUM_CAPABILITIES;i++)
     for(j=0;j<MAX_NUM_NODES;j++){
@@ -219,15 +219,15 @@ void initializeCapabilityNodes(uint16_t length, unsigned char * information){
       capabilities[capabilityID])
      capabilityStates[capabilityID][node]->state
          =
-       (capabilities[capabilityID]->initializer)(&information[i]);
+       (capabilities[capabilityID]->initializer)(&information[i],brl);
    i+=capabilityNodeInfoLength;
-  } 
-  //Extended capabilities are not supported, end of buffer is safely ignored.
+  }
+  //Extended capabilities are not yet supported, end of buffer is safely ignored.
 }
 ///////////////////////////////////////////////////////
 ///FCHAD Cells/////////////////////////////////////////
 ///////////////////////////////////////////////////////
-void * initFCHADCellState(unsigned char * information){
+void * initFCHADCellState(unsigned char * information,BrailleDisplay * brl){
   FCHADCellState * thisState =
     (FCHADCellState *)
      malloc(sizeof(FCHADCellState));
@@ -238,7 +238,8 @@ void * initFCHADCellState(unsigned char * information){
 ///////////////////////////////////////////////////////
 ///FCHAD Sensors///////////////////////////////////////
 ///////////////////////////////////////////////////////
-void * initFCHADSensorsState(unsigned char * information){
+void * initFCHADSensorsState(unsigned char * information,BrailleDisplay * brl){
+  //printf("Initialization frame recieved.");
   FCHADSensorsState * thisState =
     (FCHADSensorsState *)
      malloc(sizeof(FCHADSensorsState));
@@ -253,8 +254,9 @@ void * initFCHADSensorsState(unsigned char * information){
   thisState->sensors =
     malloc(thisState->rows*thisState->cols);
   /* Despite the fact that the UOBP standard supports multiple nodes of a single capability, BRLTTY doesn't really support having multiple braille buffers.  It is not meaningfull to add such support at this time. The case in which a device would have multiple nodes(say we could plug in a larger 2D sensor grid) is far away in the future.  We'd probably end up just using the largest node as the "primary" node and letting the nodes with smaller number of sensors be subsets of the "primary".  Not implemented yet.*/
-  thisBrl->textRows=thisState->rows;
-  thisBrl->textColumns=thisState->cols;
+  brl->textRows    =thisState->rows;
+  brl->textColumns =thisState->cols;
+  brl->resizeRequired  =1;
   if(previousCells)free(previousCells);
   previousCells=malloc(thisState->rows*thisState->cols);
   thisState->prevRow=0;
@@ -268,18 +270,19 @@ void freeFCHADSensorsState(FCHADSensorsState * thisSensorState){
 }
 
 void reactToSensorUp(uint16_t length,
-                     unsigned char * information){
-  reactToSensorAction(length,information,SENSOR_UP);
+                     FrameInfo * frameInfo){
+  reactToSensorAction(length,frameInfo,SENSOR_UP);
 }
 
 void reactToSensorDown(uint16_t length,
-                     unsigned char * information){
-  reactToSensorAction(length,information,SENSOR_DOWN);
+                     FrameInfo * frameInfo){
+  reactToSensorAction(length,frameInfo,SENSOR_DOWN);
 }
 
 void reactToSensorAction(uint16_t length,
-                         unsigned char * information,
+                         FrameInfo * frameInfo,
                          unsigned char action){
+  unsigned char * information = frameInfo->info;
   unsigned char node = information[0];
   FCHADSensorsState * myState =
     (FCHADSensorsState*)capabilityStates[4][node];
@@ -303,7 +306,16 @@ void reactToSensorAction(uint16_t length,
 void updateFCHADFromSensorValues
  (FCHADSensorsState * myState,
  unsigned char node){
-  /* We want to always display the character marked by the top left corner(or top right in the case of a left handed user) of the area that is currently being touched. So first we figure out what the top left corner being touched is, and if it is different than the previous top left corner, we send a new signal to the device to tell it to display that new character.  If nothing is being touched, than we send a signal telling the device to switch it's FCHAD Cell off.*/
+  /* We want to always display the character marked by the top left corner
+  (or top right in the case of a left handed user)
+  of the area that is currently being touched.
+  So first we figure out what the top left corner being touched is,
+  and if it is different than the previous top left corner,
+  we send a new signal to the device
+  to tell it to display that new character.
+  If nothing is being touched,
+  than we send a signal telling the device to switch it's FCHAD Cell off.*/
+ if(initializationStatus==BUFFER_INITIALIZED){
   uint16_t i,j;
   unsigned char found=0;
   j=0;//Due to a warning...
@@ -331,12 +343,13 @@ void updateFCHADFromSensorValues
    information[0]=fchadCellNode++;
    information[1]=charToDisplay;
    information[2]=0;//Braille characters are only 8 bits, but some FCHAD Cells may have up to 16(so as to allow dpad like directional symbols.)  We can safely ignore these potential extra dots.
-   sendFrame(3,1,1,information);
+   sendFrame(3,1,1,information,gioEndpoint);
   }
   #ifdef LOG_EVERYTHING
-  printf("#EVENT_LOG# displaying char:%c\n",
+  logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%c\n",
          charToDisplay);
   #endif
+ }
 }
 
 ///////////////////////////////////////////////////////
@@ -344,18 +357,19 @@ void updateFCHADFromSensorValues
 ///////////////////////////////////////////////////////
 #ifdef LOG_EVERYTHING
 void logSensorDown(uint16_t length,
-                   unsigned char * information){
-  logSensorAction(length,information,SENSOR_DOWN);
+                   FrameInfo * frameInfo){
+  logSensorAction(length,frameInfo,SENSOR_DOWN);
 }
 
 void logSensorUp(uint16_t length,
-                 unsigned char * information){
-  logSensorAction(length,information,SENSOR_UP);
+                 FrameInfo * frameInfo){
+  logSensorAction(length,frameInfo,SENSOR_UP);
 }
 
 void logSensorAction(uint16_t length,
-                     unsigned char * information,
+                     FrameInfo * frameInfo,
                      unsigned char action){
+  unsigned char * information = frameInfo->info;
   uint16_t row =
     (uint16_t)information[1]<<8;
   row +=
@@ -365,9 +379,11 @@ void logSensorAction(uint16_t length,
   col +=
     (uint16_t)information[4];
   //TODO log time as well!
-  printf("#EVENT_LOG# Sensor at row:%d col:%d ",row,col);
-  if(action==SENSOR_DOWN)printf("DOWN\n");
-  if(action==SENSOR_UP)printf("UP\n");
+  logMessage(LOG_INFO,"#EVENT_LOG# Sensor at row:%d col:%d ",row,col);
+  if(action==SENSOR_DOWN)
+   logMessage(LOG_INFO,"DOWN\n");
+  if(action==SENSOR_UP)
+   logMessage(LOG_INFO,"UP\n");
 }
 #endif
 ///////////////////////////////////////////////////////
@@ -377,29 +393,27 @@ void logSensorAction(uint16_t length,
 
 static void printByte(unsigned char byte)
 {
-    printf("CHAR:%c\n",byte);
-    printf("DEC:%d\n",byte);
-    if(byte & (1)) printf("1" ); else printf ("0" );
-    if(byte & (1<<3)) printf("1\n"); else printf ("0\n");
+    logMessage(LOG_INFO,"CHAR:%c\n",byte);
+    logMessage(LOG_INFO,"DEC:%d\n",byte);
+    if(byte & (1)) logMessage(LOG_INFO,"1" ); else logMessage (LOG_INFO,"0" );
+    if(byte & (1<<3)) logMessage(LOG_INFO,"1\n"); else logMessage (LOG_INFO,"0\n");
 
-    if(byte & (1<<1)) printf("1" ); else printf ("0" );
-    if(byte & (1<<4)) printf("1\n"); else printf ("0\n");
+    if(byte & (1<<1)) logMessage(LOG_INFO,"1" ); else logMessage (LOG_INFO,"0" );
+    if(byte & (1<<4)) logMessage(LOG_INFO,"1\n"); else logMessage (LOG_INFO,"0\n");
 
-    if(byte & (1<<2)) printf("1" ); else printf ("0" );
-    if(byte & (1<<5)) printf("1\n"); else printf ("0\n");
+    if(byte & (1<<2)) logMessage(LOG_INFO,"1" ); else logMessage (LOG_INFO,"0" );
+    if(byte & (1<<5)) logMessage(LOG_INFO,"1\n"); else logMessage (LOG_INFO,"0\n");
 
-    if(byte & (1<<6)) printf("1" ); else printf ("0" );
-    if(byte & (1<<7)) printf("1\n"); else printf ("0\n");
+    if(byte & (1<<6)) logMessage(LOG_INFO,"1" ); else logMessage (LOG_INFO,"0" );
+    if(byte & (1<<7)) logMessage(LOG_INFO,"1\n"); else logMessage (LOG_INFO,"0\n");
 }
 
 //////////////////////////////////////////////////
 //Serial//////////////////////////////////////////
 //////////////////////////////////////////////////
-static GioEndpoint *gioEndpoint = NULL;
-int serial_wait_time = 0;
-
 int Serial_init(const char *identifier){
 //COPY PASTE from connectResource() in the Voyager driver...
+    gioEndpoint = NULL;
     GioDescriptor descriptor;
     gioInitializeDescriptor(&descriptor);
 
@@ -420,7 +434,7 @@ int Serial_init(const char *identifier){
 //Read one byte from serial
 unsigned char Serial_read(){
     #if DEBUG
-    char * num[4];    
+    char * num[4];
     gets(num);
     return atoi(num);
     #else
@@ -434,7 +448,7 @@ unsigned char Serial_read(){
 //Write one byte to serial.
 void Serial_write(unsigned char byte){
     #if DEBUG
-    printf(">>\n");
+    logMessage(LOG_INFO,">>\n");
     printByte(byte);
     #else
     gioWriteData(gioEndpoint, &byte, 1);
@@ -448,19 +462,31 @@ static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,
                const char *device){
-  printf("Line 451");
-  Serial_init(device);
-  printf("Line 453");
+  int success;
+  /*We hand brltty a non zero frame size.
+  Draw requests from brltty will be ignored
+  untill the initializationStatus is set to
+  BUFFER_INITIALIZED.*/
+  brl->textRows    = 1;
+  brl->textColumns = 1;
+  logMessage(LOG_DEBUG,"Initializing serial.");
+  success=Serial_init(device);
+  logMessage(LOG_DEBUG,"Serial initialized.");
+
   initializeCapabilityInitializersArray();
-  printf("Line 455");
   initializeSpecificEventHandlers();
-  printf("Line 457");
   initializeFrameHandlers();
-  //BRLTTY
-  brl->textColumns=0;
-  brl->textRows=0;//We don't actually initialize untill we get a packet from the device telling us how big the display is to be.
-  thisBrl=brl;
-  return EOF;
+
+  logMessage(LOG_DEBUG,"Sending initialization packet.");
+  unsigned char information[4];
+  information[0]=0;
+  information[1]=0;
+  information[2]=0;
+  information[3]=0;
+  sendFrame(4,0,0,information,gioEndpoint);
+  logMessage(LOG_DEBUG,"Initialization packet sent.");
+
+  return success;
 }
 
 static void
@@ -470,6 +496,7 @@ brl_destruct (BrailleDisplay *brl) {
 static int
 brl_writeWindow (BrailleDisplay *brl,
                  const wchar_t *text) {
+ if(initializationStatus==BUFFER_INITIALIZED)
  if(cellsHaveChanged(previousCells,
                      brl->buffer,
                      (brl->textColumns*brl->textRows),
@@ -477,6 +504,7 @@ brl_writeWindow (BrailleDisplay *brl,
                      NULL,
                      NULL));
    //callHandler(onCellsChanged,NULL);
+ logMessage(LOG_INFO,"Line 481\n");
  return 1;
 }
 
@@ -501,6 +529,11 @@ static int getKeyCode(){
 
 static int
 brl_readCommand (BrailleDisplay *brl, KeyTableCommandContext context) {
-  checkForFrameAndReact(&handleFrame);
+  logMessage(LOG_INFO,"Line 507\n");
+  checkForFrameAndReact(
+   &handleFrame
+   ,START_OF_FRAME
+   ,gioEndpoint
+   ,(void*)brl);
   return EOF;
 }

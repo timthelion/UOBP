@@ -54,8 +54,11 @@
 
 
 // Global Constants
-#define TOU_THRESH	0x06
-#define	REL_THRESH	0x0A
+#define TOU_THRESH	0x01
+#define	REL_THRESH	0x01
 
-void setupMPR121(int irqPin);
-void readTouchInputs(void * onDown, void * onUp);
+void readTouchInputs(void (*onDown)(unsigned char), void (*onUp)(unsigned char),unsigned char irqPin);
+void setupMPR121(unsigned int irqPin);
+void mpr121_setup(void);
+unsigned char checkInterrupt(unsigned int irqpin);
+void set_register(int address, unsigned char r, unsigned char v);

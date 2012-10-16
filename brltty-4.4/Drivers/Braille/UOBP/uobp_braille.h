@@ -17,6 +17,18 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
+#include "prologue.h"
+#include "io_generic.h"
+#include "log.h"
+
+#include <stdlib.h>
+#include <string.h>
+
+#include "brl_driver.h"
+
+#define BRLTTY
+#include "level2.h"
+
 ///////////////////////////////////////////////////////
 ///Event Handlers//////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -40,8 +52,8 @@ void initializeSpecificEventHandlers();
 #define NUM_FRAME_TYPES 3
 #define MAX_NUM_FRAME_SUBTYPES 4
 
-void * getHandler (unsigned char frameType,
-                   unsigned char frameSubType);
+void * getFrameHandler (unsigned char frameType,
+                        unsigned char frameSubType);
 
 void initializeFrameHandlers();
 
@@ -49,7 +61,13 @@ void handleFrame(
  uint16_t length,
  unsigned char type,
  unsigned char subType,
- unsigned char * information);
+ unsigned char * information,
+ void * callerParameter);
+
+typedef struct{
+  BrailleDisplay * brl;
+  unsigned char  * info;
+}FrameInfo;
 
 ///////////////////////////////////////////////////////
 ///Capabilities////////////////////////////////////////
@@ -61,7 +79,7 @@ void initializeCapabilityInitializersArray();
 
 typedef struct{
  char * name;
- void *(*initializer)(unsigned char *);
+ void *(*initializer)(unsigned char *,BrailleDisplay*);
  void (*freeer)(void *);
  unsigned char numSettings;
  char * settings[MAX_NUM_SETTINGS];
@@ -72,7 +90,7 @@ struct capabilityState{
   uint16_t * settings;
 };
 
-void initializeCapabilityNodes(uint16_t length, unsigned char * information);
+void initializeCapabilityNodes(uint16_t length, FrameInfo * frameInfo);
 
 ///////////////////////////////////////////////////////
 ///FCHAD Cells/////////////////////////////////////////
@@ -81,7 +99,9 @@ typedef struct{
   unsigned char numDots;
 }FCHADCellState;
 
-void * initFCHADCellState(unsigned char * information);
+void * initFCHADCellState(
+ unsigned char * information,
+ BrailleDisplay * brl);
 
 ///////////////////////////////////////////////////////
 ///FCHAD Sensors///////////////////////////////////////
@@ -91,20 +111,22 @@ typedef struct{
   unsigned char ** sensors; //Boollean values, 1 for down(sensor currently being pressed), 0 for up.
 } FCHADSensorsState;
 
-void * initFCHADSensorsState(unsigned char * information);
+void * initFCHADSensorsState(
+ unsigned char * information,
+ BrailleDisplay * brl);
 void freeFCHADSensorsState(FCHADSensorsState * thisSensorState);
 
 #define SENSOR_UP   0
 #define SENSOR_DOWN 1
 
 void reactToSensorUp(uint16_t length,
-                     unsigned char * information);
+                     FrameInfo * frameInfo);
 
 void reactToSensorDown(uint16_t length,
-                       unsigned char * information);
+                       FrameInfo * frameInfo);
 
 void reactToSensorAction(uint16_t length,
-                         unsigned char * information,
+                         FrameInfo * frameInfo,
                          unsigned char action);
 
 void updateFCHADFromSensorValues
@@ -117,13 +139,13 @@ void updateFCHADFromSensorValues
 #define LOG_EVERYTHING 1
 #ifdef LOG_EVERYTHING
 void logSensorDown(uint16_t length,
-                   unsigned char * information);
+                   FrameInfo * frameInfo);
 
 void logSensorUp(uint16_t length,
-                 unsigned char * information);
+                 FrameInfo * frameInfo);
 
 void logSensorAction(uint16_t length,
-                     unsigned char * information,
+                     FrameInfo * frameInfo,
                      unsigned char action);
 
 #endif
@@ -143,7 +165,7 @@ static void printByte(unsigned char byte);
 #define SERIAL_READY_DELAY 400
 #define SERIAL_INPUT_TIMEOUT 100
 #define SERIAL_WAIT_TIMEOUT 200
-
+static GioEndpoint *gioEndpoint;
 int Serial_init(const char *identifier);
 
 unsigned char Serial_read();
@@ -180,4 +202,8 @@ static int getKeyCode();
 static int
 brl_readCommand (BrailleDisplay *brl, KeyTableCommandContext context);
 
-
+///////////////////////////////////////////////////
+/// Initialization levels//////////////////////////
+///////////////////////////////////////////////////
+#define BUFFER_UNINITIALIZED  0
+#define BUFFER_INITIALIZED    1

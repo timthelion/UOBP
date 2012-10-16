@@ -9,3 +9,9 @@ frames are proposed to look like:
  END_FLAG(1 octet)   ]
 
 A firmware implementation of this level 2 can be found in this repo as defined by the functions "sendFrame" and "checkForFrameAndReact."
+
+START_FLAG=200
+END_FLAG=201
+ESCAPE_CHAR=202
+
+Values equaling the values of the start and end flags(and escape chars) must be escaped.
