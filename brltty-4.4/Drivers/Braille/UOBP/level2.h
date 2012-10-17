@@ -1,7 +1,6 @@
-#define BRLTTY
-
 #ifdef ARDUINO
 #include "Arduino.h"
+typedef struct{}GioEndpoint;
 #endif
 #ifdef BRLTTY
 #include "prologue.h"
@@ -20,7 +19,7 @@ typedef enum{
  }FrameStatus;
 
 void checkForFrameAndReact(
- void * handleFrame(
+ void handleFrame(
    uint16_t length,
    unsigned char type,
    unsigned char subType,
@@ -41,7 +40,7 @@ typedef enum{
 
 unsigned char continueReading(
  ReadEscapedByteExitStatus
- ,void * handleFrame(
+ ,void handleFrame(
    uint16_t length,
    unsigned char type,
    unsigned char subType,

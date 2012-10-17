@@ -1,3 +1,5 @@
+/*level2.c and level2.cpp should have the same contents except for the line following this comment!*/
+#define BRLTTY
 #include "level2.h"
 
 void checkForFrameAndReact(
@@ -16,9 +18,6 @@ void checkForFrameAndReact(
 /*
  We check if there are bytes waiting for us in our serial buffer.  If there are, we read that byte.  If we are not confused, this byte should be a START_FLAG(at which point we read in the given frame).  If we ARE confused, we ignore the byte and continue eating untill a real START_FLAG does come along.
  */
- #ifdef BRLTTY
- logMessage(LOG_DEBUG,"Checking for frame.\n");
- #endif
  unsigned char byte;
  if(!serialAvailable(gioEndpoint))return;
  if(frameStatus==START_OF_FRAME)

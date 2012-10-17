@@ -27,7 +27,7 @@
 #include "brl_driver.h"
 
 #define BRLTTY
-#include "level2.h"
+#include "FCHAD_firmware_arduino/level2.h"
 
 ///////////////////////////////////////////////////////
 ///Event Handlers//////////////////////////////////////

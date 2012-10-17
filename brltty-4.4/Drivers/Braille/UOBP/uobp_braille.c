@@ -462,7 +462,6 @@ static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,
                const char *device){
-  int success;
   /*We hand brltty a non zero frame size.
   Draw requests from brltty will be ignored
   untill the initializationStatus is set to
@@ -470,7 +469,7 @@ brl_construct (BrailleDisplay *brl,
   brl->textRows    = 1;
   brl->textColumns = 1;
   logMessage(LOG_DEBUG,"Initializing serial.");
-  success=Serial_init(device);
+  if(!Serial_init(device))return 0;
   logMessage(LOG_DEBUG,"Serial initialized.");
 
   initializeCapabilityInitializersArray();
@@ -486,7 +485,7 @@ brl_construct (BrailleDisplay *brl,
   sendFrame(4,0,0,information,gioEndpoint);
   logMessage(LOG_DEBUG,"Initialization packet sent.");
 
-  return success;
+  return 1;
 }
 
 static void
@@ -504,7 +503,6 @@ brl_writeWindow (BrailleDisplay *brl,
                      NULL,
                      NULL));
    //callHandler(onCellsChanged,NULL);
- logMessage(LOG_INFO,"Line 481\n");
  return 1;
 }
 
@@ -529,7 +527,6 @@ static int getKeyCode(){
 
 static int
 brl_readCommand (BrailleDisplay *brl, KeyTableCommandContext context) {
-  logMessage(LOG_INFO,"Line 507\n");
   checkForFrameAndReact(
    &handleFrame
    ,START_OF_FRAME

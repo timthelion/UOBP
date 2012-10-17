@@ -51,7 +51,7 @@ DRIVER_VERSION = 0.0
 DRIVER_DEVELOPERS = Timothy Hobbs
 include $(SRC_TOP)braille.mk
 
-SRC_FILES = uobp_braille.c level2.c
+SRC_FILES = uobp_braille.c FCHAD_firmware_arduino/level2.c
 
 OBJ_FILES = $(SRC_FILES:.c=.$O)
 
