@@ -1,0 +1,7 @@
+To build:
+install ino from www.inotool.org
+
+Edit ino.ini to configure ino for your device.
+
+$ino build
+$ino upload
