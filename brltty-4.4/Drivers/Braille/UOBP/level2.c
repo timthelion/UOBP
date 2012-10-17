@@ -1,5 +1,3 @@
-/*level2.c and level2.cpp should have the same contents except for the line following this comment!*/
-#define BRLTTY
 #include "level2.h"
 
 void checkForFrameAndReact(

@@ -1,3 +1,4 @@
+#include "platform.h"
 #ifdef ARDUINO
 #include "Arduino.h"
 typedef struct{}GioEndpoint;

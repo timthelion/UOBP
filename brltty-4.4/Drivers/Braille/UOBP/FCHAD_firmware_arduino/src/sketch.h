@@ -1,4 +1,3 @@
-#define ARDUINO
 #include "level2.h"
 #include "mpr121.h"
 #include <stdlib.h>

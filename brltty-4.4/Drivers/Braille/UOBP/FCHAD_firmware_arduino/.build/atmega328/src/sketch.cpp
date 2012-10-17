@@ -1,3 +1,20 @@
+#include <Arduino.h>
+void * getHandler (unsigned char frameType, unsigned char frameSubType);
+void initializeFrameHandlers();
+void handleFrame(
+ unsigned int  length,
+ unsigned char type,
+ unsigned char subType,
+ unsigned char * information,
+ void * callerParameter);
+void sendInitializationFrame(unsigned int length,unsigned char * information);
+void dot_display_init();
+void displayChar(uint16_t length, unsigned char * information);
+void sendOnDown(unsigned char sensor);
+void sendOnUp(unsigned char sensor);
+void setup();
+void loop();
+#line 1 "src/sketch.ino"
 /*
  * FCHAD firmware.  Firmware for the arduino to control any FCHAD device.  
  *
