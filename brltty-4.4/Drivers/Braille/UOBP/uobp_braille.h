@@ -27,7 +27,7 @@
 #include "brl_driver.h"
 
 #define BRLTTY
-#include "FCHAD_firmware_arduino/level2.h"
+#include "level2.h"
 
 ///////////////////////////////////////////////////////
 ///Event Handlers//////////////////////////////////////
@@ -67,8 +67,10 @@ void handleFrame(
 typedef struct{
   BrailleDisplay * brl;
   unsigned char  * info;
+  uint16_t length;
 }FrameInfo;
 
+unsigned char inc(uint16_t *index,uint16_t length);
 ///////////////////////////////////////////////////////
 ///Capabilities////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -85,12 +87,18 @@ typedef struct{
  char * settings[MAX_NUM_SETTINGS];
 }Capability;
 
-struct capabilityState{
-  void * state;
-  uint16_t * settings;
-};
+typedef struct{
+ uint16_t range;
+ uint16_t sdefault;
+ uint16_t persistantValue;
+}setting;
 
-void initializeCapabilityNodes(uint16_t length, FrameInfo * frameInfo);
+typedef struct{
+  void * state;
+  setting * settings;
+}capabilityState;
+
+void initializeCapabilityNodes(FrameInfo * frameInfo);
 
 ///////////////////////////////////////////////////////
 ///FCHAD Cells/////////////////////////////////////////

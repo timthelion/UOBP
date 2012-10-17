@@ -30,8 +30,10 @@ void callHandler(void (*handler[])(),void * info){
  int i=0;
  while(handler[i]
          &&
-       i<MAX_NUM_HANDLERS)
+       i<MAX_NUM_HANDLERS){
+    logMessage(LOG_DEBUG,"Calling handler %d.",i);
     (handler[i++])(info);
+ }
 }
 
 unsigned char addHandler(void (*handler[])(),
@@ -69,8 +71,7 @@ void * getFrameHandler (unsigned char frameType,
  if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) return NULL;
  return frameHandlers
          [frameType]
-         [frameSubType]
-         [0];
+         [frameSubType];
 }
 
 void initializeFrameHandlers(){
@@ -97,14 +98,25 @@ void handleFrame(
  ,unsigned char * information
  ,void * brl){
  void * handler = getFrameHandler(type,subType);
- //printf("Frame recieved of type %d, subtype %d\n",type,subType);
  FrameInfo infoForHandler =
   {.brl  = brl,
-   .info = information};
+   .info = information,
+   .length = length};
+ logMessage(LOG_DEBUG,"Calling frame handler. type:%d,subType:%d First byte of information is %d",type,subType,infoForHandler.info[0]);
  callHandler(handler,&infoForHandler);
- free(information);
 }
 
+/*Safely increment an index.*/
+unsigned char inc
+ (uint16_t *index
+ ,uint16_t length){
+ if((*index)+1>=length){
+  logMessage(LOG_ERR,"ERROR: End of packet reached unexpectedly.  Malformed packet.");
+  return 0;
+ }
+ (*index)++;
+ return 1;
+}
 /*/////////////////////////////////////////////////////
 ///Capabilities////////////////////////////////////////
 ///////////////////////////////////////////////////////
@@ -134,9 +146,6 @@ void handleFrame(
 Capability * capabilities[NUM_CAPABILITIES];
 
 void initializeCapabilityInitializersArray(){
-  #ifdef LOG_EVERYTHING
-  logMessage(LOG_INFO,"Initialization packet recieved from device.");
-  #endif
   int i;
   for(i=0;i<NUM_CAPABILITIES;i++)
    capabilities[i]=NULL;
@@ -155,61 +164,100 @@ void initializeCapabilityInitializersArray(){
   capabilities[4]->settings[0] = "THREASHHOLD";
 }
 
-struct capabilityState * capabilityStates
+capabilityState * capabilityStates
  [NUM_CAPABILITIES]
  [MAX_NUM_NODES];
 
 /* Initialize the nodes based on the information passed(via frame type 0_1) by the braille device.*/
-void initializeCapabilityNodes(uint16_t length, FrameInfo * frameInfo){
+void initializeCapabilityNodes(
+  FrameInfo * frameInfo){
+  logMessage(LOG_DEBUG,"Initializing capability nodes.");
   unsigned char * information = frameInfo->info;
   BrailleDisplay * brl = frameInfo->brl;
-  int i,j;
+  uint16_t length = frameInfo->length;
+  uint16_t i,j;
   for(i=0;i<NUM_CAPABILITIES;i++)
     for(j=0;j<MAX_NUM_NODES;j++){
       if(capabilityStates[i][j]){
         if(capabilities[i]->freeer)
-          (capabilities[i]->freeer)(capabilityStates[i][j]->state);//If there is a custom free function use it.
+          /*If there is a custom free function use it.*/
+          (capabilities[i]->freeer)(capabilityStates[i][j]->state);
         else
          free(capabilityStates[i][j]->state);
         free(capabilityStates[i][j]);
-      }	
-    } 
+      }
+    }
 
   i=16;//Jump past the device UUID, we don't need it.
-  unsigned char numberOfStandardNodes = information[i++] << 8;
-  numberOfStandardNodes += information[i++];
+  unsigned char numberOfStandardNodes = information[i] << 8;
+  if(!inc(&i,length))return;
+  numberOfStandardNodes += information[i];
+  if(!inc(&i,length))return;
+  logMessage(LOG_DEBUG,"%d standard nodes to load.",numberOfStandardNodes);
   int capabilityNode=0;
   while(capabilityNode++<numberOfStandardNodes){
    //First two octets are the capabilityID:
    uint16_t capabilityID =
-     (uint16_t)information[i++] << 8;
+     (uint16_t)information[i] << 8;
+   if(!inc(&i,length))return;
    capabilityID +=
-     (uint16_t)information[i++];
+     (uint16_t)information[i];
+   if(!inc(&i,length))return;
+   logMessage(LOG_DEBUG,"Loading node of capability %d",capabilityID);
 
    //Third octet is the node:
-   unsigned char node = information[i++];
+   unsigned char node = information[i];
+   if(!inc(&i,length))return;
+   logMessage(LOG_DEBUG,"Node # %d",node);
 
    //Forth and fifth octets are the length of the information buffer that is associated with this capability node.
    unsigned char capabilityNodeInfoLength =
-     (uint16_t)information[i++]<<8;
+     (uint16_t)information[i]<<8;
+   if(!inc(&i,length))return;
    capabilityNodeInfoLength +=
-     (uint16_t) information[i++];
+     (uint16_t) information[i];
+   if(!inc(&i,length))return;
+   logMessage(LOG_DEBUG,"Node info length: %d",capabilityNodeInfoLength);
 
    //Now we load the settings for the capability node.
    unsigned char setting=0;
-   struct capabilityState* thisState =
-     (struct capabilityState*)
-      malloc(sizeof(struct capabilityState));
-   thisState->settings=malloc(capabilities[capabilityID]->numSettings*sizeof(uint16_t));
+   capabilityState* thisState =
+     (capabilityState*)
+      malloc(sizeof(capabilityState));
+   thisState->settings=malloc(capabilities[capabilityID]->numSettings*sizeof(setting));
    capabilityStates[capabilityID][node]=thisState;
 
    while(setting<capabilities[capabilityID]->numSettings){
-     capabilityStates [capabilityID][node]->settings[setting]
+    /*Read range*/
+     capabilityStates [capabilityID][node]->settings[setting].range
                       =
-       (uint16_t)information[i++]<<8;
-     capabilityStates [capabilityID][node]->settings[setting++]
+       (uint16_t)information[i]<<8;
+     if(!inc(&i,length))return;
+     capabilityStates [capabilityID][node]->settings[setting].range
                      +=
-       (uint16_t)information[i++];
+       (uint16_t)information[i];
+     if(!inc(&i,length))return;
+   /*Read default*/
+     capabilityStates [capabilityID][node]->settings[setting].sdefault
+                      =
+       (uint16_t)information[i]<<8;
+     if(!inc(&i,length))return;
+     capabilityStates [capabilityID][node]->settings[setting].sdefault
+                     +=
+       (uint16_t)information[i];
+     if(!inc(&i,length))return;
+
+   /*Read persistant value*/
+     capabilityStates [capabilityID][node]->settings[setting].persistantValue
+                      =
+       (uint16_t)information[i]<<8;
+     if(!inc(&i,length))return;
+     capabilityStates [capabilityID][node]->settings[setting].persistantValue
+                     +=
+       (uint16_t)information[i];
+     if(!inc(&i,length))return;
+
+     setting++;
    }
    //Now we initialize the state.
    if(capabilityID<NUM_CAPABILITIES
@@ -220,9 +268,15 @@ void initializeCapabilityNodes(uint16_t length, FrameInfo * frameInfo){
      capabilityStates[capabilityID][node]->state
          =
        (capabilities[capabilityID]->initializer)(&information[i],brl);
-   i+=capabilityNodeInfoLength;
+   if(i+(capabilityNodeInfoLength-capabilities[capabilityID]->numSettings*6)<length)
+    i+=capabilityNodeInfoLength-capabilities[capabilityID]->numSettings*6;
+   else{
+    logMessage(LOG_ERR,"ERROR 1: End of packet reached unexpectedly.  Malformed packet.");
+    return;
+   }
   }
   //Extended capabilities are not yet supported, end of buffer is safely ignored.
+  logMessage(LOG_INFO,"Device initialized.");
 }
 ///////////////////////////////////////////////////////
 ///FCHAD Cells/////////////////////////////////////////
@@ -284,6 +338,10 @@ void reactToSensorAction(uint16_t length,
                          unsigned char action){
   unsigned char * information = frameInfo->info;
   unsigned char node = information[0];
+  if(!capabilityStates[4][node]){
+   logMessage(LOG_WARNING,"Received frame event for uninitialized node %d of capability 4.",node);
+   return;
+  }
   FCHADSensorsState * myState =
     (FCHADSensorsState*)capabilityStates[4][node];
   uint16_t row =

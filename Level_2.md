@@ -8,6 +8,9 @@ frames are proposed to look like:
  XOR(1 octet)        |
  END_FLAG(1 octet)   ]
 
+The LEN refers to the length of the INFORMATION section.
+The XOR is the checksum of all bytes in the frame excluding the START and END flags.
+
 A firmware implementation of this level 2 can be found in this repo as defined by the functions "sendFrame" and "checkForFrameAndReact."
 
 START_FLAG=200

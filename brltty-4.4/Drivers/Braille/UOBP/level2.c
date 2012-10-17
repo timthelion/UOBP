@@ -29,7 +29,7 @@ void checkForFrameAndReact(
   return;
  }
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"Reading packet...\n");
+ logMessage(LOG_DEBUG,"Reading packet...");
  #endif
  unsigned char xorChecksum=0;
  uint16_t length;
@@ -46,25 +46,33 @@ void checkForFrameAndReact(
  readAnEscapedByte(&byteInMouth);
  xorChecksum^=byteInMouth;
  length+=byteInMouth;
+ #ifdef BRLTTY
+ logMessage(LOG_DEBUG,"length: %d",length);
+ #endif
  unsigned char information[length+CHECKSUM_SIZE];
 
  readAnEscapedByte(&type);
  xorChecksum^=type;
+ #ifdef BRLTTY
+ logMessage(LOG_DEBUG,"type: %d",type);
+ #endif
  readAnEscapedByte(&subType);
  xorChecksum^=subType;
+ #ifdef BRLTTY
+ logMessage(LOG_DEBUG,"subType: %d",subType);
+ #endif
+ #ifdef BRLTTY
+ logMessage(LOG_DEBUG,"Reading INFO section...");
+ #endif
  /*Now we read our information buffer*/
- while(indexInInformationBuffer<length+CHECKSUM_SIZE){
+ while(indexInInformationBuffer<length){
   readAnEscapedByte(&byteInMouth);
   information[indexInInformationBuffer++]=byteInMouth;
   xorChecksum^=byteInMouth;
  }
- /*If our indexInInformationBuffer is not the same as our length+ourChecksum, we DROP the frame.*/
- if(indexInInformationBuffer!=length){
-  #ifdef BRLTTY
-  logMessage(LOG_WARNING,"Length did not match. Packet dropped.");
-  #endif
-  return;
- }
+ /*Read the checksum.*/
+ readAnEscapedByte(&byteInMouth);
+ xorChecksum^=byteInMouth;
  /*If our checksum failed, we DROP the frame.*/
  if(xorChecksum!=0){
   #ifdef BRLTTY
@@ -77,6 +85,9 @@ void checkForFrameAndReact(
   return;
  }
  /*If everything was successfull, then we call the handling code to deal with this new bit of information.  We pass this handling code the length, the type, and the subType. AND WE DO NOT FORGET, THAT THE INFORMATION BUFFER IS CONSTRAINED BY THE LENGTH AND NOT ANY KIND OF NULL TERMINATOR*/
+ #ifdef BRLTTY
+ logMessage(LOG_DEBUG,"Packet read...");
+ #endif
  (handleFrame)(length,type,subType,information,callerParameter);
 }
 
@@ -180,7 +191,9 @@ ReadEscapedByteExitStatus readEscapedByte(
 //Read one byte from serial
 unsigned char nextChar(
  GioEndpoint *gioEndpoint){
+ #ifdef ARDUINO
  while(!serialAvailable(gioEndpoint));
+ #endif
  return serialRead(gioEndpoint);
 }
 
@@ -197,7 +210,7 @@ unsigned char serialAvailable(
 unsigned char serialRead(GioEndpoint * gioEndpoint){
  #ifdef BRLTTY
  unsigned char byte;
- gioReadByte(gioEndpoint, &byte,0);
+ gioReadByte(gioEndpoint, &byte,1);
  return byte;
  #endif
  #ifdef ARDUINO

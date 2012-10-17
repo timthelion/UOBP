@@ -112,12 +112,11 @@ void sendInitializationFrame(unsigned int length,unsigned char * information){
     0,
     0,                            //Persistant value
     0,
- 
     0,                            //Sensor rows
-    1,  
+    1,
     0,                            //Sensor columns
-    12,                           //Number of extended capabilities
-    0,
+    12,
+    0,                            //Number of extended capabilities
     0};
   sendFrame(initializerLength,0,1,initializer,NULL);
 }
