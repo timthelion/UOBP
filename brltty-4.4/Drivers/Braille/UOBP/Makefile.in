@@ -23,7 +23,7 @@ DRIVER_VERSION = 0.0
 DRIVER_DEVELOPERS = Timothy Hobbs
 include $(SRC_TOP)braille.mk
 
-SRC_FILES = uobp_braille.c level2.c
+SRC_FILES = uobp_braille.c level2.c capabilities.c capabilityNodes.c frameEventHandlers.c serial.c Capabilities/FCHAD_CELL.c Capabilities/FCHAD_SENSORS.c
 
 OBJ_FILES = $(SRC_FILES:.c=.$O)
 

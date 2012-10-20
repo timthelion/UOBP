@@ -306,10 +306,10 @@ extern "C" {
 #define SPEECH_PARAMETERS ""
 
 /* Define this to be a string containing the default screen driver code. */
-#define SCREEN_DRIVER "a2"
+#define SCREEN_DRIVER "lx"
 
 /* Define this to be a string containing a list of the screen driver codes. */
-#define SCREEN_DRIVER_CODES "a2 lx sc"
+#define SCREEN_DRIVER_CODES "lx sc a2"
 
 /* Define this to be a string containing the default screen driver parameters. */
 #define SCREEN_PARAMETERS ""

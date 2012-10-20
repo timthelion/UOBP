@@ -27,162 +27,19 @@
 #include "brl_driver.h"
 
 #define BRLTTY
+#include "types.h"
 #include "level2.h"
+#include "capabilities.h"
+#include "capabilityNodes.h"
+#include "frameEventHandlers.h"
+#include "serial.h"
+
+#include "Capabilities/FCHAD_CELL.h"
+#include "Capabilities/FCHAD_SENSORS.h"
 
 ///////////////////////////////////////////////////////
-///Event Handlers//////////////////////////////////////
+//BRLTTY FUNCTIONS/////////////////////////////////////
 ///////////////////////////////////////////////////////
-#define MAX_NUM_HANDLERS 5
-void callHandler(void (*handler[])(),void * info);
-
-#define ADD_HANDLER_SUCCESS 0
-#define ADD_HANDLER_FAIL_MAX_NUM_HANDLERS_OVERFLOW 1
-
-unsigned char addHandler(void (*handler[])(),
-                         void (*addition)());
-
-///////////////////////////////////////////////////////
-///Specific Event Handlers/////////////////////////////
-///////////////////////////////////////////////////////
-void initializeSpecificEventHandlers();
-
-///////////////////////////////////////////////////////
-///Frame Handlers//////////////////////////////////////
-///////////////////////////////////////////////////////
-#define NUM_FRAME_TYPES 3
-#define MAX_NUM_FRAME_SUBTYPES 4
-
-void * getFrameHandler (unsigned char frameType,
-                        unsigned char frameSubType);
-
-void initializeFrameHandlers();
-
-void handleFrame(
- uint16_t length,
- unsigned char type,
- unsigned char subType,
- unsigned char * information,
- void * callerParameter);
-
-typedef struct{
-  BrailleDisplay * brl;
-  unsigned char  * info;
-  uint16_t length;
-}FrameInfo;
-
-unsigned char inc(uint16_t *index,uint16_t length);
-///////////////////////////////////////////////////////
-///Capabilities////////////////////////////////////////
-///////////////////////////////////////////////////////
-#define NUM_CAPABILITIES 9 //Just increase this number as more capabilities are supported by the driver.
-#define MAX_NUM_NODES    5 //Maximum defined by the standard is 256, but that woudl be a rather pointless waste of memory as we'll probably never have more than 2 or 3.
-#define MAX_NUM_SETTINGS 5
-void initializeCapabilityInitializersArray();
-
-typedef struct{
- char * name;
- void *(*initializer)(unsigned char *,BrailleDisplay*);
- void (*freeer)(void *);
- unsigned char numSettings;
- char * settings[MAX_NUM_SETTINGS];
-}Capability;
-
-typedef struct{
- uint16_t range;
- uint16_t sdefault;
- uint16_t persistantValue;
-}setting;
-
-typedef struct{
-  void * state;
-  setting * settings;
-}capabilityState;
-
-void initializeCapabilityNodes(FrameInfo * frameInfo);
-
-///////////////////////////////////////////////////////
-///FCHAD Cells/////////////////////////////////////////
-///////////////////////////////////////////////////////
-typedef struct{
-  unsigned char numDots;
-}FCHADCellState;
-
-void * initFCHADCellState(
- unsigned char * information,
- BrailleDisplay * brl);
-
-///////////////////////////////////////////////////////
-///FCHAD Sensors///////////////////////////////////////
-///////////////////////////////////////////////////////
-typedef struct{
-  uint16_t rows,cols,prevRow,prevCol;
-  unsigned char ** sensors; //Boollean values, 1 for down(sensor currently being pressed), 0 for up.
-} FCHADSensorsState;
-
-void * initFCHADSensorsState(
- unsigned char * information,
- BrailleDisplay * brl);
-void freeFCHADSensorsState(FCHADSensorsState * thisSensorState);
-
-#define SENSOR_UP   0
-#define SENSOR_DOWN 1
-
-void reactToSensorUp(uint16_t length,
-                     FrameInfo * frameInfo);
-
-void reactToSensorDown(uint16_t length,
-                       FrameInfo * frameInfo);
-
-void reactToSensorAction(uint16_t length,
-                         FrameInfo * frameInfo,
-                         unsigned char action);
-
-void updateFCHADFromSensorValues
- (FCHADSensorsState * myState,
-  unsigned char node);
-
-///////////////////////////////////////////////////////
-///Sensor logging//////////////////////////////////////
-///////////////////////////////////////////////////////
-#define LOG_EVERYTHING 1
-#ifdef LOG_EVERYTHING
-void logSensorDown(uint16_t length,
-                   FrameInfo * frameInfo);
-
-void logSensorUp(uint16_t length,
-                 FrameInfo * frameInfo);
-
-void logSensorAction(uint16_t length,
-                     FrameInfo * frameInfo,
-                     unsigned char action);
-
-#endif
-
-///////////////////////////////////////////////////////
-///DEBUGGING///////////////////////////////////////////
-///////////////////////////////////////////////////////
-//#define DEBUG
-
-static void printByte(unsigned char byte);
-
-//////////////////////////////////////////////////
-//Serial//////////////////////////////////////////
-//////////////////////////////////////////////////
-#define SERIAL 1
-#define SERIAL_BAUD 9600
-#define SERIAL_READY_DELAY 400
-#define SERIAL_INPUT_TIMEOUT 100
-#define SERIAL_WAIT_TIMEOUT 200
-static GioEndpoint *gioEndpoint;
-int Serial_init(const char *identifier);
-
-unsigned char Serial_read();
-
-void Serial_write(unsigned char byte);
-
-//////////////////////////////////////////////////////////
-//BRLTTY FUNCTIONS////////////////////////////////////////
-//////////////////////////////////////////////////////////
 static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,
@@ -209,9 +66,3 @@ static int getKeyCode();
 
 static int
 brl_readCommand (BrailleDisplay *brl, KeyTableCommandContext context);
-
-///////////////////////////////////////////////////
-/// Initialization levels//////////////////////////
-///////////////////////////////////////////////////
-#define BUFFER_UNINITIALIZED  0
-#define BUFFER_INITIALIZED    1
