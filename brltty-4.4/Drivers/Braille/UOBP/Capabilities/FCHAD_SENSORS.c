@@ -1,12 +1,28 @@
-#import "../uobp_braille.c"
-#import "FCHAD_SENSORS.h"
-///////////////////////////////////////////////////////
-///FCHAD Sensors///////////////////////////////////////
-///////////////////////////////////////////////////////
+/*
+ * BRLTTY - A background process providing access to the console screen (when in
+ *          text mode) for a blind person using a refreshable braille display.
+ *
+ * Copyright (C) 2012 by Timothy Hobbs and
+ * Copyright (C) 1995-2011 by The BRLTTY Developers.
+ *
+ * BRLTTY and the FCHAD software comes with ABSOLUTELY NO WARRANTY.
+ *
+ * This is free software, placed under the terms of the
+ * GNU General Public License, as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any
+ * later version. Please see the file LICENSE-GPL for details.
+ *
+ * Web Page: http://mielke.cc/brltty/ and  http://brmlab.cz/user/timthelion
+ *
+ * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
+ */
+#include "FCHAD_SENSORS.h"
+/////////////////////////////////////////////////
+///FCHAD Sensors/////////////////////////////////
+/////////////////////////////////////////////////
 void * initFCHADSensorsState(FrameInfo frameInfo){
   unsigned char * information = frameInfo.info;
   BrailleDisplay * brl = frameInfo.brl;
-  //printf("Initialization frame recieved.");
   FCHADSensorsState * thisState =
     (FCHADSensorsState *)
      malloc(sizeof(FCHADSensorsState));
@@ -59,12 +75,12 @@ void reactToSensorAction(FrameInfo * frameInfo,
                          unsigned char action){
   unsigned char * information = frameInfo->info;
   unsigned char node = information[0];
-  if(!capabilityStates[4][node]){
+  if(!frameInfo->capabilityStates[4][node]){
    logMessage(LOG_WARNING,"Received frame event for uninitialized node %d of capability 4.",node);
    return;
   }
   CapabilityState * thisCapabilityNode =
-   capabilityStates[4][node];
+   frameInfo->capabilityStates[4][node];
 
   FCHADSensorsState * myState =
     (FCHADSensorsState*)thisCapabilityNode->state;
@@ -83,13 +99,17 @@ void reactToSensorAction(FrameInfo * frameInfo,
      col < myState->cols){
    logMessage(LOG_INFO,"Sensor action %d cols %d",action,myState->cols);
    myState->sensors[row][col]=action;
-   updateFCHADFromSensorValues(thisCapabilityNode,node);
+   updateFCHADFromSensorValues
+    (thisCapabilityNode
+    ,node
+    ,frameInfo);
   }
 }
 
 void updateFCHADFromSensorValues
- (capabilityState * thisCapabilityNode,
- unsigned char node){
+ (CapabilityState * thisCapabilityNode
+ ,unsigned char node
+ ,FrameInfo * frameInfo){
   /* We want to always display the character marked by the top left corner
   (or top right in the case of a left handed user)
   of the area that is currently being touched.
@@ -105,44 +125,54 @@ void updateFCHADFromSensorValues
     (FCHADSensorsState*)thisCapabilityNode->state;
   uint16_t i,j;
   unsigned char found=0;
-  j=0;//Due to a warning...
-  if(!0){//leftHanded){
-   for(i=0;i<myState->rows&&!found;i++)
-    for(j=0;j<myState->cols&&!found;j++)
-      if(myState->sensors[i][j])found=1;
-   j--;i--;
-  }else{
-   for(i=0;i<myState->rows&&!found;i++)
-    for(j=myState->cols;j>-1&&!found;j--)
-      if(myState->sensors[i][j])found=1;
-   j++;i--;
-  }
-  unsigned char charToDisplay=0;
-  if(found){
-    charToDisplay=brl->buffer[i*j];
-  }
-  unsigned char pair = 0;
-  unsigned char information[3];
-  while(capabilityStates[3][pair]){
-   information[0]=fchadCellNode++;
+  j=0;/*Due to a warning...*/
+  /*For each FCHAD_CELL node that is paired with this array of sensors,
+  display the proper character to that node.*/
+  #define FCHAD_CELL_CAPABILITY_ID 3
+  unsigned char pair;
+  for(pair=0;pair<thisCapabilityNode->numPairs;pair++)
+  if(thisCapabilityNode->pairs[pair].capability
+                        ==
+                FCHAD_CELL_CAPABILITY_ID){
+   FCHADCellState * pairState =
+    (FCHADCellState *)frameInfo->capabilityStates
+      [FCHAD_CELL_CAPABILITY_ID]
+      [node]->state;
+   if(pairState->cellHandedness==RIGHT_HANDED){
+    for(i=0;i<myState->rows&&!found;i++)
+     for(j=0;j<myState->cols&&!found;j++)
+       if(myState->sensors[i][j])found=1;
+    j--;i--;
+   }else{/*LEFT_HANDED*/
+    for(i=0;i<myState->rows&&!found;i++)
+     for(j=myState->cols;j>-1&&!found;j--)
+       if(myState->sensors[i][j])found=1;
+    j++;i--;
+   }
+   unsigned char charToDisplay=0;
+   if(found){
+     charToDisplay=frameInfo->brl->buffer[i*j];
+   }
+   unsigned char information[3];
+   information[0]=pair;
    information[1]=charToDisplay;
    /*Braille characters are only 8 bits,
    but some FCHAD Cells may have up to 16
    (so as to allow dpad like directional symbols.)
    We can safely ignore these potential extra dots.*/
    information[2]=0;
-   sendFrame(3,1,1,information,gioEndpoint);
+   sendFrame(3,1,1,information,frameInfo->gioEndpoint);
+   #ifdef LOG_EVERYTHING
+   logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%c\n",
+          charToDisplay);
+   #endif
   }
-  #ifdef LOG_EVERYTHING
-  logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%c\n",
-         charToDisplay);
-  #endif
  }
 }
 
-///////////////////////////////////////////////////////
-///Sensor logging//////////////////////////////////////
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+///Sensor logging/////////////////////////////////
+//////////////////////////////////////////////////
 #ifdef LOG_EVERYTHING
 void logSensorDown(FrameInfo * frameInfo){
   logSensorAction(frameInfo,SENSOR_DOWN);

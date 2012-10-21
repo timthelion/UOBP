@@ -16,9 +16,14 @@
  *
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
+#define FRAME_EVENT_HANDLERS_H
 #ifndef BRLTTY
-#include "uobp_braille.h"
+ #include "uobp_general.h"
 #endif
+
+#define MAX_NUM_HANDLERS 5
+#define NUM_FRAME_TYPES 3
+#define MAX_NUM_FRAME_SUBTYPES 3
 
 /*Information passed to a frame handler or node initializer
  providing the values pertaining to a frame or subframe respectively.*/
@@ -27,26 +32,32 @@ struct FrameInfo{
   unsigned char  * info;
   uint16_t length;
   Capability * capabilities[NUM_CAPABILITIES];
-  CapabilityState * capabilityStates;
+  CapabilityState * capabilityStates[NUM_CAPABILITIES][MAX_NUM_NODES];
   GioEndpoint * gioEndpoint;
+  void (*frameHandlers
+         [NUM_FRAME_TYPES]
+         [MAX_NUM_FRAME_SUBTYPES]
+         [MAX_NUM_HANDLERS])
+           (FrameInfo * frameInfo);
 };
 
 /////////////////////////////////////////////////
 ///Frame Handlers////////////////////////////////
 /////////////////////////////////////////////////
-#define MAX_NUM_HANDLERS 5
-#define NUM_FRAME_TYPES 3
-#define MAX_NUM_FRAME_SUBTYPES 3
-
 void initializeFrameHandlers(
  void (*frameHandlers[NUM_FRAME_TYPES]
                      [MAX_NUM_FRAME_SUBTYPES]
                      [MAX_NUM_HANDLERS])
-  (FrameInfo frameInfo));
+  (FrameInfo * frameInfo));
 
 void * getFrameHandler (
  unsigned char frameType
- ,unsigned char frameSubType);
+ ,unsigned char frameSubType
+ ,void (*frameHandlers
+         [NUM_FRAME_TYPES]
+         [MAX_NUM_FRAME_SUBTYPES]
+         [MAX_NUM_HANDLERS])
+           (FrameInfo * frameInfo));
 
 void handleFrame(
  uint16_t length
@@ -65,5 +76,3 @@ void callFrameEventHandler(
 unsigned char addFrameEventHandler(
  void (*handler[])(FrameInfo * frameInfo)
  ,void (*addition)(FrameInfo * frameInfo));
-
-

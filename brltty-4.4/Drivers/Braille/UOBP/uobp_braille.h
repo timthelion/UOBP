@@ -17,29 +17,12 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
-#include "prologue.h"
-#include "io_generic.h"
-#include "log.h"
-
-#include <stdlib.h>
-#include <string.h>
-
+#include "uobp_general.h"
 #include "brl_driver.h"
 
-#define BRLTTY
-#include "types.h"
-#include "level2.h"
-#include "capabilities.h"
-#include "capabilityNodes.h"
-#include "frameEventHandlers.h"
-#include "serial.h"
-
-#include "Capabilities/FCHAD_CELL.h"
-#include "Capabilities/FCHAD_SENSORS.h"
-
-///////////////////////////////////////////////////////
-//BRLTTY FUNCTIONS/////////////////////////////////////
-///////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//BRLTTY FUNCTIONS////////////////////////////////
+//////////////////////////////////////////////////
 static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,

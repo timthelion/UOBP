@@ -17,8 +17,9 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
+#define FCHAD_CELL_H
 #ifndef BRLTTY
-#include "../uobp_braille.c"
+ #include "../uobp_general.h"
 #endif
 
 /////////////////////////////////////////////////
@@ -27,12 +28,11 @@
 typedef enum{
  RIGHT_HANDED,
  LEFT_HANDED
- }handedness;
+ }Handedness;
 
 typedef struct{
   unsigned char numDots;
-  handedness cellHandedness;
+  Handedness cellHandedness;
 }FCHADCellState;
 
 void * initFCHADCellState(FrameInfo frameInfo);
-

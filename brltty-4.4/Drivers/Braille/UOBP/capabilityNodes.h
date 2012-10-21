@@ -16,14 +16,47 @@
  *
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
+
+#define CAPABILITY_NODES_H
 #ifndef BRLTTY
-#include "uobp_braille.h"
+ #include "uobp_general.h"
 #endif
 
 void initializeCapabilityNodes(FrameInfo * frameInfo);
 
 unsigned char preformInitializeCapabilityNodes(FrameInfo * frameInfo);
 
-void freeCapabilityNodeStates();
+void freeCapabilityNodeStates
+ (Capability ** capabilities
+ ,CapabilityState * capabilityStates
+                    [NUM_CAPABILITIES]
+                    [MAX_NUM_NODES]);
 
 unsigned char inc(uint16_t *index,uint16_t length);
+
+typedef struct{
+ uint16_t range;
+ uint16_t sdefault;
+ uint16_t persistantValue;
+}Setting;
+
+typedef enum{
+ NO_PAIRING,
+ PAIRED,
+ NEEDS_PAIRING
+ }PairingType;
+
+typedef struct{
+ PairingType pairingType;
+ /*If the pairing type is anything other than PAIRED
+ than the values capability and node have no meaning.*/
+ uint16_t capability;
+ unsigned char node;
+}NodePair;
+
+struct CapabilityState{
+  unsigned char numPairs;
+  NodePair * pairs;
+  void * state;
+  Setting * settings;
+};

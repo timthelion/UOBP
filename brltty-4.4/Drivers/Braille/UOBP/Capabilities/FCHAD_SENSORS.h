@@ -17,9 +17,9 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
-
+#define FCHAD_SENSORS_H
 #ifndef BRLTTY
-#include "../uobp_braille.h"
+ #include "../uobp_general.h"
 #endif
 //////////////////////////////////////////////////
 ///FCHAD Sensors//////////////////////////////////
@@ -43,8 +43,9 @@ void reactToSensorAction(FrameInfo * frameInfo,
                          unsigned char action);
 
 void updateFCHADFromSensorValues
- (FCHADSensorsState * myState,
-  unsigned char node);
+(CapabilityState * thisCapabilityNode
+ ,unsigned char node
+ ,FrameInfo * frameInfo);
 
 ///////////////////////////////////////////////////////
 ///Sensor logging//////////////////////////////////////
@@ -59,5 +60,3 @@ void logSensorAction(FrameInfo * frameInfo,
                      unsigned char action);
 
 #endif
-
-

@@ -24,14 +24,23 @@ by the braille device.*/
 void initializeCapabilityNodes(FrameInfo * frameInfo){
   logMessage(LOG_DEBUG,"Initializing capability nodes.");
   if(!preformInitializeCapabilityNodes(frameInfo))
-   freeCapabilityNodeStates();
+   freeCapabilityNodeStates
+     (frameInfo->capabilities
+     ,frameInfo->capabilityStates);
 }
 
-unsigned char preformInitializeCapabilityNodes(FrameInfo * frameInfo){
+unsigned char preformInitializeCapabilityNodes
+ (FrameInfo * frameInfo){
   unsigned char * information = frameInfo->info;
   BrailleDisplay * brl = frameInfo->brl;
+  Capability ** capabilities = frameInfo->capabilities;
+  CapabilityState *(*capabilityStates)
+    [MAX_NUM_NODES];
+  capabilityStates=frameInfo->capabilityStates;
   uint16_t length = frameInfo->length;
-  freeCapabilityNodeStates();
+  freeCapabilityNodeStates
+     (frameInfo->capabilities
+     ,frameInfo->capabilityStates);
   /*Jump past the device UUID, we don't need it.*/
   uint16_t i=16;
   unsigned char numberOfStandardNodes = information[i] << 8;
@@ -56,35 +65,49 @@ unsigned char preformInitializeCapabilityNodes(FrameInfo * frameInfo){
    if(!inc(&i,length))return 0;
    logMessage(LOG_DEBUG,"Node # %d",node);
 
-
-   capabilityState* thisState =
-     (capabilityState*)
-      malloc(sizeof(capabilityState));
-   thisState->settings=malloc(capabilities[capabilityID]->numSettings*sizeof(setting));
+   CapabilityState* thisState =
+     (CapabilityState*)
+      malloc(sizeof(CapabilityState));
+   thisState->settings=malloc(capabilities[capabilityID]->numSettings*sizeof(Setting));
    capabilityStates[capabilityID][node]=thisState;
 
-   /*Forth octed is the pairing type*/
-   switch(information[i]){
-    case 0:
-     thisState->pairingType=NO_PAIRING;
-     break;
-    case 1:
-     thisState->pairingType=PAIRED;
-     break;
-    case 2:
-     thisState->pairingType=NEEDS_PAIRING;
-     break;
-    default:
-     logMessage(LOG_ERR, "Invalid pairing type %d.",information[i]);
-     return 0;
+   /*number of pairs*/
+   thisState->numPairs=information[i];
+   if(!inc(&i,length))return 0;
+   thisState->pairs =(NodePair *)malloc(thisState->numPairs*sizeof(NodePair));
+
+   unsigned char pair;
+   for(pair=0;pair<thisState->numPairs;pair++){
+    switch(information[i]){
+     case 0:
+      thisState->pairs[pair].pairingType=NO_PAIRING;
+      break;
+     case 1:
+      thisState->pairs[pair].pairingType=PAIRED;
+      break;
+     case 2:
+      thisState->pairs[pair].pairingType=NEEDS_PAIRING;
+      break;
+     default:
+      logMessage(LOG_ERR, "Invalid pairing type %d.",information[i]);
+      return 0;
+    }
+    if(!inc(&i,length))return 0;
+
+    /* Capability to pair with */
+    thisState->pairs[pair].capability
+     = (uint16_t)information[i] << 8;
+    if(!inc(&i,length))return 0;
+    thisState->pairs[pair].capability
+      +=(uint16_t)information[i];
+    if(!inc(&i,length))return 0;
+
+    /* NODE PAIR */
+    thisState->pairs[pair].node=information[i];
+    if(!inc(&i,length))return 0;
    }
-   if(!inc(&i,length))return 0;
 
-   /* Fifth octet is NODE PAIR */
-   thisState->pair=information[i];
-   if(!inc(&i,length))return 0;
-
-   /*Sixth and seventh octets are the length of the information buffer that is associated with this capability node.*/
+   /*Length of the information buffer that is associated with this capability node.*/
    unsigned char capabilityNodeInfoLength =
      (uint16_t)information[i]<<8;
    if(!inc(&i,length))return 0;
@@ -162,7 +185,11 @@ unsigned char preformInitializeCapabilityNodes(FrameInfo * frameInfo){
   return 1;
 }
 
-void freeCapabilityNodeStates(){
+void freeCapabilityNodeStates
+ (Capability ** capabilities
+ ,CapabilityState * capabilityStates
+                    [NUM_CAPABILITIES]
+                    [MAX_NUM_NODES]){
  uint16_t i,j;
  for(i=0;i<NUM_CAPABILITIES;i++)
   for(j=0;j<MAX_NUM_NODES;j++){

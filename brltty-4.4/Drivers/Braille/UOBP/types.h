@@ -19,3 +19,4 @@
 
 typedef struct FrameInfo FrameInfo;
 typedef struct Capability Capability;
+typedef struct CapabilityState CapabilityState;

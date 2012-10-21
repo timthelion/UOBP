@@ -16,8 +16,9 @@
  *
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
+#define SERIAL_H
 #ifndef BRLTTY
-#include "uobp_braille.h"
+ #include "uobp_general.h"
 #endif
 
 //////////////////////////////////////////////////
