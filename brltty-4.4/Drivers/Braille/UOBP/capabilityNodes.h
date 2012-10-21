@@ -22,9 +22,11 @@
  #include "uobp_general.h"
 #endif
 
-void initializeCapabilityNodes(FrameInfo * frameInfo);
+void initializeCapabilityNodes
+ (FrameInfo * frameInfo);
 
-unsigned char preformInitializeCapabilityNodes(FrameInfo * frameInfo);
+unsigned char preformInitializeCapabilityNodes
+ (FrameInfo * frameInfo);
 
 void freeCapabilityNodeStates
  (Capability ** capabilities

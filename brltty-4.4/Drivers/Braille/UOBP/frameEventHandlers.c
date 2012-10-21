@@ -34,34 +34,45 @@ void initializeFrameHandlers(
      frameHandlers[i][j][k]=NULL;
  /*All frames subtypes which are NULL
  or otherwise left undefined are ignored.*/
- addFrameEventHandler(frameHandlers[0][1],(void *)&initializeCapabilityNodes);
- addFrameEventHandler(frameHandlers[2][3],(void *)&reactToSensorDown);
- addFrameEventHandler(frameHandlers[2][4],(void *)&reactToSensorUp);
+ addFrameEventHandler(frameHandlers[0][1],&initializeCapabilityNodes);
+ addFrameEventHandler(frameHandlers[2][3],&reactToSensorDown);
+ addFrameEventHandler(frameHandlers[2][4],&reactToSensorUp);
  #ifdef LOG_EVERYTHING
  /* This is for research purposes,
  to log how users use the device.*/
- addFrameEventHandler(frameHandlers[2][3],(void *)&logSensorDown);
- addFrameEventHandler(frameHandlers[2][4],(void *)&logSensorUp);
+ addFrameEventHandler(frameHandlers[2][3],&logSensorDown);
+ addFrameEventHandler(frameHandlers[2][4],&logSensorUp);
  #endif
 }
 
-void * getFrameHandler
+FrameHandler * getFrameHandler
  (unsigned char frameType
  ,unsigned char frameSubType
- ,void (*frameHandlers
-         [NUM_FRAME_TYPES]
-         [MAX_NUM_FRAME_SUBTYPES]
-         [MAX_NUM_HANDLERS])
-           (FrameInfo * frameInfo)){
- if(frameType >= NUM_FRAME_TYPES)return NULL;
- if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) return NULL;
- return frameHandlers
+ ,FrameHandler frameHandlers
+                [NUM_FRAME_TYPES]
+                [MAX_NUM_FRAME_SUBTYPES]
+                [MAX_NUM_HANDLERS]){
+ if(frameType >= NUM_FRAME_TYPES){
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  return NULL;}
+ if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) {
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  return NULL;}
+ if(frameHandlers
+         [frameType]
+         [frameSubType]
+         ){
+  return frameHandlers
          [frameType]
          [frameSubType];
+ }else{
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  return NULL;
+ }
 }
 
-void handleFrame(
- uint16_t length
+void handleFrame
+ (uint16_t length
  ,unsigned char type
  ,unsigned char subType
  ,unsigned char * information
@@ -69,33 +80,42 @@ void handleFrame(
  /*I have no idea if this is a sane way to cast this.*/
  FrameInfo * frameInfo =
   (FrameInfo*)uncastedFrameInfo;
- void * handler = getFrameHandler
-                   (type
-                   ,subType
-                   ,frameInfo->frameHandlers);
+
+ FrameHandler * handler
+   = getFrameHandler
+      (type
+      ,subType
+      ,frameInfo->frameHandlers);
  frameInfo->info=information;
  frameInfo->length=length;
- logMessage(LOG_DEBUG,"Calling frame handler. type:%d,subType:%d First byte of information is %d",type,subType,frameInfo->info[0]);
- callHandler(handler,frameInfo);
+ logMessage
+  (LOG_DEBUG
+  ,"Calling frame handler. type:%d,subType:%d First byte of information is %d"
+  ,type
+  ,subType
+  ,frameInfo->info[0]);
+ callFrameEventHandler(handler,frameInfo);
 }
 
 /////////////////////////////////////////////////
 ///Event Handlers////////////////////////////////
 /////////////////////////////////////////////////
 void callFrameEventHandler(
- void (*handler[])(FrameInfo * frameInfo),
+ FrameHandler handler[],
  FrameInfo * frameInfo){
  int i=0;
+
  while(handler[i]
          &&
        i<MAX_NUM_HANDLERS){
+    logMessage(LOG_DEBUG,"calling handler %d",i);
     (handler[i++])(frameInfo);
  }
 }
 
-unsigned char addFrameEventHandler(
- void (*handler[])(FrameInfo * frameInfo)
- ,void (*addition)(FrameInfo * frameInfo)){
+unsigned char addFrameEventHandler
+ (FrameHandler handler[]
+ ,FrameHandler addition){
  int i = 0;
  while(handler[i]&&i<MAX_NUM_HANDLERS)i++;
  if(i<MAX_NUM_HANDLERS){

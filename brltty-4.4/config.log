@@ -43,6 +43,7 @@ PATH: /opt/qt/bin
 PATH: /home/timothy/.cabal/bin
 PATH: /home/timothy/.cabal/bin
 PATH: /home/timothy/bin/
+PATH: /opt/plan9/bin/
 
 
 ## ----------- ##
@@ -88,27 +89,27 @@ gcc: fatal error: no input files
 compilation terminated.
 configure:3777: $? = 1
 configure:3797: checking whether the C compiler works
-configure:3819: gcc    conftest.c  >&5
+configure:3819: gcc -Wall -Werror   conftest.c  >&5
 configure:3823: $? = 0
 configure:3871: result: yes
 configure:3874: checking for C compiler default output file name
 configure:3876: result: a.out
 configure:3882: checking for suffix of executables
-configure:3889: gcc -o conftest    conftest.c  >&5
+configure:3889: gcc -o conftest -Wall -Werror   conftest.c  >&5
 configure:3893: $? = 0
 configure:3915: result: 
 configure:3937: checking whether we are cross compiling
-configure:3945: gcc -o conftest    conftest.c  >&5
+configure:3945: gcc -o conftest -Wall -Werror   conftest.c  >&5
 configure:3949: $? = 0
 configure:3956: ./conftest
 configure:3960: $? = 0
 configure:3975: result: no
 configure:3980: checking for suffix of object files
-configure:4002: gcc -c   conftest.c >&5
+configure:4002: gcc -c -Wall -Werror  conftest.c >&5
 configure:4006: $? = 0
 configure:4027: result: o
 configure:4031: checking whether we are using the GNU C compiler
-configure:4050: gcc -c   conftest.c >&5
+configure:4050: gcc -c -Wall -Werror  conftest.c >&5
 configure:4050: $? = 0
 configure:4059: result: yes
 configure:4068: checking whether gcc accepts -g
@@ -116,13 +117,13 @@ configure:4088: gcc -c -g  conftest.c >&5
 configure:4088: $? = 0
 configure:4129: result: yes
 configure:4146: checking for gcc option to accept ISO C89
-configure:4209: gcc  -c -g -O2  conftest.c >&5
+configure:4209: gcc  -c -Wall -Werror  conftest.c >&5
 configure:4209: $? = 0
 configure:4222: result: none needed
 configure:4247: checking for library containing __cxa_pure_virtual
-configure:4278: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/ccRfiHPs.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:28: undefined reference to `__cxa_pure_virtual'
+configure:4278: gcc -o conftest -Wall -Werror   conftest.c  >&5
+/tmp/ccv0jGk8.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `__cxa_pure_virtual'
 collect2: error: ld returned 1 exit status
 configure:4278: $? = 1
 configure: failed program was:
@@ -157,11 +158,11 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:4278: gcc -o conftest -g -O2   conftest.c -lsupc++   >&5
+configure:4278: gcc -o conftest -Wall -Werror   conftest.c -lsupc++   >&5
 configure:4278: $? = 0
 configure:4295: result: -lsupc++
 configure:4303: checking if the C compiler can compile C++
-configure:4321: gcc -o conftest -g -O2   conftest.cc -lsupc++  >&5
+configure:4321: gcc -o conftest -Wall -Werror   conftest.cc -lsupc++  >&5
 configure:4321: $? = 0
 configure:4330: result: yes
 configure:4447: checking for C++ compiler version
@@ -227,11 +228,11 @@ configure:5254: result: $(CC) -shared -Wl,-soname,<name> -o
 configure:5259: checking for configure shared object directory command
 configure:5274: result: /sbin/ldconfig -n
 configure:5602: checking for library containing socket
-configure:5633: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+configure:5633: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
 configure:5633: $? = 0
 configure:5650: result: none required
 configure:5658: checking for library containing inet_ntoa
-configure:5689: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+configure:5689: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
 configure:5689: $? = 0
 configure:5706: result: none required
 configure:5722: checking how to run the C preprocessor
@@ -291,51 +292,51 @@ configure:5913: result: /usr/bin/grep
 configure:5918: checking for egrep
 configure:5980: result: /usr/bin/grep -E
 configure:5985: checking for ANSI C header files
-configure:6005: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6005: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6005: $? = 0
-configure:6078: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+configure:6078: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
 configure:6078: $? = 0
 configure:6078: ./conftest
 configure:6078: $? = 0
 configure:6089: result: yes
 configure:6102: checking for sys/types.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for sys/stat.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for stdlib.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for string.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for memory.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for strings.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for inttypes.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for stdint.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6102: checking for unistd.h
-configure:6102: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6102: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6102: $? = 0
 configure:6102: result: yes
 configure:6139: checking libintl.h usability
-configure:6139: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6139: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6139: $? = 0
 configure:6139: result: yes
 configure:6139: checking libintl.h presence
@@ -345,7 +346,7 @@ configure:6139: result: yes
 configure:6139: checking for libintl.h
 configure:6139: result: yes
 configure:6141: checking for main in -lintl
-configure:6160: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lintl  -lsupc++  >&5
+configure:6160: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lintl  -lsupc++  >&5
 /usr/bin/ld: cannot find -lintl
 collect2: error: ld returned 1 exit status
 configure:6160: $? = 1
@@ -388,11 +389,11 @@ configure: failed program was:
 | }
 configure:6169: result: no
 configure:6194: checking for wcslen
-configure:6194: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+configure:6194: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
 configure:6194: $? = 0
 configure:6194: result: yes
 configure:6198: checking wchar.h usability
-configure:6198: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6198: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6198: $? = 0
 configure:6198: result: yes
 configure:6198: checking wchar.h presence
@@ -402,14 +403,14 @@ configure:6198: result: yes
 configure:6198: checking for wchar.h
 configure:6198: result: yes
 configure:6205: checking for wcwidth
-configure:6205: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+configure:6205: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
 configure:6205: $? = 0
 configure:6205: result: yes
 configure:6251: checking for icu-config
 configure:6269: found /usr/bin/icu-config
 configure:6281: result: /usr/bin/icu-config
 configure:6338: checking iconv.h usability
-configure:6338: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6338: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6338: $? = 0
 configure:6338: result: yes
 configure:6338: checking iconv.h presence
@@ -419,7 +420,7 @@ configure:6338: result: yes
 configure:6338: checking for iconv.h
 configure:6338: result: yes
 configure:6344: checking for main in -liconv
-configure:6363: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -liconv  -lsupc++  >&5
+configure:6363: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -liconv  -lsupc++  >&5
 /usr/bin/ld: cannot find -liconv
 collect2: error: ld returned 1 exit status
 configure:6363: $? = 1
@@ -468,7 +469,7 @@ configure: failed program was:
 configure:6372: result: no
 configure:6395: checking if pthreads are available
 configure:6408: checking pthread.h usability
-configure:6408: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:6408: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:6408: $? = 0
 configure:6408: result: yes
 configure:6408: checking pthread.h presence
@@ -478,9 +479,9 @@ configure:6408: result: yes
 configure:6408: checking for pthread.h
 configure:6408: result: yes
 configure:6524: checking for library containing pthread_create
-configure:6555: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
-/tmp/ccHRVOXK.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:44: undefined reference to `pthread_create'
+configure:6555: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lsupc++  >&5
+/tmp/cc7pHrZi.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
 configure:6555: $? = 1
 configure: failed program was:
@@ -531,7 +532,7 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:6555: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread  -lsupc++  >&5
+configure:6555: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread  -lsupc++  >&5
 configure:6555: $? = 0
 configure:6572: result: -lpthread
 configure:6589: result: yes
@@ -546,7 +547,7 @@ configure:8069: found /usr/bin/tclsh8.5
 configure:8081: result: /usr/bin/tclsh8.5
 configure:8184: checking which curses package to use
 configure:8219: checking ncursesw/ncurses.h usability
-configure:8219: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8219: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 conftest.c:69:30: fatal error: ncursesw/ncurses.h: No such file or directory
 compilation terminated.
 configure:8219: $? = 1
@@ -667,7 +668,7 @@ configure:8219: result: no
 configure:8219: checking for ncursesw/ncurses.h
 configure:8219: result: no
 configure:8219: checking ncurses.h usability
-configure:8219: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8219: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8219: $? = 0
 configure:8219: result: yes
 configure:8219: checking ncurses.h presence
@@ -677,12 +678,12 @@ configure:8219: result: yes
 configure:8219: checking for ncurses.h
 configure:8219: result: yes
 configure:8233: checking for main in -lncurses
-configure:8252: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lncurses  -lpthread -lsupc++  >&5
+configure:8252: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lncurses  -lpthread -lsupc++  >&5
 configure:8252: $? = 0
 configure:8262: result: yes
 configure:8280: result: ncurses
 configure:8383: checking X11/keysym.h usability
-configure:8383: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8383: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8383: $? = 0
 configure:8383: result: yes
 configure:8383: checking X11/keysym.h presence
@@ -692,7 +693,7 @@ configure:8383: result: yes
 configure:8383: checking for X11/keysym.h
 configure:8383: result: yes
 configure:8402: checking X11/extensions/XTest.h usability
-configure:8402: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8402: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8402: $? = 0
 configure:8402: result: yes
 configure:8402: checking X11/extensions/XTest.h presence
@@ -702,7 +703,7 @@ configure:8402: result: yes
 configure:8402: checking for X11/extensions/XTest.h
 configure:8402: result: yes
 configure:8414: checking X11/extensions/XKB.h usability
-configure:8414: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8414: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8414: $? = 0
 configure:8414: result: yes
 configure:8414: checking X11/extensions/XKB.h presence
@@ -713,7 +714,7 @@ configure:8414: checking for X11/extensions/XKB.h
 configure:8414: result: yes
 configure:8450: checking which gui toolkit package to use
 configure:8497: checking X11/Xaw/Form.h usability
-configure:8497: gcc -c -g -O2 -std=gnu99 -Wall     conftest.c >&5
+configure:8497: gcc -c -Wall -Werror -std=gnu99 -Wall     conftest.c >&5
 configure:8497: $? = 0
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Form.h presence
@@ -723,7 +724,7 @@ configure:8497: result: yes
 configure:8497: checking for X11/Xaw/Form.h
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Paned.h usability
-configure:8497: gcc -c -g -O2 -std=gnu99 -Wall     conftest.c >&5
+configure:8497: gcc -c -Wall -Werror -std=gnu99 -Wall     conftest.c >&5
 configure:8497: $? = 0
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Paned.h presence
@@ -733,7 +734,7 @@ configure:8497: result: yes
 configure:8497: checking for X11/Xaw/Paned.h
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Label.h usability
-configure:8497: gcc -c -g -O2 -std=gnu99 -Wall     conftest.c >&5
+configure:8497: gcc -c -Wall -Werror -std=gnu99 -Wall     conftest.c >&5
 configure:8497: $? = 0
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Label.h presence
@@ -743,7 +744,7 @@ configure:8497: result: yes
 configure:8497: checking for X11/Xaw/Label.h
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Command.h usability
-configure:8497: gcc -c -g -O2 -std=gnu99 -Wall     conftest.c >&5
+configure:8497: gcc -c -Wall -Werror -std=gnu99 -Wall     conftest.c >&5
 configure:8497: $? = 0
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Command.h presence
@@ -753,7 +754,7 @@ configure:8497: result: yes
 configure:8497: checking for X11/Xaw/Command.h
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Repeater.h usability
-configure:8497: gcc -c -g -O2 -std=gnu99 -Wall     conftest.c >&5
+configure:8497: gcc -c -Wall -Werror -std=gnu99 -Wall     conftest.c >&5
 configure:8497: $? = 0
 configure:8497: result: yes
 configure:8497: checking X11/Xaw/Repeater.h presence
@@ -763,30 +764,30 @@ configure:8497: result: yes
 configure:8497: checking for X11/Xaw/Repeater.h
 configure:8497: result: yes
 configure:8511: checking for main in -lXaw
-configure:8530: gcc -o conftest -g -O2 -std=gnu99 -Wall      -Wl,-export-dynamic conftest.c -lXaw  -lXt -lX11    -lX11   -lpthread -lsupc++  >&5
+configure:8530: gcc -o conftest -Wall -Werror -std=gnu99 -Wall      -Wl,-export-dynamic conftest.c -lXaw  -lXt -lX11    -lX11   -lpthread -lsupc++  >&5
 configure:8530: $? = 0
 configure:8540: result: yes
 configure:8558: result: Xaw
 configure:8648: checking for time
-configure:8648: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
+configure:8648: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
 configure:8648: $? = 0
 configure:8648: result: yes
 configure:8648: checking for gettimeofday
-configure:8648: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
+configure:8648: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
 configure:8648: $? = 0
 configure:8648: result: yes
 configure:8648: checking for nanosleep
-configure:8648: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
+configure:8648: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
 configure:8648: $? = 0
 configure:8648: result: yes
 configure:8658: checking whether clock_gettime is declared
-configure:8658: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8658: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8658: $? = 0
 configure:8658: result: yes
 configure:8663: checking for library containing clock_gettime
-configure:8694: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
-/tmp/ccqSdjLa.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:57: undefined reference to `clock_gettime'
+configure:8694: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lpthread -lsupc++  >&5
+/tmp/ccdiKRWC.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `clock_gettime'
 collect2: error: ld returned 1 exit status
 configure:8694: $? = 1
 configure: failed program was:
@@ -850,15 +851,15 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:8694: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt  -lpthread -lsupc++  >&5
+configure:8694: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt  -lpthread -lsupc++  >&5
 configure:8694: $? = 0
 configure:8711: result: -lrt
 configure:8730: checking whether localtime_r is declared
-configure:8730: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8730: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8730: $? = 0
 configure:8730: result: yes
 configure:8747: checking sys/poll.h usability
-configure:8747: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8747: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8747: $? = 0
 configure:8747: result: yes
 configure:8747: checking sys/poll.h presence
@@ -868,7 +869,7 @@ configure:8747: result: yes
 configure:8747: checking for sys/poll.h
 configure:8747: result: yes
 configure:8747: checking sys/select.h usability
-configure:8747: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8747: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8747: $? = 0
 configure:8747: result: yes
 configure:8747: checking sys/select.h presence
@@ -878,7 +879,7 @@ configure:8747: result: yes
 configure:8747: checking for sys/select.h
 configure:8747: result: yes
 configure:8747: checking sys/wait.h usability
-configure:8747: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8747: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8747: $? = 0
 configure:8747: result: yes
 configure:8747: checking sys/wait.h presence
@@ -888,11 +889,11 @@ configure:8747: result: yes
 configure:8747: checking for sys/wait.h
 configure:8747: result: yes
 configure:8759: checking for select
-configure:8759: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8759: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8759: $? = 0
 configure:8759: result: yes
 configure:8771: checking signal.h usability
-configure:8771: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8771: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8771: $? = 0
 configure:8771: result: yes
 configure:8771: checking signal.h presence
@@ -902,11 +903,11 @@ configure:8771: result: yes
 configure:8771: checking for signal.h
 configure:8771: result: yes
 configure:8783: checking for sigaction
-configure:8783: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8783: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8783: $? = 0
 configure:8783: result: yes
 configure:8796: checking alloca.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking alloca.h presence
@@ -916,7 +917,7 @@ configure:8796: result: yes
 configure:8796: checking for alloca.h
 configure:8796: result: yes
 configure:8796: checking getopt.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking getopt.h presence
@@ -926,7 +927,7 @@ configure:8796: result: yes
 configure:8796: checking for getopt.h
 configure:8796: result: yes
 configure:8796: checking glob.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking glob.h presence
@@ -936,7 +937,7 @@ configure:8796: result: yes
 configure:8796: checking for glob.h
 configure:8796: result: yes
 configure:8796: checking langinfo.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking langinfo.h presence
@@ -946,7 +947,7 @@ configure:8796: result: yes
 configure:8796: checking for langinfo.h
 configure:8796: result: yes
 configure:8796: checking regex.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking regex.h presence
@@ -956,7 +957,7 @@ configure:8796: result: yes
 configure:8796: checking for regex.h
 configure:8796: result: yes
 configure:8796: checking syslog.h usability
-configure:8796: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8796: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8796: $? = 0
 configure:8796: result: yes
 configure:8796: checking syslog.h presence
@@ -966,7 +967,7 @@ configure:8796: result: yes
 configure:8796: checking for syslog.h
 configure:8796: result: yes
 configure:8808: checking sys/file.h usability
-configure:8808: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8808: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8808: $? = 0
 configure:8808: result: yes
 configure:8808: checking sys/file.h presence
@@ -976,7 +977,7 @@ configure:8808: result: yes
 configure:8808: checking for sys/file.h
 configure:8808: result: yes
 configure:8821: checking pwd.h usability
-configure:8821: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8821: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8821: $? = 0
 configure:8821: result: yes
 configure:8821: checking pwd.h presence
@@ -986,7 +987,7 @@ configure:8821: result: yes
 configure:8821: checking for pwd.h
 configure:8821: result: yes
 configure:8821: checking grp.h usability
-configure:8821: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8821: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8821: $? = 0
 configure:8821: result: yes
 configure:8821: checking grp.h presence
@@ -996,7 +997,7 @@ configure:8821: result: yes
 configure:8821: checking for grp.h
 configure:8821: result: yes
 configure:8834: checking sys/io.h usability
-configure:8834: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8834: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8834: $? = 0
 configure:8834: result: yes
 configure:8834: checking sys/io.h presence
@@ -1006,7 +1007,7 @@ configure:8834: result: yes
 configure:8834: checking for sys/io.h
 configure:8834: result: yes
 configure:8834: checking sys/modem.h usability
-configure:8834: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8834: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 conftest.c:97:23: fatal error: sys/modem.h: No such file or directory
 compilation terminated.
 configure:8834: $? = 1
@@ -1183,7 +1184,7 @@ configure:8834: result: no
 configure:8834: checking for sys/modem.h
 configure:8834: result: no
 configure:8834: checking machine/speaker.h usability
-configure:8834: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8834: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 conftest.c:97:29: fatal error: machine/speaker.h: No such file or directory
 compilation terminated.
 configure:8834: $? = 1
@@ -1360,7 +1361,7 @@ configure:8834: result: no
 configure:8834: checking for machine/speaker.h
 configure:8834: result: no
 configure:8834: checking linux/vt.h usability
-configure:8834: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8834: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8834: $? = 0
 configure:8834: result: yes
 configure:8834: checking linux/vt.h presence
@@ -1370,7 +1371,7 @@ configure:8834: result: yes
 configure:8834: checking for linux/vt.h
 configure:8834: result: yes
 configure:8847: checking linux/input.h usability
-configure:8847: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8847: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8847: $? = 0
 configure:8847: result: yes
 configure:8847: checking linux/input.h presence
@@ -1380,49 +1381,49 @@ configure:8847: result: yes
 configure:8847: checking for linux/input.h
 configure:8847: result: yes
 configure:8855: checking for linux/uinput.h
-configure:8855: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:8855: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:8855: $? = 0
 configure:8855: result: yes
 configure:8876: checking for getopt_long
-configure:8876: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8876: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8876: $? = 0
 configure:8876: result: yes
 configure:8876: checking for hstrerror
-configure:8876: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8876: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8876: $? = 0
 configure:8876: result: yes
 configure:8876: checking for realpath
-configure:8876: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8876: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8876: $? = 0
 configure:8876: result: yes
 configure:8876: checking for vsyslog
-configure:8876: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8876: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8876: $? = 0
 configure:8876: result: yes
 configure:8887: checking for pause
-configure:8887: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8887: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8887: $? = 0
 configure:8887: result: yes
 configure:8899: checking for fchdir
-configure:8899: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8899: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8899: $? = 0
 configure:8899: result: yes
 configure:8899: checking for fchmod
-configure:8899: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8899: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8899: $? = 0
 configure:8899: result: yes
 configure:8911: checking for shmget
-configure:8911: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8911: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8911: $? = 0
 configure:8911: result: yes
 configure:8911: checking for shm_open
-configure:8911: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8911: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8911: $? = 0
 configure:8911: result: yes
 configure:8923: checking for getpeereid
-configure:8923: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
-/tmp/ccB1cJyk.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:110: undefined reference to `getpeereid'
+configure:8923: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+/tmp/ccuu5qRw.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `getpeereid'
 collect2: error: ld returned 1 exit status
 configure:8923: $? = 1
 configure: failed program was:
@@ -1541,9 +1542,9 @@ configure: failed program was:
 | }
 configure:8923: result: no
 configure:8923: checking for getpeerucred
-configure:8923: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
-/tmp/ccR7cXwt.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:110: undefined reference to `getpeerucred'
+configure:8923: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+/tmp/ccawYYZE.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `getpeerucred'
 collect2: error: ld returned 1 exit status
 configure:8923: $? = 1
 configure: failed program was:
@@ -1662,9 +1663,9 @@ configure: failed program was:
 | }
 configure:8923: result: no
 configure:8923: checking for getzoneid
-configure:8923: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
-/tmp/ccjaSK9w.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:110: undefined reference to `getzoneid'
+configure:8923: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+/tmp/ccyKUC2I.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `getzoneid'
 collect2: error: ld returned 1 exit status
 configure:8923: $? = 1
 configure: failed program was:
@@ -1783,37 +1784,152 @@ configure: failed program was:
 | }
 configure:8923: result: no
 configure:8935: checking for mempcpy
-configure:8935: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
-conftest.c:99:6: warning: conflicting types for built-in function 'mempcpy' [enabled by default]
-configure:8935: $? = 0
-configure:8935: result: yes
+configure:8935: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+conftest.c:99:6: error: conflicting types for built-in function 'mempcpy' [-Werror]
+cc1: all warnings being treated as errors
+configure:8935: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "brltty"
+| #define PACKAGE_TARNAME "brltty"
+| #define PACKAGE_VERSION "4.4"
+| #define PACKAGE_STRING "brltty 4.4"
+| #define PACKAGE_BUGREPORT "http://mielke.cc/brltty/"
+| #define PACKAGE_URL ""
+| #define BRLAPI_RELEASE "0.5.7"
+| #define BRLAPI_MAJOR 0
+| #define BRLAPI_MINOR 5
+| #define BRLAPI_REVISION 7
+| #define PACKAGE_TITLE "BRLTTY"
+| #define PACKAGE_REVISION "Unversioned directory"
+| #define CONFIGURATION_FILE "brltty.conf"
+| #define PREFERENCES_FILE "brltty.prefs"
+| #define ENABLE_SHARED_OBJECTS 1
+| #define STDC_HEADERS 1
+| #define HAVE_SYS_TYPES_H 1
+| #define HAVE_SYS_STAT_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_STRINGS_H 1
+| #define HAVE_INTTYPES_H 1
+| #define HAVE_STDINT_H 1
+| #define HAVE_UNISTD_H 1
+| #define ENABLE_I18N_SUPPORT 1
+| #define HAVE_WCHAR_H 1
+| #define HAVE_WCWIDTH 1
+| #define HAVE_ICU 1
+| #define HAVE_ICONV_H 1
+| #define ENABLE_API 1
+| #define API_PARAMETERS ""
+| #define BRLAPI_AUTHKEYFILE "brlapi.key"
+| #define HAVE_LIBNCURSES 1
+| #define HAVE_PKG_NCURSES 1
+| #define HAVE_X11_KEYSYM_H 1
+| #define HAVE_X11_EXTENSIONS_XTEST_H 1
+| #define HAVE_X11_EXTENSIONS_XKB_H 1
+| #define HAVE_LIBXAW 1
+| #define HAVE_PKG_XAW 1
+| #define HAVE_TIME 1
+| #define HAVE_GETTIMEOFDAY 1
+| #define HAVE_NANOSLEEP 1
+| #define HAVE_CLOCK_GETTIME 1
+| #define HAVE_DECL_LOCALTIME_R 1
+| #define HAVE_SYS_POLL_H 1
+| #define HAVE_SYS_SELECT_H 1
+| #define HAVE_SYS_WAIT_H 1
+| #define HAVE_SELECT 1
+| #define HAVE_SIGNAL_H 1
+| #define HAVE_SIGACTION 1
+| #define HAVE_ALLOCA_H 1
+| #define HAVE_GETOPT_H 1
+| #define HAVE_GLOB_H 1
+| #define HAVE_LANGINFO_H 1
+| #define HAVE_REGEX_H 1
+| #define HAVE_SYSLOG_H 1
+| #define HAVE_SYS_FILE_H 1
+| #define HAVE_PWD_H 1
+| #define HAVE_GRP_H 1
+| #define HAVE_SYS_IO_H 1
+| #define HAVE_LINUX_VT_H 1
+| #define HAVE_LINUX_INPUT_H 1
+| #define HAVE_LINUX_UINPUT_H 1
+| #define HAVE_GETOPT_LONG 1
+| #define HAVE_HSTRERROR 1
+| #define HAVE_REALPATH 1
+| #define HAVE_VSYSLOG 1
+| #define HAVE_PAUSE 1
+| #define HAVE_FCHDIR 1
+| #define HAVE_FCHMOD 1
+| #define HAVE_SHMGET 1
+| #define HAVE_SHM_OPEN 1
+| /* end confdefs.h.  */
+| /* Define mempcpy to an innocuous variant, in case <limits.h> declares mempcpy.
+|    For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+| #define mempcpy innocuous_mempcpy
+| 
+| /* System header to define __stub macros and hopefully few prototypes,
+|     which can conflict with char mempcpy (); below.
+|     Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+|     <limits.h> exists even on freestanding compilers.  */
+| 
+| #ifdef __STDC__
+| # include <limits.h>
+| #else
+| # include <assert.h>
+| #endif
+| 
+| #undef mempcpy
+| 
+| /* Override any GCC internal prototype to avoid an error.
+|    Use char because int might match the return type of a GCC
+|    builtin and then its argument prototype would still apply.  */
+| #ifdef __cplusplus
+| extern "C"
+| #endif
+| char mempcpy ();
+| /* The GNU C library defines this for functions which it implements
+|     to always fail with ENOSYS.  Some functions are actually named
+|     something starting with __ and the normal name is an alias.  */
+| #if defined __stub_mempcpy || defined __stub___mempcpy
+| choke me
+| #endif
+| 
+| int
+| main ()
+| {
+| return mempcpy ();
+|   ;
+|   return 0;
+| }
+configure:8935: result: no
 configure:8935: checking for wmempcpy
-configure:8935: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:8935: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:8935: $? = 0
 configure:8935: result: yes
 configure:9071: checking for gai_strerror
-configure:9071: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:9071: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:9071: $? = 0
 configure:9071: result: yes
 configure:9071: checking for getaddrinfo
-configure:9071: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:9071: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:9071: $? = 0
 configure:9071: result: yes
 configure:9071: checking for getnameinfo
-configure:9071: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:9071: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:9071: $? = 0
 configure:9071: result: yes
 configure:9087: checking size of key_t
-configure:9092: gcc -o conftest -g -O2 -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
+configure:9092: gcc -o conftest -Wall -Werror -std=gnu99 -Wall    -Wl,-export-dynamic conftest.c -lrt -lpthread -lsupc++  >&5
 configure:9092: $? = 0
 configure:9092: ./conftest
 configure:9092: $? = 0
 configure:9110: result: 4
 configure:9129: checking whether byte ordering is bigendian
-configure:9144: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
-conftest.c:84:9: error: unknown type name 'not'
-conftest.c:84:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'universal'
-conftest.c:84:15: error: unknown type name 'universal'
+configure:9144: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
+conftest.c:83:9: error: unknown type name 'not'
+conftest.c:83:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'universal'
+conftest.c:83:15: error: unknown type name 'universal'
 configure:9144: $? = 1
 configure: failed program was:
 | /* confdefs.h */
@@ -1890,7 +2006,6 @@ configure: failed program was:
 | #define HAVE_FCHMOD 1
 | #define HAVE_SHMGET 1
 | #define HAVE_SHM_OPEN 1
-| #define HAVE_MEMPCPY 1
 | #define HAVE_WMEMPCPY 1
 | #define HAVE_GAI_STRERROR 1
 | #define HAVE_GETADDRINFO 1
@@ -1903,12 +2018,12 @@ configure: failed program was:
 | 	     #endif
 | 	     typedef int dummy;
 | 
-configure:9189: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9189: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9189: $? = 0
-configure:9207: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9207: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 conftest.c: In function 'main':
-conftest.c:90:4: error: unknown type name 'not'
-conftest.c:90:12: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'endian'
+conftest.c:89:4: error: unknown type name 'not'
+conftest.c:89:12: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'endian'
 configure:9207: $? = 1
 configure: failed program was:
 | /* confdefs.h */
@@ -1985,7 +2100,6 @@ configure: failed program was:
 | #define HAVE_FCHMOD 1
 | #define HAVE_SHMGET 1
 | #define HAVE_SHM_OPEN 1
-| #define HAVE_MEMPCPY 1
 | #define HAVE_WMEMPCPY 1
 | #define HAVE_GAI_STRERROR 1
 | #define HAVE_GETADDRINFO 1
@@ -2008,34 +2122,132 @@ configure: failed program was:
 | }
 configure:9335: result: no
 configure:9353: checking for an ANSI C-conforming const
-configure:9419: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9419: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9419: $? = 0
 configure:9426: result: yes
 configure:9434: checking for inline
-configure:9450: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9450: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9450: $? = 0
 configure:9458: result: inline
 configure:9479: checking if the compiler understands the __alignof__ operator
-configure:9498: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9498: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9498: $? = 0
 configure:9505: result: yes
 configure:9514: checking if the compiler understands __attribute__((format(__printf__)))
-configure:9533: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9533: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9533: $? = 0
 configure:9540: result: yes
 configure:9549: checking if the compiler understands __attribute__((noreturn))
-configure:9568: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9568: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9568: $? = 0
 configure:9575: result: yes
 configure:9584: checking if the compiler understands __attribute__((packed))
-configure:9605: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
+configure:9605: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
 configure:9605: $? = 0
 configure:9612: result: yes
 configure:9621: checking if the compiler understands __attribute__((unused))
-configure:9640: gcc -c -g -O2 -std=gnu99 -Wall   conftest.c >&5
-conftest.c:88:13: warning: 'conf_attribute_unused' declared 'static' but never defined [-Wunused-function]
-configure:9640: $? = 0
-configure:9647: result: yes
+configure:9640: gcc -c -Wall -Werror -std=gnu99 -Wall   conftest.c >&5
+conftest.c:87:13: error: 'conf_attribute_unused' declared 'static' but never defined [-Werror=unused-function]
+cc1: all warnings being treated as errors
+configure:9640: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "brltty"
+| #define PACKAGE_TARNAME "brltty"
+| #define PACKAGE_VERSION "4.4"
+| #define PACKAGE_STRING "brltty 4.4"
+| #define PACKAGE_BUGREPORT "http://mielke.cc/brltty/"
+| #define PACKAGE_URL ""
+| #define BRLAPI_RELEASE "0.5.7"
+| #define BRLAPI_MAJOR 0
+| #define BRLAPI_MINOR 5
+| #define BRLAPI_REVISION 7
+| #define PACKAGE_TITLE "BRLTTY"
+| #define PACKAGE_REVISION "Unversioned directory"
+| #define CONFIGURATION_FILE "brltty.conf"
+| #define PREFERENCES_FILE "brltty.prefs"
+| #define ENABLE_SHARED_OBJECTS 1
+| #define STDC_HEADERS 1
+| #define HAVE_SYS_TYPES_H 1
+| #define HAVE_SYS_STAT_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_STRINGS_H 1
+| #define HAVE_INTTYPES_H 1
+| #define HAVE_STDINT_H 1
+| #define HAVE_UNISTD_H 1
+| #define ENABLE_I18N_SUPPORT 1
+| #define HAVE_WCHAR_H 1
+| #define HAVE_WCWIDTH 1
+| #define HAVE_ICU 1
+| #define HAVE_ICONV_H 1
+| #define ENABLE_API 1
+| #define API_PARAMETERS ""
+| #define BRLAPI_AUTHKEYFILE "brlapi.key"
+| #define HAVE_LIBNCURSES 1
+| #define HAVE_PKG_NCURSES 1
+| #define HAVE_X11_KEYSYM_H 1
+| #define HAVE_X11_EXTENSIONS_XTEST_H 1
+| #define HAVE_X11_EXTENSIONS_XKB_H 1
+| #define HAVE_LIBXAW 1
+| #define HAVE_PKG_XAW 1
+| #define HAVE_TIME 1
+| #define HAVE_GETTIMEOFDAY 1
+| #define HAVE_NANOSLEEP 1
+| #define HAVE_CLOCK_GETTIME 1
+| #define HAVE_DECL_LOCALTIME_R 1
+| #define HAVE_SYS_POLL_H 1
+| #define HAVE_SYS_SELECT_H 1
+| #define HAVE_SYS_WAIT_H 1
+| #define HAVE_SELECT 1
+| #define HAVE_SIGNAL_H 1
+| #define HAVE_SIGACTION 1
+| #define HAVE_ALLOCA_H 1
+| #define HAVE_GETOPT_H 1
+| #define HAVE_GLOB_H 1
+| #define HAVE_LANGINFO_H 1
+| #define HAVE_REGEX_H 1
+| #define HAVE_SYSLOG_H 1
+| #define HAVE_SYS_FILE_H 1
+| #define HAVE_PWD_H 1
+| #define HAVE_GRP_H 1
+| #define HAVE_SYS_IO_H 1
+| #define HAVE_LINUX_VT_H 1
+| #define HAVE_LINUX_INPUT_H 1
+| #define HAVE_LINUX_UINPUT_H 1
+| #define HAVE_GETOPT_LONG 1
+| #define HAVE_HSTRERROR 1
+| #define HAVE_REALPATH 1
+| #define HAVE_VSYSLOG 1
+| #define HAVE_PAUSE 1
+| #define HAVE_FCHDIR 1
+| #define HAVE_FCHMOD 1
+| #define HAVE_SHMGET 1
+| #define HAVE_SHM_OPEN 1
+| #define HAVE_WMEMPCPY 1
+| #define HAVE_GAI_STRERROR 1
+| #define HAVE_GETADDRINFO 1
+| #define HAVE_GETNAMEINFO 1
+| #define SIZEOF_KEY_T 4
+| #define HAVE_POSIX_THREADS 1
+| #define HAVE_OPERATOR_ALIGNOF 1
+| #define HAVE_ATTRIBUTE_FORMAT_PRINTF 1
+| #define HAVE_ATTRIBUTE_NORETURN 1
+| #define HAVE_ATTRIBUTE_PACKED 1
+| /* end confdefs.h.  */
+| 
+| static void conf_attribute_unused (void)
+|        __attribute__((unused));
+| 
+| int
+| main ()
+| {
+| 
+|   ;
+|   return 0;
+| }
+configure:9647: result: no
 configure:9656: checking for system-dependent compilation flags
 configure:9680: result: -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE
 configure:9684: checking for c compiler shared object flags
@@ -2047,7 +2259,7 @@ configure:9821: result: a
 configure:9826: checking for shared object run-time search path environment variable
 configure:9844: result: LD_LIBRARY_PATH
 configure:9858: checking alsa/asoundlib.h usability
-configure:9858: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:9858: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:9858: $? = 0
 configure:9858: result: yes
 configure:9858: checking alsa/asoundlib.h presence
@@ -2057,7 +2269,7 @@ configure:9858: result: yes
 configure:9858: checking for alsa/asoundlib.h
 configure:9858: result: yes
 configure:9867: checking linux/soundcard.h usability
-configure:9867: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:9867: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:9867: $? = 0
 configure:9867: result: yes
 configure:9867: checking linux/soundcard.h presence
@@ -2067,13 +2279,13 @@ configure:9867: result: yes
 configure:9867: checking for linux/soundcard.h
 configure:9867: result: yes
 configure:10268: checking for Gpm_Open in -lgpm
-configure:10293: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -lgpm  -lrt -lpthread -lsupc++  >&5
+configure:10293: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -lgpm  -lrt -lpthread -lsupc++  >&5
 configure:10293: $? = 0
 configure:10302: result: yes
 configure:10323: checking for library containing dlopen
-configure:10354: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -lgpm -lrt -lpthread -lsupc++  >&5
-/tmp/ccEV5Gb7.o: In function `main':
-/home/timothy/works/2012/braille/UOBP/brltty-4.4/conftest.c:111: undefined reference to `dlopen'
+configure:10354: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -lgpm -lrt -lpthread -lsupc++  >&5
+/tmp/cctZJoS9.o: In function `main':
+conftest.c:(.text+0xa): undefined reference to `dlopen'
 collect2: error: ld returned 1 exit status
 configure:10354: $? = 1
 configure: failed program was:
@@ -2151,7 +2363,6 @@ configure: failed program was:
 | #define HAVE_FCHMOD 1
 | #define HAVE_SHMGET 1
 | #define HAVE_SHM_OPEN 1
-| #define HAVE_MEMPCPY 1
 | #define HAVE_WMEMPCPY 1
 | #define HAVE_GAI_STRERROR 1
 | #define HAVE_GETADDRINFO 1
@@ -2162,7 +2373,6 @@ configure: failed program was:
 | #define HAVE_ATTRIBUTE_FORMAT_PRINTF 1
 | #define HAVE_ATTRIBUTE_NORETURN 1
 | #define HAVE_ATTRIBUTE_PACKED 1
-| #define HAVE_ATTRIBUTE_UNUSED 1
 | #define LIBRARY_EXTENSION "so"
 | #define MODULE_NAME "libbrltty"
 | #define MODULE_EXTENSION "so"
@@ -2191,11 +2401,11 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:10354: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl  -lgpm -lrt -lpthread -lsupc++  >&5
+configure:10354: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl  -lgpm -lrt -lpthread -lsupc++  >&5
 configure:10354: $? = 0
 configure:10371: result: -ldl
 configure:10504: checking termios.h usability
-configure:10504: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:10504: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:10504: $? = 0
 configure:10504: result: yes
 configure:10504: checking termios.h presence
@@ -2205,11 +2415,11 @@ configure:10504: result: yes
 configure:10504: checking for termios.h
 configure:10504: result: yes
 configure:10509: checking for tcdrain
-configure:10509: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
+configure:10509: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
 configure:10509: $? = 0
 configure:10509: result: yes
 configure:10785: checking bluetooth/bluetooth.h usability
-configure:10785: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:10785: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:10785: $? = 0
 configure:10785: result: yes
 configure:10785: checking bluetooth/bluetooth.h presence
@@ -2221,17 +2431,17 @@ configure:10785: result: yes
 configure:10906: checking for iconv.h
 configure:10906: result: yes
 configure:10993: checking whether fork is declared
-configure:10993: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:10993: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:10993: $? = 0
 configure:10993: result: yes
 configure:10995: checking for signal.h
 configure:10995: result: yes
 configure:10997: checking whether SIGCHLD is declared
-configure:10997: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:10997: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:10997: $? = 0
 configure:10997: result: yes
 configure:11092: checking mntent.h usability
-configure:11092: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:11092: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:11092: $? = 0
 configure:11092: result: yes
 configure:11092: checking mntent.h presence
@@ -2241,11 +2451,11 @@ configure:11092: result: yes
 configure:11092: checking for mntent.h
 configure:11092: result: yes
 configure:11094: checking for setmntent
-configure:11094: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
+configure:11094: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
 configure:11094: $? = 0
 configure:11094: result: yes
 configure:11099: checking for addmntent
-configure:11099: gcc -o conftest -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
+configure:11099: gcc -o conftest -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE  -Wl,-export-dynamic conftest.c -ldl -lgpm -lrt -lpthread -lsupc++  >&5
 configure:11099: $? = 0
 configure:11099: result: yes
 configure:11278: WARNING: Libbraille package not found: /usr /usr/local /usr/local/Libbraille /usr/local/libbraille /opt/Libbraille /opt/libbraille
@@ -2259,7 +2469,7 @@ configure:12256: WARNING: Swift package not found: /usr /usr/local /usr/local/Sw
 configure:12302: WARNING: Theta package not found: /usr /usr/local /usr/local/Theta /usr/local/theta /opt/Theta /opt/theta
 configure:12348: WARNING: ViaVoice package not found: /usr /usr/local /usr/local/ViaVoice /usr/local/viavoice /opt/ViaVoice /opt/viavoice
 configure:12690: checking sys/shm.h usability
-configure:12690: gcc -c -g -O2 -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
+configure:12690: gcc -c -Wall -Werror -std=gnu99 -Wall   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE conftest.c >&5
 configure:12690: $? = 0
 configure:12690: result: yes
 configure:12690: checking sys/shm.h presence
@@ -2287,75 +2497,75 @@ generated by GNU Autoconf 2.69.  Invocation command line was
 
 on timothy
 
-config.status:1278: creating config.mk
-config.status:1278: creating brltty.spec
-config.status:1278: creating Programs/brltty-config
-config.status:1278: creating Documents/brltty.conf
-config.status:1278: creating Documents/brltty.1
-config.status:1278: creating Documents/BrlAPIref.doxy
-config.status:1278: creating Bindings/Lisp/brlapi.lisp
-config.status:1278: creating Bindings/Python/setup.py
-config.status:1278: creating ./Makefile
-config.status:1278: creating Programs/Makefile
-config.status:1278: creating Documents/Makefile
-config.status:1278: creating Messages/Makefile
-config.status:1278: creating Documents/Manual-BRLTTY/English/Makefile
-config.status:1278: creating Documents/Manual-BRLTTY/French/Makefile
-config.status:1278: creating Documents/Manual-BrlAPI/English/Makefile
-config.status:1278: creating Bindings/Lisp/Makefile
-config.status:1278: creating Bindings/Python/Makefile
-config.status:1278: creating Bindings/Tcl/Makefile
-config.status:1278: creating Drivers/Braille/Alva/Makefile
-config.status:1278: creating Drivers/Braille/Albatross/Makefile
-config.status:1278: creating Drivers/Braille/BrlAPI/Makefile
-config.status:1278: creating Drivers/Braille/BrailComm/Makefile
-config.status:1278: creating Drivers/Braille/Braudi/Makefile
-config.status:1278: creating Drivers/Braille/BrailleLite/Makefile
-config.status:1278: creating Drivers/Braille/Baum/Makefile
-config.status:1278: creating Drivers/Braille/BrailleNote/Makefile
-config.status:1278: creating Drivers/Braille/CombiBraille/Makefile
-config.status:1278: creating Drivers/Braille/EcoBraille/Makefile
-config.status:1278: creating Drivers/Braille/EuroBraille/Makefile
-config.status:1278: creating Drivers/Braille/FreedomScientific/Makefile
-config.status:1278: creating Drivers/Braille/HIMS/Makefile
-config.status:1278: creating Drivers/Braille/HandyTech/Makefile
-config.status:1278: creating Drivers/Braille/HumanWare/Makefile
-config.status:1278: creating Drivers/Braille/IrisLinux/Makefile
-config.status:1278: creating Drivers/Braille/Iris/Makefile
-config.status:1278: creating Drivers/Braille/LogText/Makefile
-config.status:1278: creating Drivers/Braille/MultiBraille/Makefile
-config.status:1278: creating Drivers/Braille/MDV/Makefile
-config.status:1278: creating Drivers/Braille/MiniBraille/Makefile
-config.status:1278: creating Drivers/Braille/Metec/Makefile
-config.status:1278: creating Drivers/Braille/UOBP/Makefile
-config.status:1278: creating Drivers/Braille/Pegasus/Makefile
-config.status:1278: creating Drivers/Braille/Papenmeier/Makefile
-config.status:1278: creating Drivers/Braille/Seika/Makefile
-config.status:1278: creating Drivers/Braille/TechniBraille/Makefile
-config.status:1278: creating Drivers/Braille/TSI/Makefile
-config.status:1278: creating Drivers/Braille/TTY/Makefile
-config.status:1278: creating Drivers/Braille/VideoBraille/Makefile
-config.status:1278: creating Drivers/Braille/Voyager/Makefile
-config.status:1278: creating Drivers/Braille/Virtual/Makefile
-config.status:1278: creating Drivers/Braille/VisioBraille/Makefile
-config.status:1278: creating Drivers/Braille/XWindow/Makefile
-config.status:1278: creating Drivers/Braille/NinePoint/Makefile
-config.status:1278: creating Drivers/Speech/Alva/Makefile
-config.status:1278: creating Drivers/Speech/BrailleLite/Makefile
-config.status:1278: creating Drivers/Speech/CombiBraille/Makefile
-config.status:1278: creating Drivers/Speech/eSpeak/Makefile
-config.status:1278: creating Drivers/Speech/ExternalSpeech/Makefile
-config.status:1278: creating Drivers/Speech/Festival/Makefile
-config.status:1278: creating Drivers/Speech/GenericSay/Makefile
-config.status:1278: creating Drivers/Speech/SpeechDispatcher/Makefile
-config.status:1278: creating Drivers/Screen/Linux/Makefile
-config.status:1278: creating Drivers/Screen/Screen/Makefile
-config.status:1278: creating Drivers/Screen/AtSpi2/Makefile
-config.status:1278: creating config.h
-config.status:1278: creating Programs/brlapi.h
-config.status:1453: Programs/brlapi.h is unchanged
-config.status:1467: executing item-summary commands
-config.status:1474: Options Summary:
+config.status:1276: creating config.mk
+config.status:1276: creating brltty.spec
+config.status:1276: creating Programs/brltty-config
+config.status:1276: creating Documents/brltty.conf
+config.status:1276: creating Documents/brltty.1
+config.status:1276: creating Documents/BrlAPIref.doxy
+config.status:1276: creating Bindings/Lisp/brlapi.lisp
+config.status:1276: creating Bindings/Python/setup.py
+config.status:1276: creating ./Makefile
+config.status:1276: creating Programs/Makefile
+config.status:1276: creating Documents/Makefile
+config.status:1276: creating Messages/Makefile
+config.status:1276: creating Documents/Manual-BRLTTY/English/Makefile
+config.status:1276: creating Documents/Manual-BRLTTY/French/Makefile
+config.status:1276: creating Documents/Manual-BrlAPI/English/Makefile
+config.status:1276: creating Bindings/Lisp/Makefile
+config.status:1276: creating Bindings/Python/Makefile
+config.status:1276: creating Bindings/Tcl/Makefile
+config.status:1276: creating Drivers/Braille/Alva/Makefile
+config.status:1276: creating Drivers/Braille/Albatross/Makefile
+config.status:1276: creating Drivers/Braille/BrlAPI/Makefile
+config.status:1276: creating Drivers/Braille/BrailComm/Makefile
+config.status:1276: creating Drivers/Braille/Braudi/Makefile
+config.status:1276: creating Drivers/Braille/BrailleLite/Makefile
+config.status:1276: creating Drivers/Braille/Baum/Makefile
+config.status:1276: creating Drivers/Braille/BrailleNote/Makefile
+config.status:1276: creating Drivers/Braille/CombiBraille/Makefile
+config.status:1276: creating Drivers/Braille/EcoBraille/Makefile
+config.status:1276: creating Drivers/Braille/EuroBraille/Makefile
+config.status:1276: creating Drivers/Braille/FreedomScientific/Makefile
+config.status:1276: creating Drivers/Braille/HIMS/Makefile
+config.status:1276: creating Drivers/Braille/HandyTech/Makefile
+config.status:1276: creating Drivers/Braille/HumanWare/Makefile
+config.status:1276: creating Drivers/Braille/IrisLinux/Makefile
+config.status:1276: creating Drivers/Braille/Iris/Makefile
+config.status:1276: creating Drivers/Braille/LogText/Makefile
+config.status:1276: creating Drivers/Braille/MultiBraille/Makefile
+config.status:1276: creating Drivers/Braille/MDV/Makefile
+config.status:1276: creating Drivers/Braille/MiniBraille/Makefile
+config.status:1276: creating Drivers/Braille/Metec/Makefile
+config.status:1276: creating Drivers/Braille/UOBP/Makefile
+config.status:1276: creating Drivers/Braille/Pegasus/Makefile
+config.status:1276: creating Drivers/Braille/Papenmeier/Makefile
+config.status:1276: creating Drivers/Braille/Seika/Makefile
+config.status:1276: creating Drivers/Braille/TechniBraille/Makefile
+config.status:1276: creating Drivers/Braille/TSI/Makefile
+config.status:1276: creating Drivers/Braille/TTY/Makefile
+config.status:1276: creating Drivers/Braille/VideoBraille/Makefile
+config.status:1276: creating Drivers/Braille/Voyager/Makefile
+config.status:1276: creating Drivers/Braille/Virtual/Makefile
+config.status:1276: creating Drivers/Braille/VisioBraille/Makefile
+config.status:1276: creating Drivers/Braille/XWindow/Makefile
+config.status:1276: creating Drivers/Braille/NinePoint/Makefile
+config.status:1276: creating Drivers/Speech/Alva/Makefile
+config.status:1276: creating Drivers/Speech/BrailleLite/Makefile
+config.status:1276: creating Drivers/Speech/CombiBraille/Makefile
+config.status:1276: creating Drivers/Speech/eSpeak/Makefile
+config.status:1276: creating Drivers/Speech/ExternalSpeech/Makefile
+config.status:1276: creating Drivers/Speech/Festival/Makefile
+config.status:1276: creating Drivers/Speech/GenericSay/Makefile
+config.status:1276: creating Drivers/Speech/SpeechDispatcher/Makefile
+config.status:1276: creating Drivers/Screen/Linux/Makefile
+config.status:1276: creating Drivers/Screen/Screen/Makefile
+config.status:1276: creating Drivers/Screen/AtSpi2/Makefile
+config.status:1276: creating config.h
+config.status:1276: creating Programs/brlapi.h
+config.status:1451: Programs/brlapi.h is unchanged
+config.status:1465: executing item-summary commands
+config.status:1472: Options Summary:
    execute-root: 
    install-root: 
    libdir: ${exec_prefix}/lib
@@ -2419,7 +2629,7 @@ config.status:1474: Options Summary:
    screen-driver: lx
    relocatable-install: no
    stripping: yes
-config.status:1467: executing build-configure commands
+config.status:1465: executing build-configure commands
 
 ## ---------------- ##
 ## Cache variables. ##
@@ -2435,8 +2645,8 @@ ac_cv_env_CCC_set=
 ac_cv_env_CCC_value=
 ac_cv_env_CC_set=
 ac_cv_env_CC_value=
-ac_cv_env_CFLAGS_set=
-ac_cv_env_CFLAGS_value=
+ac_cv_env_CFLAGS_set=set
+ac_cv_env_CFLAGS_value='-Wall -Werror'
 ac_cv_env_CPPFLAGS_set=
 ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CPP_set=
@@ -2467,7 +2677,7 @@ ac_cv_func_getpeerucred=no
 ac_cv_func_gettimeofday=yes
 ac_cv_func_getzoneid=no
 ac_cv_func_hstrerror=yes
-ac_cv_func_mempcpy=yes
+ac_cv_func_mempcpy=no
 ac_cv_func_nanosleep=yes
 ac_cv_func_pause=yes
 ac_cv_func_realpath=yes
@@ -2571,7 +2781,7 @@ ac_cv_target=x86_64-unknown-linux-gnu
 brltty_cv_c_attribute_format_printf=yes
 brltty_cv_c_attribute_noreturn=yes
 brltty_cv_c_attribute_packed=yes
-brltty_cv_c_attribute_unused=yes
+brltty_cv_c_attribute_unused=no
 brltty_cv_c_operator_alignof=yes
 brltty_cv_device_directory=/dev
 brltty_cv_device_serial_first=ttyS0
@@ -2597,7 +2807,7 @@ brltty_cv_prog_mkobj='$(LD) -r -o'
 
 AWK='gawk'
 CC='gcc'
-CFLAGS='-g -O2 -std=gnu99 -Wall'
+CFLAGS='-Wall -Werror -std=gnu99 -Wall'
 CONFIGURATION_DIRECTORY='/etc'
 CONFIGURATION_FILE='brltty.conf'
 CONFLIBDIR='/sbin/ldconfig -n'
@@ -2855,7 +3065,7 @@ mount_cflags=''
 mount_libs=''
 mount_package='mntent'
 oldincludedir='/usr/include'
-package_date='2012/10/20'
+package_date='2012/10/21'
 pcm_tune_objects='pcm.$O'
 pdfdir='${docdir}'
 prefix='/usr'
@@ -2995,7 +3205,6 @@ writable_directory='/var/run/brltty'
 #define HAVE_FCHMOD 1
 #define HAVE_SHMGET 1
 #define HAVE_SHM_OPEN 1
-#define HAVE_MEMPCPY 1
 #define HAVE_WMEMPCPY 1
 #define HAVE_GAI_STRERROR 1
 #define HAVE_GETADDRINFO 1
@@ -3006,7 +3215,6 @@ writable_directory='/var/run/brltty'
 #define HAVE_ATTRIBUTE_FORMAT_PRINTF 1
 #define HAVE_ATTRIBUTE_NORETURN 1
 #define HAVE_ATTRIBUTE_PACKED 1
-#define HAVE_ATTRIBUTE_UNUSED 1
 #define LIBRARY_EXTENSION "so"
 #define MODULE_NAME "libbrltty"
 #define MODULE_EXTENSION "so"

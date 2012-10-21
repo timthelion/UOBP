@@ -125,7 +125,13 @@ void sendFrame(
  GioEndpoint *gioEndpoint){
  unsigned char byteInArse;
  byteInArse=START_FLAG;
+ #ifdef BRLTTY
+  logMessage(LOG_DEBUG,"Sending start flag.");
+ #endif
  serialWrite(gioEndpoint, byteInArse);
+ #ifdef BRLTTY
+  logMessage(LOG_DEBUG,"Start flag sent.");
+ #endif
 
  unsigned char xorChecksum=0;
  byteInArse=(length&0xFF00ul)>>8;

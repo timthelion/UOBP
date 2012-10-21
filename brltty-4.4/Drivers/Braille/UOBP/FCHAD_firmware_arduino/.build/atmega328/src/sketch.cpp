@@ -1,5 +1,7 @@
 #include <Arduino.h>
-void * getHandler (unsigned char frameType, unsigned char frameSubType);
+void * getHandler
+ (unsigned char frameType
+ ,unsigned char frameSubType);
 void initializeFrameHandlers();
 void handleFrame(
  unsigned int  length,
@@ -42,9 +44,14 @@ void loop();
 ///////////////////////////////////////////////////
 //Frame Handlers///////////////////////////////////
 ///////////////////////////////////////////////////
-void (*frameHandlers[NUM_FRAME_TYPES][MAX_NUM_FRAME_SUBTYPES])(unsigned int,unsigned char *);
+void (*frameHandlers
+        [NUM_FRAME_TYPES]
+        [MAX_NUM_FRAME_SUBTYPES])
+         (unsigned int,unsigned char *);
 
-void * getHandler (unsigned char frameType, unsigned char frameSubType){
+void * getHandler
+ (unsigned char frameType
+ ,unsigned char frameSubType){
  if(frameType >= NUM_FRAME_TYPES)return NULL;
  if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) return NULL;
  return (void *)frameHandlers[frameType][frameSubType];
@@ -70,7 +77,7 @@ void handleFrame(
    It is not needed for FCHAD code.
    It is used in the BRLTTY driver.*/{
 // digitalWrite(13,LOW);
- void (*handler)(unsigned int,unsigned char *) = 
+ void (*handler)(unsigned int,unsigned char *) =
   (void (*)(unsigned int, unsigned char*))getHandler(type,subType);
  if(handler)(handler)(length,information);
  free(information);
@@ -81,7 +88,7 @@ void handleFrame(
 //////////////////////////////////////////
 void sendInitializationFrame(unsigned int length,unsigned char * information){
   int i = 0;
-  #define INITIALIZER_LENGTH 52
+  #define INITIALIZER_LENGTH 62
   unsigned int initializerLength=INITIALIZER_LENGTH;
   unsigned char initializer[INITIALIZER_LENGTH]={
     UUID0,
@@ -100,40 +107,78 @@ void sendInitializationFrame(unsigned int length,unsigned char * information){
     UUID13,
     UUID14,
     UUID15,
-    0,                            //These two bytes are the number of standard capabilities
+    /*These two bytes are the number of standard capabilities*/
+    0,
     2,
-  //FCHAD cell
-    0,                            //capabilityID
+/*FCHAD cell*/
+    /*capabilityID*/
+    0,
     3,
-    0,                            //nodeID
-    0,                            //info length
-    7,
-    //Punch force setting, we ignore this for now. So we give it no value.  
-    0,                            //Range
+    /*nodeID*/
     0,
-    0,                            //Default
+    /*NUM PAIRS*/
+    1,
+    /*Pairing type: paired*/
+    1,
+    /*capability to be paired with: FCHAD_SENSORS*/
     0,
-    0,                            //Persistant value
-    0,
-    dotCount,                     //number of dots
-    //FCHAD Sensors
-  //threashhold setting, we ignore this for now. So we give it no value.  
-    0, //capabilityID
     4,
-    0, //nodeID
-    0,//Length
+    /*node to be paired with*/
+    0,
+    /*info length*/
+    0,
+    7,
+/*Punch force setting,
+we ignore this for now.
+So we give it no value.*/
+    /*Range*/
+    0,
+    0,
+    /*Default*/
+    0,
+    0,
+    /*Persistant value*/
+    0,
+    0,
+    /*number of dots*/
+    dotCount,
+/*FCHAD Sensors*/
+    /*capabilityID*/
+    0,
+    4,
+    /*nodeID*/
+    0,
+    /*NUM PAIRS*/
+    1,
+    /*Pairing type: paired*/
+    1,
+    /*capability to be paired with: FCHAD_CELL*/
+    0,
+    3,
+    /*node to be paired with*/
+    0,
+    /*Length*/
+    0,
     10,
-    0,                            //Range
+  /*threashhold setting,
+  we ignore this for now.
+  So we give it no value.*/
+    /*Range*/
     0,
-    0,                            //Default
     0,
-    0,                            //Persistant value
+    /*Default*/
     0,
- 
-    0,                            //Sensor rows
-    1,  
-    0,                            //Sensor columns
-    12,                           //Number of extended capabilities
+    0,
+    /*Persistant value*/
+    0,
+    0,
+    /*Sensor rows*/
+    0,
+    1,
+    /*Sensor columns*/
+    0,
+    12,
+    /*Number of extended capabilities*/
     0,
     0};
   sendFrame(initializerLength,0,1,initializer,NULL);

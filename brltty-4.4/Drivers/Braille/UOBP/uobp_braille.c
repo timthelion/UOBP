@@ -22,10 +22,10 @@
 //////////////////////////////////////////////////
 ///Frame Handlers/////////////////////////////////
 //////////////////////////////////////////////////
-void (*frameHandlers
-      [NUM_FRAME_TYPES]
-      [MAX_NUM_FRAME_SUBTYPES]
-      [MAX_NUM_HANDLERS])(FrameInfo * frameInfo);
+FrameHandler frameHandlers
+              [NUM_FRAME_TYPES]
+              [MAX_NUM_FRAME_SUBTYPES]
+              [MAX_NUM_HANDLERS];
 
 //////////////////////////////////////////////////
 ///Capabilities///////////////////////////////////
@@ -57,7 +57,7 @@ brl_construct (BrailleDisplay *brl,
   brl->textRows    = 1;
   brl->textColumns = 1;
   logMessage(LOG_DEBUG,"Initializing serial.");
-  if(!Serial_init(device,gioEndpoint))return 0;
+  if(!Serial_init(device,&gioEndpoint))return 0;
   logMessage(LOG_DEBUG,"Serial initialized.");
 
   initializeCapabilityInitializersArray(capabilities);
@@ -75,13 +75,14 @@ brl_construct (BrailleDisplay *brl,
 
   logMessage(LOG_DEBUG,"Sending initialization packet.");
   unsigned char information[4];
-  information[0]=0;//Host driver id (brltty=0)
+  /*Host driver id (brltty=0)*/
+  information[0]=0;
   information[1]=0;
-  information[2]=0;//Host driver version.
+  /*Host driver version.*/
+  information[2]=0;
   information[3]=0;
   sendFrame(4,0,0,information,gioEndpoint);
   logMessage(LOG_DEBUG,"Initialization packet sent.");
-
   return 1;
 }
 
@@ -125,7 +126,8 @@ brl_readCommand
    .info = NULL,
    .length = 0,
    .capabilities = capabilities,
-   .capabilityStates = capabilityStates};
+   .capabilityStates = capabilityStates,
+   .frameHandlers = frameHandlers};
   checkForFrameAndReact(
    &handleFrame
    ,START_OF_FRAME

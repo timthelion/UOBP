@@ -69,7 +69,7 @@ void handleFrame(
 //////////////////////////////////////////
 void sendInitializationFrame(unsigned int length,unsigned char * information){
   int i = 0;
-  #define INITIALIZER_LENGTH 52
+  #define INITIALIZER_LENGTH 62
   unsigned int initializerLength=INITIALIZER_LENGTH;
   unsigned char initializer[INITIALIZER_LENGTH]={
     UUID0,

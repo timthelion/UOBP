@@ -21,9 +21,9 @@
 //////////////////////////////////////////////////
 //Serial//////////////////////////////////////////
 //////////////////////////////////////////////////
-int Serial_init(const char *identifier, GioEndpoint * gioEndpoint){
+int Serial_init(const char *identifier, GioEndpoint ** gioEndpoint){
 //COPY PASTE from connectResource() in the Voyager driver...
-    gioEndpoint = NULL;
+    *gioEndpoint = NULL;
     GioDescriptor descriptor;
     gioInitializeDescriptor(&descriptor);
 
@@ -35,7 +35,7 @@ int Serial_init(const char *identifier, GioEndpoint * gioEndpoint){
     descriptor.serial.options.readyDelay = SERIAL_READY_DELAY;
     descriptor.serial.options.inputTimeout = SERIAL_INPUT_TIMEOUT;
 
-    if ((gioEndpoint = gioConnectResource(identifier, &descriptor))) {
+    if ((*gioEndpoint = gioConnectResource(identifier, &descriptor))) {
       return 1;
     }
     return 0;

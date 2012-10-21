@@ -29,7 +29,7 @@
 #define SERIAL_READY_DELAY 400
 #define SERIAL_INPUT_TIMEOUT 100
 #define SERIAL_WAIT_TIMEOUT 200
-int Serial_init(const char *identifier, GioEndpoint * gioEndpoint);
+int Serial_init(const char *identifier, GioEndpoint ** gioEndpoint);
 
 unsigned char Serial_read();
 

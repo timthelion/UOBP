@@ -25,39 +25,38 @@
 #define NUM_FRAME_TYPES 3
 #define MAX_NUM_FRAME_SUBTYPES 3
 
+typedef void (*FrameHandler)(FrameInfo * frameInfo);
+
 /*Information passed to a frame handler or node initializer
  providing the values pertaining to a frame or subframe respectively.*/
 struct FrameInfo{
   BrailleDisplay * brl;
   unsigned char  * info;
   uint16_t length;
-  Capability * capabilities[NUM_CAPABILITIES];
-  CapabilityState * capabilityStates[NUM_CAPABILITIES][MAX_NUM_NODES];
+  Capability * (*capabilities);
+  CapabilityState * (*capabilityStates)
+                     [NUM_CAPABILITIES];
   GioEndpoint * gioEndpoint;
-  void (*frameHandlers
-         [NUM_FRAME_TYPES]
-         [MAX_NUM_FRAME_SUBTYPES]
-         [MAX_NUM_HANDLERS])
-           (FrameInfo * frameInfo);
+  FrameHandler (*frameHandlers)
+                [NUM_FRAME_TYPES]
+                [MAX_NUM_FRAME_SUBTYPES];
 };
 
 /////////////////////////////////////////////////
 ///Frame Handlers////////////////////////////////
 /////////////////////////////////////////////////
-void initializeFrameHandlers(
- void (*frameHandlers[NUM_FRAME_TYPES]
-                     [MAX_NUM_FRAME_SUBTYPES]
-                     [MAX_NUM_HANDLERS])
-  (FrameInfo * frameInfo));
 
-void * getFrameHandler (
- unsigned char frameType
+void initializeFrameHandlers(
+ FrameHandler[NUM_FRAME_TYPES]
+             [MAX_NUM_FRAME_SUBTYPES]
+             [MAX_NUM_HANDLERS]);
+
+FrameHandler * getFrameHandler 
+ (unsigned char frameType
  ,unsigned char frameSubType
- ,void (*frameHandlers
-         [NUM_FRAME_TYPES]
-         [MAX_NUM_FRAME_SUBTYPES]
-         [MAX_NUM_HANDLERS])
-           (FrameInfo * frameInfo));
+ ,FrameHandler[NUM_FRAME_TYPES]
+              [MAX_NUM_FRAME_SUBTYPES]
+              [MAX_NUM_HANDLERS]);
 
 void handleFrame(
  uint16_t length
@@ -68,11 +67,11 @@ void handleFrame(
 //////////////////////////////////////////////////
 ///Event Handling/////////////////////////////////
 //////////////////////////////////////////////////
-void callFrameEventHandler(
- void (*handler[])(FrameInfo * frameInfo),
- FrameInfo * frameInfo);
+void callFrameEventHandler
+ (FrameHandler handler[]
+ ,FrameInfo * frameInfo);
 #define ADD_HANDLER_SUCCESS 0
 #define ADD_HANDLER_FAIL_MAX_NUM_HANDLERS_OVERFLOW 1
-unsigned char addFrameEventHandler(
- void (*handler[])(FrameInfo * frameInfo)
- ,void (*addition)(FrameInfo * frameInfo));
+unsigned char addFrameEventHandler
+ (FrameHandler handler[]
+ ,FrameHandler addition);

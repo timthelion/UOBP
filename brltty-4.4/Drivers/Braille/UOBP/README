@@ -34,7 +34,7 @@ Configure: On Arch-linux:
 Most of the build depends are listed here: http://www.archlinux.org/packages/extra/x86_64/brltty/
 
 $ cd ../../../
-$ ./configure --prefix=/usr \
+$ CFLAGS +=--Wall --Werror ./configure --prefix=/usr \
   --sysconfdir=/etc \
   --mandir=/usr/share/man \
   --localstatedir=/var \
