@@ -41,6 +41,8 @@ void loop();
 #include "sketch.h"
 #include <Wire.h>
 
+unsigned char thresh = 4;
+
 ///////////////////////////////////////////////////
 //Frame Handlers///////////////////////////////////
 ///////////////////////////////////////////////////
@@ -251,7 +253,7 @@ void setup()
   // initialize the the pins as outputs:
   dot_display_init();
   // initialize the touch sensors:
-  setupMPR121(IRQ_PIN);
+  setupMPR121(IRQ_PIN,thresh,thresh);
   initializeFrameHandlers();
   digitalWrite(13,HIGH);
 }

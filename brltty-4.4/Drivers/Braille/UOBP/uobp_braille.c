@@ -54,8 +54,17 @@ brl_construct (BrailleDisplay *brl,
   /*We hand brltty a non zero frame size.
   Draw requests from brltty will be ignored
   untill a capability is initialized.*/
+  /* If I include these lines than buffer stays 1x1 even after I change the size in Capabilities/FCHAD_SENSORS.c
+  despite the fact that it logs:
+  brltty: Braille Display Dimensions: 1 row, 12 columns
+  as if it had been successfull in resizing the display.
+  One theory I have,
+  is that when debugging I'm only getting the welcom message,
+  and the welcome message gets clipped to 1 character when I declare the display as being 1x1.
+  This would mean that the fix would be for BRLTTY to redisplay the last message after resizing the display.
   brl->textRows    = 1;
   brl->textColumns = 1;
+  brl->resizeRequired = 1;*/
   logMessage(LOG_DEBUG,"Initializing serial.");
   if(!Serial_init(device,&gioEndpoint))return 0;
   logMessage(LOG_DEBUG,"Serial initialized.");
@@ -72,6 +81,18 @@ brl_construct (BrailleDisplay *brl,
     capabilityStates[i][j]=NULL;
 
   initializeFrameHandlers(frameHandlers);
+  FrameInfo frameInfo = {
+   .brl=brl,
+   .gioEndpoint = gioEndpoint,
+   .info = NULL,
+   .length = 0,
+   .capabilities = capabilities,
+   .capabilityStates = capabilityStates,
+  .frameHandlers = frameHandlers
+};
+  frameInfo.capabilityStates= capabilityStates;
+  frameInfo.frameHandlers = frameHandlers;
+  initializeCapabilityNodes(&frameInfo);
 
   logMessage(LOG_DEBUG,"Sending initialization packet.");
   unsigned char information[4];

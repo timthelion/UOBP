@@ -30,17 +30,22 @@ void readTouchInputs(
   }
 }
 
-void setupMPR121(unsigned int irqPin){
+void setupMPR121
+ (unsigned int irqPin
+ ,unsigned char touchThresh
+ ,unsigned char relThresh){
   pinMode(irqPin, INPUT);
   digitalWrite(irqPin, HIGH); //enable pullup resistor
   Wire.begin();
-  mpr121_setup();
+  mpr121_setup(touchThresh,relThresh);
 }
 
-void mpr121_setup(void){
+void mpr121_setup
+ (unsigned char touchThresh
+ ,unsigned char relThresh){
 
   set_register(0x5A, ELE_CFG, 0x00); 
-  
+
   // Section A - Controls filtering when data is > baseline.
   set_register(0x5A, MHD_R, 0x01);
   set_register(0x5A, NHD_R, 0x01);
@@ -52,43 +57,43 @@ void mpr121_setup(void){
   set_register(0x5A, NHD_F, 0x01);
   set_register(0x5A, NCL_F, 0xFF);
   set_register(0x5A, FDL_F, 0x02);
-  
+
   // Section C - Sets touch and release thresholds for each electrode
-  set_register(0x5A, ELE0_T, TOU_THRESH);
-  set_register(0x5A, ELE0_R, REL_THRESH);
- 
-  set_register(0x5A, ELE1_T, TOU_THRESH);
-  set_register(0x5A, ELE1_R, REL_THRESH);
+  set_register(0x5A, ELE0_T, touchThresh);
+  set_register(0x5A, ELE0_R, relThresh);
+
+  set_register(0x5A, ELE1_T, touchThresh);
+  set_register(0x5A, ELE1_R, relThresh);
+
+  set_register(0x5A, ELE2_T, touchThresh);
+  set_register(0x5A, ELE2_R, relThresh);
+
+  set_register(0x5A, ELE3_T, touchThresh);
+  set_register(0x5A, ELE3_R, relThresh);
+
+  set_register(0x5A, ELE4_T, touchThresh);
+  set_register(0x5A, ELE4_R, relThresh);
+
+  set_register(0x5A, ELE5_T, touchThresh);
+  set_register(0x5A, ELE5_R, relThresh);
+
+  set_register(0x5A, ELE6_T, touchThresh);
+  set_register(0x5A, ELE6_R, relThresh);
+
+  set_register(0x5A, ELE7_T, touchThresh);
+  set_register(0x5A, ELE7_R, relThresh);
+
+  set_register(0x5A, ELE8_T, touchThresh);
+  set_register(0x5A, ELE8_R, relThresh);
   
-  set_register(0x5A, ELE2_T, TOU_THRESH);
-  set_register(0x5A, ELE2_R, REL_THRESH);
+  set_register(0x5A, ELE9_T, touchThresh);
+  set_register(0x5A, ELE9_R, relThresh);
   
-  set_register(0x5A, ELE3_T, TOU_THRESH);
-  set_register(0x5A, ELE3_R, REL_THRESH);
+  set_register(0x5A, ELE10_T, touchThresh);
+  set_register(0x5A, ELE10_R, relThresh);
   
-  set_register(0x5A, ELE4_T, TOU_THRESH);
-  set_register(0x5A, ELE4_R, REL_THRESH);
-  
-  set_register(0x5A, ELE5_T, TOU_THRESH);
-  set_register(0x5A, ELE5_R, REL_THRESH);
-  
-  set_register(0x5A, ELE6_T, TOU_THRESH);
-  set_register(0x5A, ELE6_R, REL_THRESH);
-  
-  set_register(0x5A, ELE7_T, TOU_THRESH);
-  set_register(0x5A, ELE7_R, REL_THRESH);
-  
-  set_register(0x5A, ELE8_T, TOU_THRESH);
-  set_register(0x5A, ELE8_R, REL_THRESH);
-  
-  set_register(0x5A, ELE9_T, TOU_THRESH);
-  set_register(0x5A, ELE9_R, REL_THRESH);
-  
-  set_register(0x5A, ELE10_T, TOU_THRESH);
-  set_register(0x5A, ELE10_R, REL_THRESH);
-  
-  set_register(0x5A, ELE11_T, TOU_THRESH);
-  set_register(0x5A, ELE11_R, REL_THRESH);
+  set_register(0x5A, ELE11_T, touchThresh);
+  set_register(0x5A, ELE11_R, relThresh);
   
   // Section D
   // Set the Filter Configuration

@@ -22,8 +22,8 @@
 #endif
 
 #define MAX_NUM_HANDLERS 5
-#define NUM_FRAME_TYPES 3
-#define MAX_NUM_FRAME_SUBTYPES 3
+#define NUM_FRAME_TYPES 5
+#define MAX_NUM_FRAME_SUBTYPES 5
 
 typedef void (*FrameHandler)(FrameInfo * frameInfo);
 
@@ -35,11 +35,11 @@ struct FrameInfo{
   uint16_t length;
   Capability * (*capabilities);
   CapabilityState * (*capabilityStates)
-                     [NUM_CAPABILITIES];
+                     [MAX_NUM_NODES];
   GioEndpoint * gioEndpoint;
   FrameHandler (*frameHandlers)
-                [NUM_FRAME_TYPES]
-                [MAX_NUM_FRAME_SUBTYPES];
+                [MAX_NUM_FRAME_SUBTYPES]
+                [MAX_NUM_HANDLERS];
 };
 
 /////////////////////////////////////////////////

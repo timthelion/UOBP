@@ -151,7 +151,7 @@ unsigned char preformInitializeCapabilityNodes
 
      setting++;
    }
-   /*If there is space left in our buffer that could hold the node information.*/
+   /*If the buffer is long enough that it could contain the node information.*/
    if(i+(capabilityNodeInfoLength-capabilities[capabilityID]->numSettings*6)<length){
    /*We initialize the state.*/
     if(capabilityID<NUM_CAPABILITIES

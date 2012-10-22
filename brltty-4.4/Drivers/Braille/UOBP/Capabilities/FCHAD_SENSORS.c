@@ -35,7 +35,11 @@ void * initFCHADSensorsState(FrameInfo frameInfo){
   thisState->cols +=
     (uint16_t)information[3];
   thisState->sensors =
-    malloc(thisState->rows*thisState->cols);
+    (unsigned char *)malloc(thisState->rows*thisState->cols*sizeof(unsigned char));
+  int i,j;
+  for(i=0;i<thisState->rows;i++)
+   for(j=0;j<thisState->cols;j++)
+    thisState->sensors[i*thisState->rows+j]=0;
   /* Despite the fact that the UOBP standard supports multiple nodes of a single capability,
   BRLTTY doesn't really support having multiple braille buffers.
   It is not meaningfull to add such support at this time.
@@ -97,13 +101,13 @@ void reactToSensorAction(FrameInfo * frameInfo,
   if(row < myState->rows
            &&
      col < myState->cols){
-   logMessage(LOG_INFO,"Sensor action %d cols %d",action,myState->cols);
-   myState->sensors[row][col]=action;
+   logMessage(LOG_INFO,"Sensor action %d row %d col %d of cols %d",action,row,col,myState->cols);
+   myState->sensors[row*myState->rows+col]=action;
    updateFCHADFromSensorValues
     (thisCapabilityNode
     ,node
     ,frameInfo);
-  }
+  }else logMessage(LOG_ERR,"Sensor action %d outside buffer row %d col %d of cols %d",action,row,col,myState->cols);
 }
 
 void updateFCHADFromSensorValues
@@ -141,17 +145,17 @@ void updateFCHADFromSensorValues
    if(pairState->cellHandedness==RIGHT_HANDED){
     for(i=0;i<myState->rows&&!found;i++)
      for(j=0;j<myState->cols&&!found;j++)
-       if(myState->sensors[i][j])found=1;
+       if(myState->sensors[i*myState->rows+j])found=1;
     j--;i--;
    }else{/*LEFT_HANDED*/
     for(i=0;i<myState->rows&&!found;i++)
      for(j=myState->cols;j>-1&&!found;j--)
-       if(myState->sensors[i][j])found=1;
+       if(myState->sensors[i*myState->rows+j])found=1;
     j++;i--;
    }
    unsigned char charToDisplay=0;
    if(found){
-     charToDisplay=frameInfo->brl->buffer[i*j];
+     charToDisplay=frameInfo->brl->buffer[i*myState->rows+j];
    }
    unsigned char information[3];
    information[0]=pair;
@@ -163,7 +167,7 @@ void updateFCHADFromSensorValues
    information[2]=0;
    sendFrame(3,1,1,information,frameInfo->gioEndpoint);
    #ifdef LOG_EVERYTHING
-   logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%c\n",
+   logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%d\n",
           charToDisplay);
    #endif
   }

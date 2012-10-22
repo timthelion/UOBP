@@ -53,10 +53,10 @@ FrameHandler * getFrameHandler
                 [MAX_NUM_FRAME_SUBTYPES]
                 [MAX_NUM_HANDLERS]){
  if(frameType >= NUM_FRAME_TYPES){
-  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d. frameType out of max range.",frameType, frameSubType);
   return NULL;}
  if(frameSubType >= MAX_NUM_FRAME_SUBTYPES) {
-  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d. frameSubType out of max range.",frameType, frameSubType);
   return NULL;}
  if(frameHandlers
          [frameType]
@@ -66,7 +66,7 @@ FrameHandler * getFrameHandler
          [frameType]
          [frameSubType];
  }else{
-  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d.",frameType, frameSubType);
+  logMessage(LOG_WARNING,"Unrecognized frame type %d subType %d. Frame type handler undeclared.",frameType, frameSubType);
   return NULL;
  }
 }
@@ -80,21 +80,22 @@ void handleFrame
  /*I have no idea if this is a sane way to cast this.*/
  FrameInfo * frameInfo =
   (FrameInfo*)uncastedFrameInfo;
-
+ frameInfo->info=information;
+ frameInfo->length=length;
  FrameHandler * handler
    = getFrameHandler
       (type
       ,subType
       ,frameInfo->frameHandlers);
- frameInfo->info=information;
- frameInfo->length=length;
- logMessage
-  (LOG_DEBUG
-  ,"Calling frame handler. type:%d,subType:%d First byte of information is %d"
-  ,type
-  ,subType
-  ,frameInfo->info[0]);
- callFrameEventHandler(handler,frameInfo);
+ if(handler){
+  logMessage
+   (LOG_DEBUG
+   ,"Calling frame handler. type:%d,subType:%d First byte of information is %d"
+   ,type
+   ,subType
+   ,frameInfo->info[0]);
+  callFrameEventHandler(handler,frameInfo);
+ }
 }
 
 /////////////////////////////////////////////////

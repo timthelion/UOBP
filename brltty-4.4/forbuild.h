@@ -49,7 +49,7 @@ extern "C" {
 #define HAVE_ATTRIBUTE_PACKED 1
 
 /* Define this if the unused attribute is supported. */
-/* #undef HAVE_ATTRIBUTE_UNUSED */
+#define HAVE_ATTRIBUTE_UNUSED 1
 
 /* Define this if the header file alloca.h exists. */
 #define HAVE_ALLOCA_H 1
@@ -148,7 +148,7 @@ extern "C" {
 #define HAVE_LINUX_UINPUT_H 1
 
 /* Define this if the function mempcpy exists. */
-/* #undef HAVE_MEMPCPY */
+#define HAVE_MEMPCPY 1
 
 /* Define this if the function wmempcpy exists. */
 #define HAVE_WMEMPCPY 1
