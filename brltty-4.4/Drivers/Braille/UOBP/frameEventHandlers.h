@@ -33,6 +33,7 @@ struct FrameInfo{
   BrailleDisplay * brl;
   unsigned char  * info;
   uint16_t length;
+  wchar_t * text;
   Capability * (*capabilities);
   CapabilityState * (*capabilityStates)
                      [MAX_NUM_NODES];

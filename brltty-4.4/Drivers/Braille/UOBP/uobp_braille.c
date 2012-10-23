@@ -45,15 +45,17 @@ CapabilityState * capabilityStates
 static GioEndpoint *gioEndpoint;
 
 //////////////////////////////////////////////////
+//Text cells//////////////////////////////////////
+//////////////////////////////////////////////////
+wchar_t * textCells=NULL;
+
+//////////////////////////////////////////////////
 //BRLTTY FUNCTIONS////////////////////////////////
 //////////////////////////////////////////////////
 static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,
                const char *device){
-  /*We hand brltty a non zero frame size.
-  Draw requests from brltty will be ignored
-  untill a capability is initialized.*/
   /* If I include these lines than buffer stays 1x1 even after I change the size in Capabilities/FCHAD_SENSORS.c
   despite the fact that it logs:
   brltty: Braille Display Dimensions: 1 row, 12 columns
@@ -62,6 +64,10 @@ brl_construct (BrailleDisplay *brl,
   is that when debugging I'm only getting the welcom message,
   and the welcome message gets clipped to 1 character when I declare the display as being 1x1.
   This would mean that the fix would be for BRLTTY to redisplay the last message after resizing the display.
+  We hand brltty a non zero frame size.
+  Draw requests from brltty will be ignored
+  untill a capability is initialized./
+
   brl->textRows    = 1;
   brl->textColumns = 1;
   brl->resizeRequired = 1;*/
@@ -115,6 +121,8 @@ static int
 brl_writeWindow (BrailleDisplay *brl,
                  const wchar_t *text) {
    //callHandler(onCellsChanged,NULL);
+ free(textCells);
+ textCells=strdup(text);
  return 1;
 }
 
@@ -146,6 +154,7 @@ brl_readCommand
    .gioEndpoint = gioEndpoint,
    .info = NULL,
    .length = 0,
+   .text = textCells,
    .capabilities = capabilities,
    .capabilityStates = capabilityStates,
    .frameHandlers = frameHandlers};

@@ -101,7 +101,6 @@ void reactToSensorAction(FrameInfo * frameInfo,
   if(row < myState->rows
            &&
      col < myState->cols){
-   logMessage(LOG_INFO,"Sensor action %d row %d col %d of cols %d",action,row,col,myState->cols);
    myState->sensors[row*myState->rows+col]=action;
    updateFCHADFromSensorValues
     (thisCapabilityNode
@@ -154,8 +153,17 @@ void updateFCHADFromSensorValues
     j++;i--;
    }
    unsigned char charToDisplay=0;
+   #ifdef LOG_EVERYTHING
+   wchar_t charVisual = L' ';
+   #endif
    if(found){
      charToDisplay=frameInfo->brl->buffer[i*myState->rows+j];
+     #ifdef LOG_EVERYTHING
+     if(frameInfo->text)
+      charVisual=frameInfo->text[i*myState->rows+j];
+     else
+      logMessage(LOG_WARNING,"Text buffer not initialized.");
+     #endif
    }
    unsigned char information[3];
    information[0]=pair;
@@ -167,8 +175,13 @@ void updateFCHADFromSensorValues
    information[2]=0;
    sendFrame(3,1,1,information,frameInfo->gioEndpoint);
    #ifdef LOG_EVERYTHING
-   logMessage(LOG_INFO,"#EVENT_LOG# displaying char:%d\n",
-          charToDisplay);
+   char * message;
+   asprintf
+    (&message
+    ,"CHAR %lc"
+    ,charVisual);
+   logMessageDateTime(message);
+   free(message);
    #endif
   }
  }
@@ -179,11 +192,11 @@ void updateFCHADFromSensorValues
 //////////////////////////////////////////////////
 #ifdef LOG_EVERYTHING
 void logSensorDown(FrameInfo * frameInfo){
-  logSensorAction(frameInfo,SENSOR_DOWN);
+ logSensorAction(frameInfo,SENSOR_DOWN);
 }
 
 void logSensorUp(FrameInfo * frameInfo){
-  logSensorAction(frameInfo,SENSOR_UP);
+ logSensorAction(frameInfo,SENSOR_UP);
 }
 
 void logSensorAction(FrameInfo * frameInfo,
@@ -197,11 +210,39 @@ void logSensorAction(FrameInfo * frameInfo,
     (uint16_t)information[3]<<8;
   col +=
     (uint16_t)information[4];
-  //TODO log time as well!
-  logMessage(LOG_INFO,"#EVENT_LOG# Sensor at row:%d col:%d ",row,col);
+
+  char * actionText;
+
   if(action==SENSOR_DOWN)
-   logMessage(LOG_INFO,"DOWN");
+   actionText ="DOWN";
   if(action==SENSOR_UP)
-   logMessage(LOG_INFO,"UP");
+   actionText ="UP";
+  char * message;
+  asprintf
+    (&message
+    ,"%s %d"
+    ,actionText
+    ,col);
+  logMessageDateTime(message);
+  free(message);
+}
+
+void logMessageDateTime(char * message){
+ struct tm *current;
+ time_t now;
+ time(&now);
+ current = localtime(&now);
+ struct timeb tp;
+ ftime(&tp);
+
+ logMessage
+   (LOG_ERR
+   ,"#EVENT_LOG# %d%d%d %d.%d %s"
+   ,current->tm_year+1900/*Sigh*/
+   ,current->tm_mon+1/*Not even worth a sigh*/
+   ,current->tm_mday
+   ,tp.time
+   ,tp.millitm
+   ,message);
 }
 #endif

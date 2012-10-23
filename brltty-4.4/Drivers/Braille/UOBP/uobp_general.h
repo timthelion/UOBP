@@ -25,6 +25,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*Remove this line in production code.*/
+#define LOG_EVERYTHING 1
+
 #define BRLTTY
 #include "types.h"
 #include "level2.h"
