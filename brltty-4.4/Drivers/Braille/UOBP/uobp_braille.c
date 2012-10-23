@@ -122,7 +122,7 @@ brl_writeWindow (BrailleDisplay *brl,
                  const wchar_t *text) {
    //callHandler(onCellsChanged,NULL);
  free(textCells);
- textCells=strdup(text);
+ textCells=wcsdup(text);
  return 1;
 }
 
