@@ -54,12 +54,5 @@ void updateFCHADFromSensorValues
 ///Sensor logging/////////////////////////////////
 //////////////////////////////////////////////////
 #ifdef LOG_EVERYTHING
-void logSensorDown(FrameInfo * frameInfo);
-
-void logSensorUp(FrameInfo * frameInfo);
-
-void logSensorAction(FrameInfo * frameInfo,
-                     unsigned char action);
-
 void logMessageDateTime(char * message);
 #endif

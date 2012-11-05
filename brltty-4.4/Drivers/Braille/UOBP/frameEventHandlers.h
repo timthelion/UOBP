@@ -34,9 +34,11 @@ struct FrameInfo{
   unsigned char  * info;
   uint16_t length;
   wchar_t * text;
+  unsigned char * brailleBuffer;
   Capability * (*capabilities);
   CapabilityState * (*capabilityStates)
                      [MAX_NUM_NODES];
+  unsigned char * initializationStatus;
   GioEndpoint * gioEndpoint;
   FrameHandler (*frameHandlers)
                 [MAX_NUM_FRAME_SUBTYPES]

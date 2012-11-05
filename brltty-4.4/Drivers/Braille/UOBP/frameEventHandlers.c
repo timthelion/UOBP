@@ -37,12 +37,6 @@ void initializeFrameHandlers(
  addFrameEventHandler(frameHandlers[0][1],&initializeCapabilityNodes);
  addFrameEventHandler(frameHandlers[2][3],&reactToSensorDown);
  addFrameEventHandler(frameHandlers[2][4],&reactToSensorUp);
- #ifdef LOG_EVERYTHING
- /* This is for research purposes,
- to log how users use the device.*/
- addFrameEventHandler(frameHandlers[2][3],&logSensorDown);
- addFrameEventHandler(frameHandlers[2][4],&logSensorUp);
- #endif
 }
 
 FrameHandler * getFrameHandler

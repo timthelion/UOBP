@@ -49,13 +49,20 @@ void * initFCHADSensorsState(FrameInfo frameInfo){
   Here we just use the largest node as the "primary" node
   and let the nodes with smaller number of sensors be subsets of the "primary".*/
   if(thisState->rows>brl->textRows){
-   brl->textRows    =thisState->rows;
+   brl->textRows = thisState->rows;
    brl->resizeRequired  = 1;
   }
   if(thisState->cols>brl->textColumns){
-   brl->textColumns =thisState->cols;
+   brl->textColumns = thisState->cols;
    brl->resizeRequired  = 1;
   }
+  logMessage
+   (LOG_DEBUG
+   ,"Size of new node %dx%d"
+   ,brl->textRows
+   ,brl->textColumns);
+   //,thisState->rows
+   //,thisState->cols);
   thisState->prevRow=0;
   thisState->prevCol=0;
   return thisState;
@@ -123,12 +130,12 @@ void updateFCHADFromSensorValues
   If nothing is being touched,
   than we send a signal telling the device to switch it's FCHAD Cell off.*/
 
- if(thisCapabilityNode){
+ if(thisCapabilityNode && frameInfo->brailleBuffer){
   FCHADSensorsState * myState =
     (FCHADSensorsState*)thisCapabilityNode->state;
   uint16_t i,j;
-  unsigned char found=0;
   j=0;/*Due to a warning...*/
+  unsigned char found=0;
   /*For each FCHAD_CELL node that is paired with this array of sensors,
   display the proper character to that node.*/
   #define FCHAD_CELL_CAPABILITY_ID 3
@@ -157,7 +164,7 @@ void updateFCHADFromSensorValues
    wchar_t charVisual = L' ';
    #endif
    if(found){
-     charToDisplay=frameInfo->brl->buffer[i*myState->rows+j];
+     charToDisplay=frameInfo->brailleBuffer[i*myState->rows+j];
      #ifdef LOG_EVERYTHING
      if(frameInfo->text)
       charVisual=frameInfo->text[i*myState->rows+j];
@@ -178,7 +185,20 @@ void updateFCHADFromSensorValues
    char * message;
    asprintf
     (&message
-    ,"CHAR %lc"
+    ,"%d %d %d %d %d %d %d %d %d %d %d %d %d '%lc'"
+    ,myState->sensors[ 0]
+    ,myState->sensors[ 1]
+    ,myState->sensors[ 2]
+    ,myState->sensors[ 3]
+    ,myState->sensors[ 4]
+    ,myState->sensors[ 5]
+    ,myState->sensors[ 6]
+    ,myState->sensors[ 7]
+    ,myState->sensors[ 8]
+    ,myState->sensors[ 9]
+    ,myState->sensors[10]
+    ,myState->sensors[11]
+    ,j
     ,charVisual);
    logMessageDateTime(message);
    free(message);
@@ -191,42 +211,6 @@ void updateFCHADFromSensorValues
 ///Sensor logging/////////////////////////////////
 //////////////////////////////////////////////////
 #ifdef LOG_EVERYTHING
-void logSensorDown(FrameInfo * frameInfo){
- logSensorAction(frameInfo,SENSOR_DOWN);
-}
-
-void logSensorUp(FrameInfo * frameInfo){
- logSensorAction(frameInfo,SENSOR_UP);
-}
-
-void logSensorAction(FrameInfo * frameInfo,
-                     unsigned char action){
-  unsigned char * information = frameInfo->info;
-  uint16_t row =
-    (uint16_t)information[1]<<8;
-  row +=
-    (uint16_t)information[2];
-  uint16_t col =
-    (uint16_t)information[3]<<8;
-  col +=
-    (uint16_t)information[4];
-
-  char * actionText;
-
-  if(action==SENSOR_DOWN)
-   actionText ="DOWN";
-  if(action==SENSOR_UP)
-   actionText ="UP";
-  char * message;
-  asprintf
-    (&message
-    ,"%s %d"
-    ,actionText
-    ,col);
-  logMessageDateTime(message);
-  free(message);
-}
-
 void logMessageDateTime(char * message){
  struct tm *current;
  time_t now;

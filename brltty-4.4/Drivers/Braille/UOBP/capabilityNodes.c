@@ -182,6 +182,8 @@ unsigned char preformInitializeCapabilityNodes
   }
   //Extended capabilities are not yet supported, end of buffer is safely ignored.
   logMessage(LOG_INFO,"Device initialized.");
+  if(frameInfo->initializationStatus)
+   *frameInfo->initializationStatus=1;
   return 1;
 }
 
