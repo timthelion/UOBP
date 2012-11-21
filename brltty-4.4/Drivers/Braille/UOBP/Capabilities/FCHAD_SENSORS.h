@@ -28,7 +28,7 @@
 ///FCHAD Sensors//////////////////////////////////
 //////////////////////////////////////////////////
 typedef struct{
-  uint16_t rows,cols,prevRow,prevCol;
+  uint16_t rows,cols;
   unsigned char * sensors; //Boollean values, 1 for down(sensor currently being pressed), 0 for up.
 } FCHADSensorsState;
 

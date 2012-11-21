@@ -47,14 +47,14 @@ static GioEndpoint *gioEndpoint;
 //////////////////////////////////////////////////
 //Text cells//////////////////////////////////////
 //////////////////////////////////////////////////
-wchar_t * textCells=NULL;
+wchar_t * textCells = NULL;
 
 //////////////////////////////////////////////////
 //Braille cells///////////////////////////////////
 //////////////////////////////////////////////////
-unsigned char * thisBrailleBuffer=NULL;
-unsigned int currentBrailleRows=0;
-unsigned int currentBrailleColumns=0;
+unsigned char * thisBrailleBuffer     = NULL;
+unsigned int    actualRows            = 1;
+unsigned int    actualColumns         = 12;
 
 //////////////////////////////////////////////////
 //BRLTTY FUNCTIONS////////////////////////////////
@@ -63,20 +63,8 @@ static int
 brl_construct (BrailleDisplay *brl,
                char **parameters,
                const char *device){
-  /* If I include these lines than buffer stays 1x1 even after I change the size in Capabilities/FCHAD_SENSORS.c
-  despite the fact that it logs:
-  brltty: Braille Display Dimensions: 1 row, 12 columns
-  as if it had been successfull in resizing the display.
-  One theory I have,
-  is that when debugging I'm only getting the welcom message,
-  and the welcome message gets clipped to 1 character when I declare the display as being 1x1.
-  This would mean that the fix would be for BRLTTY to redisplay the last message after resizing the display.
-  We hand brltty a non zero frame size.
-  Draw requests from brltty will be ignored
-  untill a capability is initialized.*/
-
-  brl->textRows    = 0;
-  brl->textColumns = 0;
+  logMessage(LOG_DEBUG,"Setting buffer size");
+  resizeBrailleBuffer(brl);
   logMessage(LOG_DEBUG,"Initializing serial.");
   if(!Serial_init(device,&gioEndpoint))return 0;
   logMessage(LOG_DEBUG,"Serial initialized.");
@@ -115,11 +103,6 @@ brl_construct (BrailleDisplay *brl,
   information[3]=0;
   sendFrame(4,0,0,information,gioEndpoint);
   logMessage(LOG_DEBUG,"Initialization packet sent.");
-  unsigned char initializationStatus=0;
-  while(!initializationStatus){
-   logMessage(LOG_DEBUG,"Waiting for initialization frame.");
-   checkForFrameAndReactBrltty(brl,&initializationStatus);
-  }
   return 1;
 }
 
@@ -135,36 +118,34 @@ brl_writeWindow (BrailleDisplay *brl,
  free(textCells);
  textCells=wcsdup(text);
 
- if(  currentBrailleRows    != brl->textRows
-   || currentBrailleColumns != brl->textColumns
+ if(cellsHaveChanged
+      (thisBrailleBuffer
+      ,brl->buffer
+      ,brl->textRows*brl->textColumns
+      ,NULL
+      ,NULL
+      ,NULL));
+   //callHandler(onCellsChanged,NULL);
+ return 1;
+}
+
+void resizeBrailleBuffer
+ (BrailleDisplay *brl){
+ if(  actualRows    != brl->textRows
+   || actualColumns != brl->textColumns
    || !thisBrailleBuffer){
-  logMessage
+  /*logMessage
    (LOG_DEBUG
    ,"Resizing window from %dx%d to %dx%d"
    ,currentBrailleRows
    ,currentBrailleColumns
    ,brl->textRows
-   ,brl->textColumns);
-  free(thisBrailleBuffer);
-  thisBrailleBuffer=
-   (unsigned char *)malloc(
-    sizeof(unsigned char)
-    *brl->textRows
-    *brl->textColumns);
-  currentBrailleRows = brl->textRows;
-  currentBrailleColumns = brl->textColumns;
+   ,brl->textColumns);*/
+  free(thisBrailleBuffer); brl->textRows = actualRows;
+  brl->textColumns = actualColumns; brl->resizeRequired = 1;
+  thisBrailleBuffer= (unsigned char *)malloc( sizeof(unsigned
+  char) *brl->textRows *brl->textColumns);
  }
- //int * from,to;
- cellsHaveChanged
-  (thisBrailleBuffer
-  ,brl->buffer
-  ,brl->textRows*brl->textColumns
-  ,NULL
-  ,NULL
-  ,NULL);
-
- //callHandler(onCellsChanged,NULL);
- return 1;
 }
 
 #ifdef BRL_HAVE_KEY_CODES
@@ -186,7 +167,7 @@ brl_keyToCommand (BrailleDisplay *brl,
 checkForFrameAndReactBrltty
  (BrailleDisplay * brl
  ,unsigned char  * initializationStatus){
-  FrameInfo frameInfo = {
+ FrameInfo frameInfo = {
    .brl=brl,
    .gioEndpoint = gioEndpoint,
    .info = NULL,
@@ -195,13 +176,13 @@ checkForFrameAndReactBrltty
    .brailleBuffer = thisBrailleBuffer,
    .capabilities = capabilities,
    .capabilityStates = capabilityStates,
-   .initializationStatus = initializationStatus,
    .frameHandlers = frameHandlers};
-  checkForFrameAndReact(
+ checkForFrameAndReact(
    &handleFrame
    ,START_OF_FRAME
    ,gioEndpoint
    ,(void*)&frameInfo);
+// resizeBrailleBuffer(brl);
 }
 
 static int

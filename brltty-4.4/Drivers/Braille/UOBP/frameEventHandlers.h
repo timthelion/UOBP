@@ -38,7 +38,8 @@ struct FrameInfo{
   Capability * (*capabilities);
   CapabilityState * (*capabilityStates)
                      [MAX_NUM_NODES];
-  unsigned char * initializationStatus;
+  uint16_t * actualRows;
+  uint16_t * actualColumns;
   GioEndpoint * gioEndpoint;
   FrameHandler (*frameHandlers)
                 [MAX_NUM_FRAME_SUBTYPES]

@@ -8,7 +8,6 @@
  * BRLTTY and the FCHAD software comes with ABSOLUTELY NO WARRANTY.
  *
  * This is free software, placed under the terms of the
- * GNU General Public License, as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option) any
  * later version. Please see the file LICENSE-GPL for details.
  *
@@ -48,14 +47,10 @@ void * initFCHADSensorsState(FrameInfo frameInfo){
   is far away in the future.
   Here we just use the largest node as the "primary" node
   and let the nodes with smaller number of sensors be subsets of the "primary".*/
-  if(thisState->rows>brl->textRows){
-   brl->textRows = thisState->rows;
-   brl->resizeRequired  = 1;
-  }
-  if(thisState->cols>brl->textColumns){
-   brl->textColumns = thisState->cols;
-   brl->resizeRequired  = 1;
-  }
+  if(thisState->rows > *frameInfo.actualRows)
+   *frameInfo.actualRows = thisState->rows;
+  if(thisState->cols > *frameInfo.actualColumns)
+   *frameInfo.actualColumns = thisState->cols;
   logMessage
    (LOG_DEBUG
    ,"Size of new node %dx%d"
@@ -63,8 +58,6 @@ void * initFCHADSensorsState(FrameInfo frameInfo){
    ,brl->textColumns);
    //,thisState->rows
    //,thisState->cols);
-  thisState->prevRow=0;
-  thisState->prevCol=0;
   return thisState;
 }
 
