@@ -20,9 +20,6 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>
  */
 #include "sketch.h"
-#include <Wire.h>
-
-unsigned char thresh = 4;
 
 ///////////////////////////////////////////////////
 //Frame Handlers///////////////////////////////////
@@ -72,8 +69,9 @@ void sendInitializationFrame(unsigned int length,unsigned char * information){
   #ifdef RUNTESTS
   testSolenoids();
   #endif
+  Serial.begin(9600);
   int i = 0;
-  #define INITIALIZER_LENGTH 62
+  #define INITIALIZER_LENGTH 74
   unsigned int initializerLength=INITIALIZER_LENGTH;
   unsigned char initializer[INITIALIZER_LENGTH]={
     UUID0,
@@ -112,10 +110,21 @@ void sendInitializationFrame(unsigned int length,unsigned char * information){
     0,
     /*info length*/
     0,
-    7,
+    13,
 /*Punch force setting,
 we ignore this for now.
 So we give it no value.*/
+    /*Range*/
+    0,
+    0,
+    /*Default*/
+    0,
+    0,
+    /*Persistant value*/
+    0,
+    0,
+/*MIN_DISPLAY_TIME setting,
+we set this to 50ms*/
     /*Range*/
     0,
     0,
@@ -144,10 +153,21 @@ So we give it no value.*/
     0,
     /*Length*/
     0,
-    10,
+    16,
   /*threashhold setting,
   we ignore this for now.
   So we give it no value.*/
+    /*Range*/
+    0,
+    0,
+    /*Default*/
+    0,
+    0,
+    /*Persistant value*/
+    0,
+    0,
+  /*portamento setting,
+  Turned on by default.*/
     /*Range*/
     0,
     0,
@@ -162,7 +182,7 @@ So we give it no value.*/
     1,
     /*Sensor columns*/
     0,
-    12,
+    NUM_SENSORS,
     /*Number of extended capabilities*/
     0,
     0};
@@ -189,6 +209,7 @@ void displayChar(uint16_t length, unsigned char * information)
 }
 
 void displayAChar(uint16_t character){
+ #ifdef DISPLAY
  for(uint16_t n = 0;n<dotCount;n++){
   if((1 << n) & character){
     digitalWrite(dotPins[n],HIGH);
@@ -196,6 +217,7 @@ void displayAChar(uint16_t character){
    digitalWrite(dotPins[n],LOW);
   }
  }
+ #endif
 }
 
 void testSolenoids(){
@@ -240,18 +262,19 @@ void sendOnUp(unsigned char sensor){
 //////////////////////////////////////////////
 ////Standard initializers/////////////////////
 //////////////////////////////////////////////
+TouchSensors*touchSensors;
 void setup()
 {
   // initialize the serial communication:
-  Serial.begin(9600);
+  Serial.begin(SERIAL_BAUD);
   // initialize the the pins as outputs:
   dot_display_init();
   // initialize the touch sensors:
-  setupMPR121(IRQ_PIN,thresh,thresh);
+  touchSensors=setupTouch();
   initializeFrameHandlers();
 }
 
 void loop() {
- readTouchInputs(&sendOnDown,&sendOnUp,IRQ_PIN);
+ readTouchInputs(&sendOnDown,&sendOnUp,touchSensors);
  checkForFrameAndReact(&handleFrame,START_OF_FRAME,NULL,NULL);
 }

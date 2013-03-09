@@ -62,13 +62,15 @@ void initializeCapabilityInitializersArray(
   capabilities[3]=(Capability *)malloc(sizeof(Capability));
   capabilities[3]->name        = "FCHAD_CELL";
   capabilities[3]->initializer = &initFCHADCellState;
-  capabilities[3]->numSettings = 1;
+  capabilities[3]->numSettings = 2;
   capabilities[3]->settings[0] = "PUNCH_FORCE";
+  capabilities[3]->settings[1] = "MIN_DISPLAY_TIME";
 
   capabilities[4]=(Capability *)malloc(sizeof(Capability));
   capabilities[4]->name        = "FCHAD_SENSORS";
   capabilities[4]->initializer = &initFCHADSensorsState;
   capabilities[4]->freeer      = (void *)&freeFCHADSensorsState;
-  capabilities[4]->numSettings = 1;
+  capabilities[4]->numSettings = 2;
   capabilities[4]->settings[0] = "THREASHHOLD";
+  capabilities[4]->settings[1] = "PORTAMENTO";
 }

@@ -191,7 +191,7 @@ extern "C" {
 #define SIZEOF_KEY_T 4
 
 /* Define this if the function shm_open exists. */
-#define HAVE_SHM_OPEN 1
+/* #undef HAVE_SHM_OPEN */
 
 /* Define this if the function pause exists. */
 #define HAVE_PAUSE 1

@@ -59,7 +59,7 @@ EXECUTE_ROOT_FOR_BUILD =
 
 CC_FOR_BUILD = gcc
 CPPFLAGS_FOR_BUILD = -I$(BLD_DIR) -I$(SRC_DIR) -I$(BLD_TOP:/=)/$(PGM_DIR_FOR_BUILD) -I$(SRC_TOP:/=)/$(PGM_DIR_FOR_BUILD) -I$(BLD_TOP:/=) -I$(SRC_TOP:/=)   -D_POSIX_C_SOURCE=2 -D_BSD_SOURCE -D_XOPEN_SOURCE=500 -D_XOPEN_SOURCE_EXTENDED -D_GNU_SOURCE -DHAVE_CONFIG_H
-CFLAGS_FOR_BUILD = $(CPPFLAGS_FOR_BUILD) -Wall -std=gnu99 -Wall
+CFLAGS_FOR_BUILD = $(CPPFLAGS_FOR_BUILD) -g -O2 -std=gnu99 -Wall
 LIBCFLAGS_FOR_BUILD = $(CFLAGS_FOR_BUILD) -fPIC
 
 CXX_FOR_BUILD = gcc
@@ -68,7 +68,7 @@ LIBCXXFLAGS_FOR_BUILD = $(CXXFLAGS_FOR_BUILD) -fPIC
 
 LD_FOR_BUILD = ld
 LDFLAGS_FOR_BUILD =  -Wl,-export-dynamic
-LDLIBS_FOR_BUILD = -ldl -lgpm -lrt -lpthread -lsupc++ 
+LDLIBS_FOR_BUILD = -ldl -lgpm -lpthread -lsupc++ 
 CLIBS_FOR_BUILD = -lncurses 
 
 MKOBJ_FOR_BUILD = $(LD_FOR_BUILD) -r -o
@@ -81,10 +81,10 @@ AWK_FOR_BUILD = gawk
 SYMLINK_FOR_BUILD = ln -s
 DOXYGEN_FOR_BUILD = 
 
-X_CFLAGS_FOR_BUILD =  
-X_LIBS_FOR_BUILD = -lX11  
-XKB_LIBS_FOR_BUILD = -lXtst   -lXext   
-XTK_LIBS_FOR_BUILD = -lXaw -lXt -lX11    
+X_CFLAGS_FOR_BUILD = 
+X_LIBS_FOR_BUILD = -lX11 
+XKB_LIBS_FOR_BUILD = -lXtst  -lXext  
+XTK_LIBS_FOR_BUILD = -lXaw -lXt -lX11   
 
 CURSES_LIB_FOR_BUILD = ncurses
 GUI_TOOLKIT_LIB_FOR_BUILD = Xaw
@@ -186,8 +186,8 @@ INSTALL_DRIVERS_FOR_BUILD = install-drivers
 CSPI_INCLUDES_FOR_BUILD = 
 CSPI_LIBS_FOR_BUILD = 
 
-DBUS_INCLUDES_FOR_BUILD = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include  
-DBUS_LIBS_FOR_BUILD = -ldbus-1  
+DBUS_INCLUDES_FOR_BUILD = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include 
+DBUS_LIBS_FOR_BUILD = -ldbus-1 
 
 ICU_INCLUDES_FOR_BUILD = -I/usr/include 
 ICU_LIBRARIES_FOR_BUILD = -Wl,-O1,--sort-common,--as-needed,-z,relro  -lpthread -ldl -lm   -L/usr/lib -licui18n -licuuc -licudata  -lpthread -ldl -lm   

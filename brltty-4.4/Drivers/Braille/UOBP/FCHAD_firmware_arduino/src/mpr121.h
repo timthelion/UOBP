@@ -4,6 +4,11 @@
 	by: Jim Lindblom
 */
 
+#define NUM_SENSORS 12
+#include <Wire.h>
+#include <Arduino.h>
+#define IRQ_PIN 2
+
 // MPR121 Register Defines
 #define MHD_R	0x2B
 #define NHD_R	0x2C
@@ -52,24 +57,16 @@
 #define	ATO_CFGL	0x7E
 #define	ATO_CFGT	0x7F
 
-
 // Global Constants
-//#define TOU_THRESH	0x01
-//#define	REL_THRESH	0x01
+#define TOU_THRESH	0x01
+#define REL_THRESH	0x01
+typedef struct{
+ unsigned char * touchStates;
+}TouchSensors;
 
-void readTouchInputs
- (void (*onDown)(unsigned char)
- ,void (*onUp)(unsigned char)
- ,unsigned char irqPin);
+#include "GenericTouchInterface.h"
 
-void setupMPR121
- (unsigned int irqPin
- ,unsigned char touchThresh
- ,unsigned char relThresh);
-
-void mpr121_setup
- (unsigned char touchThresh
- ,unsigned char relThresh);
+void mpr121_setup();
 
 unsigned char checkInterrupt(unsigned int irqpin);
 

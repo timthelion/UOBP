@@ -105,7 +105,6 @@ brl_construct (BrailleDisplay *brl,
   frameInfo.frameHandlers = frameHandlers;
   initializeCapabilityNodes(&frameInfo);
 
-  logMessage(LOG_DEBUG,"Sending initialization packet.");
   unsigned char information[4];
   /*Host driver id (brltty=0)*/
   information[0]=0;
@@ -113,13 +112,22 @@ brl_construct (BrailleDisplay *brl,
   /*Host driver version.*/
   information[2]=0;
   information[3]=0;
-  sendFrame(4,0,0,information,gioEndpoint);
-  logMessage(LOG_DEBUG,"Initialization packet sent.");
   unsigned char initializationStatus=0;
-  while(!initializationStatus){
-   logMessage(LOG_DEBUG,"Waiting for initialization frame.");
+  #define NUM_INITIAL_CHECKS_PER_TRY 100
+  #define INITIAL_CHECK_DELAY 10
+  int n = NUM_INITIAL_CHECKS_PER_TRY;
+  while(1){
+   if(n++>=NUM_INITIAL_CHECKS_PER_TRY){
+    n=0;
+    sendFrame(4,0,0,information,gioEndpoint);
+    logMessage(LOG_DEBUG,"Initialization packet sent.");
+   }
    checkForFrameAndReactBrltty(brl,&initializationStatus);
+   usleep(INITIAL_CHECK_DELAY*1000);
+  //Sleep for the given number of 1/1000ths of a seccond.
+   if(initializationStatus)break;
   }
+  logMessage(LOG_DEBUG,"Initialized!");
   return 1;
 }
 

@@ -20,12 +20,12 @@
 #ifndef BRLTTY
  #include "uobp_general.h"
 #endif
+#include "level1.h"
 
 //////////////////////////////////////////////////
 //Serial//////////////////////////////////////////
 //////////////////////////////////////////////////
 #define SERIAL 1
-#define SERIAL_BAUD 9600
 #define SERIAL_READY_DELAY 400
 #define SERIAL_INPUT_TIMEOUT 100
 #define SERIAL_WAIT_TIMEOUT 200

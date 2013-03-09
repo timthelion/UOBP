@@ -46,7 +46,7 @@ typedef enum{
  NO_PAIRING,
  PAIRED,
  NEEDS_PAIRING
- }PairingType;
+}PairingType;
 
 typedef struct{
  PairingType pairingType;

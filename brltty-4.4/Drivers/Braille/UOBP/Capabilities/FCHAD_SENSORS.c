@@ -40,6 +40,7 @@ void * initFCHADSensorsState(FrameInfo frameInfo){
   for(i=0;i<thisState->rows;i++)
    for(j=0;j<thisState->cols;j++)
     thisState->sensors[i*thisState->rows+j]=0;
+
   /* Despite the fact that the UOBP standard supports multiple nodes of a single capability,
   BRLTTY doesn't really support having multiple braille buffers.
   It is not meaningfull to add such support at this time.
@@ -133,6 +134,7 @@ void updateFCHADFromSensorValues
  if(thisCapabilityNode && frameInfo->brailleBuffer){
   FCHADSensorsState * myState =
     (FCHADSensorsState*)thisCapabilityNode->state;
+  uint16_t portamento = thisCapabilityNode->settings[1].persistantValue;
   uint16_t i,j;
   j=0;/*Due to a warning...*/
   unsigned char found=0;
@@ -164,45 +166,59 @@ void updateFCHADFromSensorValues
    wchar_t charVisual = L' ';
    #endif
    if(found){
-     charToDisplay=frameInfo->brailleBuffer[i*myState->rows+j];
+     if(portamento){
+      //If we are moving forward:
+      if (  myState->prevRow <= i
+         && myState->prevCol <= j){
+       uint16_t pi;
+       uint16_t pj;
+       for(pi = myState->prevRow;pi<=i;pi++)
+        for(pj = myState->prevCol;pj<=j;pj++){
+         charToDisplay=frameInfo->brailleBuffer[pi*myState->rows+pj];
+         displayChar(frameInfo,pair,charToDisplay,0);
+        }
+      }else{
+       charToDisplay=frameInfo->brailleBuffer[i*myState->rows+j];
+       displayChar(frameInfo,pair,charToDisplay,0);
+      }
+      myState->prevRow = i;
+      myState->prevCol = j;
+     }else{
+      charToDisplay=frameInfo->brailleBuffer[i*myState->rows+j];
+      displayChar(frameInfo,pair,charToDisplay,0);
+     }
      #ifdef LOG_EVERYTHING
      if(frameInfo->text)
       charVisual=frameInfo->text[i*myState->rows+j];
      else
       logMessage(LOG_WARNING,"Text buffer not initialized.");
      #endif
+   } else {
+      displayChar(frameInfo,pair,charToDisplay,0);
    }
-   unsigned char information[3];
-   information[0]=pair;
-   information[1]=charToDisplay;
-   /*Braille characters are only 8 bits,
-   but some FCHAD Cells may have up to 16
-   (so as to allow dpad like directional symbols.)
-   We can safely ignore these potential extra dots.*/
-   information[2]=0;
-   sendFrame(3,1,1,information,frameInfo->gioEndpoint);
-   #ifdef LOG_EVERYTHING
-   char * message;
-   asprintf
-    (&message
-    ,"%d %d %d %d %d %d %d %d %d %d %d %d %d '%lc'"
-    ,myState->sensors[ 0]
-    ,myState->sensors[ 1]
-    ,myState->sensors[ 2]
-    ,myState->sensors[ 3]
-    ,myState->sensors[ 4]
-    ,myState->sensors[ 5]
-    ,myState->sensors[ 6]
-    ,myState->sensors[ 7]
-    ,myState->sensors[ 8]
-    ,myState->sensors[ 9]
-    ,myState->sensors[10]
-    ,myState->sensors[11]
-    ,j
-    ,charVisual);
-   logMessageDateTime(message);
-   free(message);
-   #endif
+  #ifdef LOG_EVERYTHING
+  char * message;
+  asprintf
+   (&message
+   ,"%d %d %d %d %d %d %d %d %d %d %d %d %d '%lc'"
+   ,myState->sensors[ 0]
+   ,myState->sensors[ 1]
+   ,myState->sensors[ 2]
+   ,myState->sensors[ 3]
+   ,myState->sensors[ 4]
+   ,myState->sensors[ 5]
+   ,myState->sensors[ 6]
+   ,myState->sensors[ 7]
+   ,myState->sensors[ 8]
+   ,myState->sensors[ 9]
+   ,myState->sensors[10]
+   ,myState->sensors[11]
+   ,j
+   ,charVisual);
+  logMessageDateTime(message);
+  free(message);
+  #endif
+
   }
  }
 }
