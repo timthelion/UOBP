@@ -10,4 +10,5 @@
   /usr/share/arduino/hardware/arduino/cores/arduino/WCharacter.h \
   /usr/share/arduino/hardware/arduino/cores/arduino/HardwareSerial.h \
   /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h \
-  /usr/share/arduino/hardware/arduino/variants/standard/pins_arduino.h
+  /usr/share/arduino/hardware/arduino/variants/standard/pins_arduino.h \
+  src/GenericTouchInterface.h

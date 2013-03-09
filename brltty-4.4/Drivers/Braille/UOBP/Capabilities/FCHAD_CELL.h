@@ -22,6 +22,8 @@
  #include "../uobp_general.h"
 #endif
 
+#include <unistd.h>
+
 /////////////////////////////////////////////////
 ///FCHAD Cells///////////////////////////////////
 /////////////////////////////////////////////////
@@ -36,3 +38,9 @@ typedef struct{
 }FCHADCellState;
 
 void * initFCHADCellState(FrameInfo frameInfo);
+
+void * displayChar
+ (FrameInfo * frameInfo
+ ,unsigned char node
+ ,unsigned char byte1
+ ,unsigned char byte2);

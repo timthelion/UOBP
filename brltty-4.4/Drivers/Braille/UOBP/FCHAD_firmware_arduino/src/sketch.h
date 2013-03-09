@@ -1,8 +1,16 @@
 #include "level2.h"
-#include "mpr121.h"
+#include "level1.h"
+//#define CAPSENSE
+#ifdef CAPSENSE
+ #include <Wire.h>
+ #include "mpr121.h"
+#endif
+#define RESISTIVE_TOUCH
+#ifdef RESISTIVE_TOUCH
+ #include "resistive_touch.h"
+#endif
 #include <stdlib.h>
 #include "UUID.h"
-#define IRQ_PIN 2
 #define NULL 0
 #define dotCount 8
 //#define RUNTESTS

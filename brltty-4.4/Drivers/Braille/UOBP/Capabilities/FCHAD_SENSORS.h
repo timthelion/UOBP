@@ -21,6 +21,11 @@
 #ifndef BRLTTY
  #include "../uobp_general.h"
 #endif
+
+#ifndef FCHAD_CELL_H
+ #include "FCHAD_CELL.h"
+#endif
+
 #include <time.h>
 #include <sys/timeb.h>
 #include <stdio.h>

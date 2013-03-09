@@ -9,6 +9,7 @@ typedef struct{}GioEndpoint;
 #include "log.h"
 #endif
 #include <stdlib.h>
+#include "level1.h"
 
 ////////////////////////////////////////
 ///FRAMES///////////////////////////////
@@ -34,6 +35,7 @@ void checkForFrameAndReact(
 
 typedef enum{
  READ_FAILED_UNEXPECTED_START_FLAG,
+ READ_FAILED_TIMEOUT,
  READ_FAILED_UNEXPECTED_END_FLAG,
  READ_SUCCESS
  }ReadEscapedByteExitStatus;
@@ -68,13 +70,16 @@ ReadEscapedByteExitStatus readEscapedByte(
  GioEndpoint *gioEndpoint
  ,unsigned char * byte);
 
-unsigned char nextChar(GioEndpoint *gioEndpoint);
+unsigned char nextChar
+ (unsigned char * byte
+ ,GioEndpoint *gioEndpoint);
 
 unsigned char serialAvailable(
  GioEndpoint *gioEndpoint);
 
-unsigned char serialRead(
- GioEndpoint * gioEndpoint);
+unsigned char serialRead
+ (unsigned char * byte
+ ,GioEndpoint * gioEndpoint);
 
 void serialWrite(
  GioEndpoint *gioEndpoint

@@ -185,11 +185,11 @@ include .build/atmega328/arduino/new.d
 	@/usr/share/arduino/hardware/tools/avr/bin/avr-g++ -mmcu=atmega328p -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/hardware/arduino/variants/standard -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/hardware/arduino/cores/arduino -fno-exceptions  -o $@ -c src/level2.cpp
 include .build/atmega328/src/level2.d
 
-.build/atmega328/src/mpr121.o : src/mpr121.cpp
-	@echo [93msrc/mpr121.cpp[0m
+.build/atmega328/src/resistive_touch.o : src/resistive_touch.cpp
+	@echo [93msrc/resistive_touch.cpp[0m
 	@mkdir -p .build/atmega328/src
-	@/usr/share/arduino/hardware/tools/avr/bin/avr-g++ -mmcu=atmega328p -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/hardware/arduino/variants/standard -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/hardware/arduino/cores/arduino -fno-exceptions  -o $@ -c src/mpr121.cpp
-include .build/atmega328/src/mpr121.d
+	@/usr/share/arduino/hardware/tools/avr/bin/avr-g++ -mmcu=atmega328p -ffunction-sections -fdata-sections -g -Os -w -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -I/usr/share/arduino/hardware/arduino/variants/standard -I/usr/share/arduino/libraries/Wire -I/usr/share/arduino/libraries/Wire/utility -I/usr/share/arduino/hardware/arduino/cores/arduino -fno-exceptions  -o $@ -c src/resistive_touch.cpp
+include .build/atmega328/src/resistive_touch.d
 
 .build/atmega328/src/sketch.o : .build/atmega328/src/sketch.cpp
 	@echo [93msrc/sketch.cpp[0m
@@ -203,7 +203,7 @@ include .build/atmega328/src/sketch.d
 
 
 
-.build/atmega328/firmware.elf : .build/atmega328/src/level2.o .build/atmega328/src/mpr121.o .build/atmega328/src/sketch.o .build/atmega328/Wire/libWire.a .build/atmega328/arduino/libarduino.a
+.build/atmega328/firmware.elf : .build/atmega328/src/level2.o .build/atmega328/src/resistive_touch.o .build/atmega328/src/sketch.o .build/atmega328/Wire/libWire.a .build/atmega328/arduino/libarduino.a
 	@echo [92mLinking firmware.elf[0m
 	@/usr/share/arduino/hardware/tools/avr/bin/avr-gcc -Os -Wl,--gc-sections -mmcu=atmega328p -o $@ $^ -lm
 

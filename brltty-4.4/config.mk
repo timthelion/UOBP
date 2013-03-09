@@ -68,7 +68,7 @@ LIBCXXFLAGS = $(CXXFLAGS) -fPIC
 
 LD = ld
 LDFLAGS =  -Wl,-export-dynamic
-LDLIBS = -ldl -lgpm -lrt -lpthread -lsupc++ 
+LDLIBS = -ldl -lgpm -lpthread -lsupc++ 
 CLIBS = -lncurses 
 
 MKOBJ = $(LD) -r -o
@@ -81,10 +81,10 @@ AWK = gawk
 SYMLINK = ln -s
 DOXYGEN = 
 
-X_CFLAGS =  
-X_LIBS = -lX11  
-XKB_LIBS = -lXtst   -lXext   
-XTK_LIBS = -lXaw -lXt -lX11    
+X_CFLAGS = 
+X_LIBS = -lX11 
+XKB_LIBS = -lXtst  -lXext  
+XTK_LIBS = -lXaw -lXt -lX11   
 
 CURSES_LIB = ncurses
 GUI_TOOLKIT_LIB = Xaw
@@ -186,8 +186,8 @@ INSTALL_DRIVERS = install-drivers
 CSPI_INCLUDES = 
 CSPI_LIBS = 
 
-DBUS_INCLUDES = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include  
-DBUS_LIBS = -ldbus-1  
+DBUS_INCLUDES = -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include 
+DBUS_LIBS = -ldbus-1 
 
 ICU_INCLUDES = -I/usr/include 
 ICU_LIBRARIES = -Wl,-O1,--sort-common,--as-needed,-z,relro  -lpthread -ldl -lm   -L/usr/lib -licui18n -licuuc -licudata  -lpthread -ldl -lm   

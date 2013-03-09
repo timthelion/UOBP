@@ -17,11 +17,19 @@ void checkForFrameAndReact(
  We check if there are bytes waiting for us in our serial buffer.  If there are, we read that byte.  If we are not confused, this byte should be a START_FLAG(at which point we read in the given frame).  If we ARE confused, we ignore the byte and continue eating untill a real START_FLAG does come along.
  */
  unsigned char byte;
+ #ifdef ARDUINO
+ digitalWrite(13,HIGH);
+ #endif
  if(!serialAvailable(gioEndpoint))return;
- if(frameStatus==START_OF_FRAME)
-  byte=serialRead(gioEndpoint);
- else
+ if(frameStatus==START_OF_FRAME){
+  if(!serialRead(&byte,gioEndpoint))return;
+ }else{
   byte=START_FLAG;
+ }
+ #ifdef ARDUINO
+ digitalWrite(13,LOW);
+ #endif
+
  if(byte!=START_FLAG){
   #ifdef BRLTTY
   logMessage(LOG_WARNING,"Unexpected byte that was not a frame start flag. The byte was:%d",byte);
@@ -81,9 +89,8 @@ void checkForFrameAndReact(
   return;
  }
  /*If our frame was not closed off by an END_FLAG we DROP the frame*/
- if(nextChar(gioEndpoint)!=END_FLAG){
-  return;
- }
+ if(!nextChar(&byteInMouth,gioEndpoint))return;
+ if(byteInMouth!=END_FLAG)return;
  /*If everything was successfull, then we call the handling code to deal with this new bit of information.  We pass this handling code the length, the type, and the subType. AND WE DO NOT FORGET, THAT THE INFORMATION BUFFER IS CONSTRAINED BY THE LENGTH AND NOT ANY KIND OF NULL TERMINATOR*/
  #ifdef BRLTTY
  logMessage(LOG_DEBUG,"Packet read...");
@@ -109,6 +116,11 @@ unsigned char continueReading(
     CONTINUATION_OF_FRAME,
     gioEndpoint,
     callerParameter);
+   return 0;
+  case READ_FAILED_TIMEOUT:
+   #ifdef BRLTTY
+   logMessage(LOG_WARNING,"Timeout. Packet dropped.");
+   #endif
    return 0;
   case READ_FAILED_UNEXPECTED_END_FLAG:
    return 0;
@@ -156,6 +168,12 @@ void sendFrame(
  writeEscapedByte(xorChecksum,gioEndpoint);
  byteInArse=END_FLAG;
  serialWrite(gioEndpoint, byteInArse);
+ #ifdef ARDUINO
+ //Serial.flush();
+ #endif
+ #ifdef BRLTTY
+  logMessage(LOG_DEBUG,"Packet sent.");
+ #endif
 }
 
 void writeEscapedByte(
@@ -176,10 +194,10 @@ void writeEscapedByte(
 ReadEscapedByteExitStatus readEscapedByte(
  GioEndpoint *gioEndpoint,
  unsigned char * byte){
- *byte=nextChar(gioEndpoint);
+ if(!nextChar(byte,gioEndpoint))return READ_FAILED_TIMEOUT;
  switch(*byte){
   case ESCAPE_CHAR:
-   *byte=nextChar(gioEndpoint);
+   if(!nextChar(byte,gioEndpoint))return READ_FAILED_TIMEOUT;
    return READ_SUCCESS;
   case START_FLAG:
    #ifdef BRLTTY
@@ -195,12 +213,27 @@ ReadEscapedByteExitStatus readEscapedByte(
 }
 
 //Read one byte from serial
-unsigned char nextChar(
- GioEndpoint *gioEndpoint){
+unsigned char nextChar
+ (unsigned char * byte
+ ,GioEndpoint *gioEndpoint){
+ unsigned char get = 1;
  #ifdef ARDUINO
- while(!serialAvailable(gioEndpoint));
+ unsigned char timeoutCounter = 0;
+ while(1){
+  if(serialAvailable(gioEndpoint))break;
+  if(timeoutCounter++>TIMEOUT_AFTER){
+   get = 0;
+   break;
+  }
+  delay(1);
+ }
  #endif
- return serialRead(gioEndpoint);
+ if(get){
+  serialRead(byte,gioEndpoint);
+  return get;
+ }else{
+  return 0;
+ }
 }
 
 unsigned char serialAvailable(
@@ -213,14 +246,16 @@ unsigned char serialAvailable(
  #endif
 }
 
-unsigned char serialRead(GioEndpoint * gioEndpoint){
+unsigned char serialRead
+ (unsigned char * byte
+ ,GioEndpoint * gioEndpoint){
  #ifdef BRLTTY
- unsigned char byte;
- gioReadByte(gioEndpoint, &byte,1);
- return byte;
+ gioReadByte(gioEndpoint, byte,1);
+ return 1;
  #endif
  #ifdef ARDUINO
- return Serial.read();
+ *byte=Serial.read();
+ return 1;
  #endif
 }
 

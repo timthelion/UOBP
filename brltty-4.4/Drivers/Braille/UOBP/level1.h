@@ -1,0 +1,2 @@
+#define SERIAL_BAUD 9600
+#define TIMEOUT_AFTER 20

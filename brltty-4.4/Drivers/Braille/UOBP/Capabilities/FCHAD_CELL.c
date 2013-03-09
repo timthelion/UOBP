@@ -17,13 +17,12 @@
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>.
  */
 
-
 #include "FCHAD_CELL.h"
 //////////////////////////////////////////////////
 ///FCHAD Cells////////////////////////////////////
 //////////////////////////////////////////////////
 void * initFCHADCellState(FrameInfo frameInfo){
-  if(frameInfo.length!=7)return NULL;
+  if(frameInfo.length!=13)return NULL;
   FCHADCellState * thisState =
     (FCHADCellState *)
      malloc(sizeof(FCHADCellState));
@@ -41,4 +40,20 @@ void * initFCHADCellState(FrameInfo frameInfo){
   return thisState;
 }
 
+void * displayChar
+ (FrameInfo * frameInfo
+ ,unsigned char node
+ ,unsigned char byte1
+ ,unsigned char byte2){
+ CapabilityState * thisCapabilityNode =
+  frameInfo->capabilityStates[3][node];
 
+ uint16_t minDisplayTime = thisCapabilityNode->settings[1].persistantValue;
+ unsigned char information[3];
+ information[0]=node;
+ information[1]=byte1;
+ information[2]=byte2;
+ sendFrame(3,1,1,information,frameInfo->gioEndpoint);
+ usleep(minDisplayTime*100);
+  //Sleep for the given number of 1/10 000ths of a seccond.
+}

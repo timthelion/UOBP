@@ -38,9 +38,11 @@ unsigned char preformInitializeCapabilityNodes
     [MAX_NUM_NODES];
   capabilityStates=frameInfo->capabilityStates;
   uint16_t length = frameInfo->length;
+  logMessage(LOG_DEBUG,"0Preform initializing capability nodes.");
   freeCapabilityNodeStates
      (frameInfo->capabilities
      ,frameInfo->capabilityStates);
+  logMessage(LOG_DEBUG,"1Preform initializing capability nodes.");
   /*Jump past the device UUID, we don't need it.*/
   uint16_t i=16;
   unsigned char numberOfStandardNodes = information[i] << 8;
@@ -187,23 +189,25 @@ unsigned char preformInitializeCapabilityNodes
   return 1;
 }
 
-void freeCapabilityNodeStates
+void freeCapabilityNodeStates //TODO SOME FIXME BUG HERE!!!! NEVER RETURS WHEN THERE IS ACTUALLY SOMETHING TO FREE!!!
  (Capability ** capabilities
  ,CapabilityState * capabilityStates
                     [NUM_CAPABILITIES]
                     [MAX_NUM_NODES]){
  uint16_t i,j;
- for(i=0;i<NUM_CAPABILITIES;i++)
+ for(i=0;i<NUM_CAPABILITIES;i++){
   for(j=0;j<MAX_NUM_NODES;j++){
    if(capabilityStates[i][j]){
-    if(capabilities[i]->freeer)
+    if(capabilities[i]->freeer){
     /*If there is a custom free function use it.*/
      (capabilities[i]->freeer)(capabilityStates[i][j]->state);
-    else
+    }else{
      free(capabilityStates[i][j]->state);
-    free(capabilityStates[i][j]);
+     free(capabilityStates[i][j]);
+    }
    }
   }
+ }
 }
 
 /*Safely increment an index.*/

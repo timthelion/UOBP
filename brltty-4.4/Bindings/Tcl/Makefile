@@ -46,9 +46,9 @@ include $(SRC_TOP)common.mk
 include $(SRC_TOP)bindings.mk
 
 TCL_OK = true
-TCLSH = /usr/bin/tclsh8.5
+TCLSH = /usr/bin/tclsh8.6
 TCL_CPPFLAGS = -I/usr/include
-TCL_LIBS = -L/usr/lib -ltcl8.5
+TCL_LIBS = -L/usr/lib -ltcl8.6
 TCL_DIR = /usr/lib
 TCL_DESTDIR = $(INSTALL_ROOT)
 
