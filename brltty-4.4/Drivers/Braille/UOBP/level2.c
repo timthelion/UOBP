@@ -21,6 +21,10 @@ void checkForFrameAndReact(
  if(!serialAvailable(gioEndpoint))return;
  #ifdef ARDUINO
   delay(1);
+  /*
+  This is why we cannot have nice thigs!
+  Delay needed if you don't want the arduino to freeze indefinitely for no reason.
+  */
  #endif
  if(frameStatus==START_OF_FRAME){
   if(!serialRead(&byte,gioEndpoint))return;
@@ -135,9 +139,6 @@ void sendFrame(
  GioEndpoint *gioEndpoint){
  unsigned char byteInArse;
  byteInArse=START_FLAG;
- #ifdef ARDUINO
-  //delay(1);
- #endif
  #ifdef BRLTTY
   #define SEND_PACKET_DELAY 10
   logMessage(LOG_DEBUG,"Sending start flag.");
