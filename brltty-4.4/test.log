@@ -1,0 +1,7 @@
+2012-11-21@23:08:58.822 BRLTTY 4.4 rev Unversioned directory [http://mielke.cc/brltty/]
+2012-11-21@23:08:58.843 AtSpi2 Screen Driver:
+2012-11-21@23:08:58.843 BrlAPI Server: release 0.5.7
+2012-11-21@23:08:59.251 ERROR: End of packet reached unexpectedly.  Malformed packet.
+2012-11-21@23:08:59.251 cannot open file: /home/timothy/works/2012/braille/UOBP/brltty-4.4/Programs/../Tables/brl-ob-all.txt: Adresář nebo soubor neexistuje
+2012-11-21@23:08:59.251 cannot open help file: /home/timothy/works/2012/braille/UOBP/brltty-4.4/Programs/../Tables/brl-ob-all.txt
+2012-11-21@23:08:59.251 UOBP Braille Driver: version 0.0

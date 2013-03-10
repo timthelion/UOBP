@@ -1,0 +1,26 @@
+void sendOnDown(unsigned char sensor){
+  unsigned char information [5] = {
+  //Node
+  0,
+  //Row
+  0,
+  0,
+  //Column
+  0,
+  sensor};
+ sendFrame(5, 2, 3, information,NULL);
+}
+void sendOnUp(unsigned char sensor){
+ unsigned char information [5] = {
+  //Node
+  0,
+  //Row
+  0,
+  0,
+  //Column
+  0,
+  sensor};
+ sendFrame(5, 2, 4, information,NULL);
+}
+
+
