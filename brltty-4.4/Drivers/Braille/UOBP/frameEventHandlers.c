@@ -55,7 +55,7 @@ FrameHandler * getFrameHandler
  if(frameHandlers
          [frameType]
          [frameSubType]
-         ){
+         != NULL){
   return frameHandlers
          [frameType]
          [frameSubType];
@@ -81,7 +81,7 @@ void handleFrame
       (type
       ,subType
       ,frameInfo->frameHandlers);
- if(handler){
+ if(handler[0]!=NULL){
   logMessage
    (LOG_DEBUG
    ,"Calling frame handler. type:%d,subType:%d First byte of information is %d"
@@ -100,7 +100,7 @@ void callFrameEventHandler(
  FrameInfo * frameInfo){
  int i=0;
 
- while(handler[i]
+ while(handler[i]!=NULL
          &&
        i<MAX_NUM_HANDLERS){
     logMessage(LOG_DEBUG,"calling handler %d",i);
@@ -112,7 +112,7 @@ unsigned char addFrameEventHandler
  (FrameHandler handler[]
  ,FrameHandler addition){
  int i = 0;
- while(handler[i]&&i<MAX_NUM_HANDLERS)i++;
+ while(handler[i]!=NULL&&i<MAX_NUM_HANDLERS)i++;
  if(i<MAX_NUM_HANDLERS){
   handler[i]=addition;
   return ADD_HANDLER_SUCCESS;

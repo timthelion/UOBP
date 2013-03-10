@@ -34,6 +34,8 @@ typedef enum{
 
 typedef struct{
   unsigned char numDots;
+  unsigned char lastDisplayed1;
+  unsigned char lastDisplayed2;
   Handedness cellHandedness;
 }FCHADCellState;
 

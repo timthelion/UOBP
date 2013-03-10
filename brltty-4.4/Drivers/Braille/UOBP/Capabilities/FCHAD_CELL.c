@@ -27,6 +27,8 @@ void * initFCHADCellState(FrameInfo frameInfo){
     (FCHADCellState *)
      malloc(sizeof(FCHADCellState));
   thisState->numDots = frameInfo.info[0];
+  thisState->lastDisplayed1 = 0;
+  thisState->lastDisplayed2 = 0;
   switch(frameInfo.info[1]){
    case 0:
     thisState->cellHandedness = RIGHT_HANDED;
@@ -49,11 +51,17 @@ void * displayChar
   frameInfo->capabilityStates[3][node];
 
  uint16_t minDisplayTime = thisCapabilityNode->settings[1].persistantValue;
- unsigned char information[3];
- information[0]=node;
- information[1]=byte1;
- information[2]=byte2;
- sendFrame(3,1,1,information,frameInfo->gioEndpoint);
- usleep(minDisplayTime*100);
+ FCHADCellState * state = thisCapabilityNode->state;
+ if(  state->lastDisplayed1 != byte1
+   || state->lastDisplayed2 != byte2){
+  state->lastDisplayed1 = byte1;
+  state->lastDisplayed2 = byte2;
+  unsigned char information[3];
+  information[0]=node;
+  information[1]=byte1;
+  information[2]=byte2;
+  sendFrame(3,1,1,information,frameInfo->gioEndpoint);
+  usleep(minDisplayTime*100);
   //Sleep for the given number of 1/10 000ths of a seccond.
+ }
 }

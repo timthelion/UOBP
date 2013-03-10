@@ -9,6 +9,7 @@ void checkForFrameAndReact(
    void * passedCallerParameter
    )
  ,FrameStatus frameStatus
+
  ,GioEndpoint *gioEndpoint
  ,void * callerParameter
  )
@@ -17,18 +18,15 @@ void checkForFrameAndReact(
  We check if there are bytes waiting for us in our serial buffer.  If there are, we read that byte.  If we are not confused, this byte should be a START_FLAG(at which point we read in the given frame).  If we ARE confused, we ignore the byte and continue eating untill a real START_FLAG does come along.
  */
  unsigned char byte;
- #ifdef ARDUINO
- digitalWrite(13,HIGH);
- #endif
  if(!serialAvailable(gioEndpoint))return;
+ #ifdef ARDUINO
+  delay(1);
+ #endif
  if(frameStatus==START_OF_FRAME){
   if(!serialRead(&byte,gioEndpoint))return;
  }else{
   byte=START_FLAG;
  }
- #ifdef ARDUINO
- digitalWrite(13,LOW);
- #endif
 
  if(byte!=START_FLAG){
   #ifdef BRLTTY
@@ -37,7 +35,7 @@ void checkForFrameAndReact(
   return;
  }
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"Reading packet...");
+ //logMessage(LOG_DEBUG,"Reading packet...");
  #endif
  unsigned char xorChecksum=0;
  uint16_t length;
@@ -55,22 +53,22 @@ void checkForFrameAndReact(
  xorChecksum^=byteInMouth;
  length+=byteInMouth;
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"length: %d",length);
+ //logMessage(LOG_DEBUG,"length: %d",length);
  #endif
  unsigned char information[length+CHECKSUM_SIZE];
 
  readAnEscapedByte(&type);
  xorChecksum^=type;
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"type: %d",type);
+ //logMessage(LOG_DEBUG,"type: %d",type);
  #endif
  readAnEscapedByte(&subType);
  xorChecksum^=subType;
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"subType: %d",subType);
+ //logMessage(LOG_DEBUG,"subType: %d",subType);
  #endif
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"Reading INFO section...");
+ //logMessage(LOG_DEBUG,"Reading INFO section...");
  #endif
  /*Now we read our information buffer*/
  while(indexInInformationBuffer<length){
@@ -93,7 +91,7 @@ void checkForFrameAndReact(
  if(byteInMouth!=END_FLAG)return;
  /*If everything was successfull, then we call the handling code to deal with this new bit of information.  We pass this handling code the length, the type, and the subType. AND WE DO NOT FORGET, THAT THE INFORMATION BUFFER IS CONSTRAINED BY THE LENGTH AND NOT ANY KIND OF NULL TERMINATOR*/
  #ifdef BRLTTY
- logMessage(LOG_DEBUG,"Packet read...");
+ //logMessage(LOG_DEBUG,"Packet read...");
  #endif
  (handleFrame)(length,type,subType,information,callerParameter);
 }
@@ -137,8 +135,14 @@ void sendFrame(
  GioEndpoint *gioEndpoint){
  unsigned char byteInArse;
  byteInArse=START_FLAG;
+ #ifdef ARDUINO
+  //delay(1);
+ #endif
  #ifdef BRLTTY
+  #define SEND_PACKET_DELAY 10
   logMessage(LOG_DEBUG,"Sending start flag.");
+  //usleep(SEND_PACKET_DELAY*1000);
+  //Sleep for the given number of 1/1000ths of a seccond.
  #endif
  serialWrite(gioEndpoint, byteInArse);
  #ifdef BRLTTY
@@ -169,7 +173,7 @@ void sendFrame(
  byteInArse=END_FLAG;
  serialWrite(gioEndpoint, byteInArse);
  #ifdef ARDUINO
- //Serial.flush();
+ Serial.flush();
  #endif
  #ifdef BRLTTY
   logMessage(LOG_DEBUG,"Packet sent.");
@@ -254,8 +258,16 @@ unsigned char serialRead
  return 1;
  #endif
  #ifdef ARDUINO
- *byte=Serial.read();
- return 1;
+ unsigned char v;
+ //displayAChar(255);
+ if(Serial.available()){
+  *byte=Serial.read();
+  v=1;
+ }else{
+  v=0;
+ }
+ //displayAChar(0);
+ return v;
  #endif
 }
 

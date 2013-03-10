@@ -123,7 +123,7 @@ brl_construct (BrailleDisplay *brl,
     logMessage(LOG_DEBUG,"Initialization packet sent.");
    }
    checkForFrameAndReactBrltty(brl,&initializationStatus);
-   usleep(INITIAL_CHECK_DELAY*1000);
+  //usleep(INITIAL_CHECK_DELAY*1000);
   //Sleep for the given number of 1/1000ths of a seccond.
    if(initializationStatus)break;
   }

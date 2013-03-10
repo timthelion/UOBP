@@ -13,9 +13,9 @@ typedef struct{
 #define SELECTOR_BITS 4
 
 //Each sensor is read NUMCHECKS times.
-#define NUMCHECKS 37
+#define NUMCHECKS 5
 //The sum of the reads must be higher than TOUCH_THRESHOLD to register a touch.
-#define TOUCH_THRESHOLD 37
+#define TOUCH_THRESHOLD 5
 //Each round of checks is separated by a CHECKDELAY milisecond delay.
 #define CHECKDELAY 1
 

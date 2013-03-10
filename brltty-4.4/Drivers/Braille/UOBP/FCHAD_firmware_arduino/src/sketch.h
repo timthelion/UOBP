@@ -1,5 +1,14 @@
-#include "level2.h"
+#include <stdlib.h>
+#define NULL 0
+#define dotCount 8
+
+#ifndef CELL
+ #include "Cell.h"
+#endif
+
+#include "UUID.h"
 #include "level1.h"
+#include "level2.h"
 //#define CAPSENSE
 #ifdef CAPSENSE
  #include <Wire.h>
@@ -9,10 +18,7 @@
 #ifdef RESISTIVE_TOUCH
  #include "resistive_touch.h"
 #endif
-#include <stdlib.h>
-#include "UUID.h"
-#define NULL 0
-#define dotCount 8
+
 //#define RUNTESTS
 
 /*const int dotPins[] =
@@ -49,12 +55,6 @@ void handleFrame(unsigned int length,unsigned char type, unsigned char subType, 
 ///Initialization Frame///////////////////
 //////////////////////////////////////////
 void sendInitializationFrame(unsigned int length,unsigned char * information);
-
-//////////////////////////////////////////
-///Display functions//////////////////////
-//////////////////////////////////////////
-void dot_display_init();
-void displayChar(unsigned int length, unsigned char * information);
 
 //////////////////////////////////////////////
 ////Send sensor touch signals/////////////////
