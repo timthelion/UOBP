@@ -189,7 +189,7 @@ unsigned char preformInitializeCapabilityNodes
   return 1;
 }
 
-void freeCapabilityNodeStates //TODO SOME FIXME BUG HERE!!!! NEVER RETURS WHEN THERE IS ACTUALLY SOMETHING TO FREE!!!
+void freeCapabilityNodeStates
  (Capability ** capabilities
  ,CapabilityState * capabilityStates
                     [NUM_CAPABILITIES]
@@ -200,10 +200,14 @@ void freeCapabilityNodeStates //TODO SOME FIXME BUG HERE!!!! NEVER RETURS WHEN T
    if(capabilityStates[i][j]){
     if(capabilities[i]->freeer){
     /*If there is a custom free function use it.*/
+     logMessage(LOG_DEBUG,"Freeing capability %d node %d with custom free function.",i,j);
      (capabilities[i]->freeer)(capabilityStates[i][j]->state);
+     logMessage(LOG_DEBUG,"Freed capability %d node %d",i,j);
     }else{
+     logMessage(LOG_DEBUG,"Freeing capability %d node %d with standard free function.",i,j);
      free(capabilityStates[i][j]->state);
      free(capabilityStates[i][j]);
+     logMessage(LOG_DEBUG,"Freed capability %d node %d",i,j);
     }
    }
   }

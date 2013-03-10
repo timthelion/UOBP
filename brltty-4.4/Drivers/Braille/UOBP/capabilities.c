@@ -60,6 +60,7 @@ void initializeCapabilityInitializersArray(
    capabilities[i]=NULL;
 
   capabilities[3]=(Capability *)malloc(sizeof(Capability));
+  memset(capabilities[3],NULL,sizeof(Capability));
   capabilities[3]->name        = "FCHAD_CELL";
   capabilities[3]->initializer = &initFCHADCellState;
   capabilities[3]->numSettings = 2;
@@ -67,6 +68,7 @@ void initializeCapabilityInitializersArray(
   capabilities[3]->settings[1] = "MIN_DISPLAY_TIME";
 
   capabilities[4]=(Capability *)malloc(sizeof(Capability));
+  memset(capabilities[4],NULL,sizeof(Capability));
   capabilities[4]->name        = "FCHAD_SENSORS";
   capabilities[4]->initializer = &initFCHADSensorsState;
   capabilities[4]->freeer      = (void *)&freeFCHADSensorsState;
