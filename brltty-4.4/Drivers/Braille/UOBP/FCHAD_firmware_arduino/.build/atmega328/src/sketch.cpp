@@ -67,5 +67,11 @@ void loop() {
  if(pingCountUp++>=20){
   pingCountUp=0;
   sendFrame(0,3,0,NULL,NULL);
+  /*
+  We ping the driver constantly because sending more information is apparently the only working way to flush the serial buffer.
+  Flush,
+  leave the seat down,
+  close the lid ;)
+  */
  }
 }

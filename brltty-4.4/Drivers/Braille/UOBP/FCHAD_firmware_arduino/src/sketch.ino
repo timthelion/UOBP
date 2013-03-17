@@ -19,55 +19,21 @@
  *
  * This software is maintained by Timothy Hobbs <timothyhobbs@seznam.cz>
  */
-#include "sketch.h"
-
-///////////////////////////////////////////////////
-//Frame Handlers///////////////////////////////////
-///////////////////////////////////////////////////
-
+#include "includes.h"
+#include "data-types.h"
+#include "settings.h"
+#include "functions.h"
+//Frame Handlers
 #include "frameHandling.cpp-section"
-
-//////////////////////////////////////////
-///Initialization Frame///////////////////
-//////////////////////////////////////////
-
+///Initialization Frame
 #include "initializationFrame.cpp-section"
-
-//////////////////////////////////////////////
-////Send sensor touch signals/////////////////
-//////////////////////////////////////////////
-
-#include "touchSignals.cpp-section"
-
-//////////////////////////////////////////////
-////Standard initializers/////////////////////
-//////////////////////////////////////////////
-TouchSensors*touchSensors;
-
-void setup()
-{
-  // initialize the serial communication:
-  Serial.begin(SERIAL_BAUD);
-  // initialize the the pins as outputs:
-  dot_display_init();
-  // initialize the touch sensors:
-  touchSensors=setupTouch();
-  initializeFrameHandlers();
-}
-
-char pingCountUp = 0;
-
-void loop() {
- readTouchInputs(&sendOnDown,&sendOnUp,touchSensors);
- checkForFrameAndReact(&handleFrame,START_OF_FRAME,NULL,NULL);
- if(pingCountUp++>=20){
-  pingCountUp=0;
-  sendFrame(0,3,0,NULL,NULL);
-  /*
-  We ping the driver constantly because sending more information is apparently the only working way to flush the serial buffer.
-  Flush,
-  leave the seat down,
-  close the lid ;)
-  */
- }
-}
+////Touch sensors
+#include "touchSensors.cpp-section"
+////Braille Cell
+#include "cell.cpp-section"
+////Pings
+#include "ping.cpp-section"
+////Snímky
+#include "snimekHandlers.cpp-section"
+////Standard initializers
+#include "standardInitializers.cpp-section"

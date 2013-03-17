@@ -1,6 +1,3 @@
-#include "sketch.h"
-#include <stdlib.h>
-#include "Cell.h"
 //////////////////////////////////////////
 ///Display functions//////////////////////
 //////////////////////////////////////////
@@ -9,15 +6,23 @@ void dot_display_init(){
   {
     pinMode(dotPins[n], OUTPUT);
   }
+  #ifdef RUNTESTS
+  testSolenoids();
+  #endif
 }
 
+uint16_t currentChar=0;
+
+/*
+This is a frame handler. The function that actually does the displaying is displayAChar.
+*/
 void displayChar
  (uint16_t length
  ,unsigned char * information){
   if(information[0]==0){ //This is the NODE ID.  We are node 0 as this firmware only supports one cell.
    uint16_t character = (uint16_t)information[1];
    character += (uint16_t)information[2]<<8;
-   displayAChar(character);
+   currentChar = character;
   }
 }
 
@@ -29,6 +34,14 @@ void displayAChar(uint16_t character){
    digitalWrite(dotPins[n],LOW);
   }
  }
+}
+
+void displayCurrentChar(){
+ displayAChar(currentChar);
+}
+
+void displayNothing(){
+ displayAChar(0);
 }
 
 void testSolenoids(){

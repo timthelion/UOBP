@@ -1,9 +1,4 @@
 void sendInitializationFrame(unsigned int length,unsigned char * information){
-  #ifdef RUNTESTS
-  testSolenoids();
-  #endif
-  Serial.begin(9600);
-  int i = 0;
   #define INITIALIZER_LENGTH 74
   unsigned int initializerLength=INITIALIZER_LENGTH;
   unsigned char initializer[INITIALIZER_LENGTH]={

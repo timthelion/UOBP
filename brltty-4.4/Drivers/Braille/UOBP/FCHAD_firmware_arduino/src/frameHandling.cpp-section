@@ -38,3 +38,7 @@ void handleFrame(
  if(handler)(handler)(length,information);
  free(information);
 }
+
+void checkSerial(){
+ checkForFrameAndReact(&handleFrame,START_OF_FRAME,NULL,NULL);
+}
