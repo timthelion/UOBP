@@ -9,9 +9,8 @@
   /usr/share/arduino/hardware/arduino/cores/arduino/Printable.h \
   /usr/share/arduino/hardware/arduino/cores/arduino/new.h \
   /usr/share/arduino/hardware/arduino/variants/standard/pins_arduino.h \
-  src/sketch.h src/Cell.h src/UUID.h src/level1.h src/level2.h \
-  src/platform.h src/resistive_touch.h \
-  /usr/share/arduino/libraries/Wire/Wire.h \
-  /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h \
-  src/GenericTouchInterface.h src/frameHandling.cpp-section \
-  src/initializationFrame.cpp-section src/touchSignals.cpp-section
+  src/includes.h src/UUID.h src/level1.h src/level2.h src/platform.h \
+  src/data-types.h src/settings.h src/functions.h \
+  src/frameHandling.cpp-section src/initializationFrame.cpp-section \
+  src/touchSensors.cpp-section src/cell.cpp-section src/ping.cpp-section \
+  src/snimekHandlers.cpp-section src/standardInitializers.cpp-section

@@ -2,7 +2,6 @@
 #ifdef ARDUINO
 #include "Arduino.h"
 typedef struct{}GioEndpoint;
-#include "Cell.h"
 #endif
 #ifdef BRLTTY
 #include "prologue.h"

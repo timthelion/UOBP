@@ -140,10 +140,7 @@ void sendFrame(
  unsigned char byteInArse;
  byteInArse=START_FLAG;
  #ifdef BRLTTY
-  #define SEND_PACKET_DELAY 10
   logMessage(LOG_DEBUG,"Sending start flag.");
-  //usleep(SEND_PACKET_DELAY*1000);
-  //Sleep for the given number of 1/1000ths of a seccond.
  #endif
  serialWrite(gioEndpoint, byteInArse);
  #ifdef BRLTTY
