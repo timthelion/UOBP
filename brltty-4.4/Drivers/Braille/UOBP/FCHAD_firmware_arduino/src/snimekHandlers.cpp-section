@@ -1,0 +1,38 @@
+/*
+Unfortunately the word frame is overloaded.  It can mean either: a low level packet, or a regular time interval.  Because we have both of these in this firmware, both frames bassed between device and host, and regular time intervals used to read sensors, check for frames(in the packet sense) and manage pulse width modulation stuff(power savings, heat reduction for the solenoids.)  To prevent confusion, regular events are called snimky and not frames.  Snimek is frame in Czech. */
+
+#define NUM_SNIMEK_HANDLERS 6
+SnimekHandler snimekHandlers[NUM_SNIMEK_HANDLERS];
+unsigned long int time;
+
+void initSnimekHandlers(){
+ //PWM of solenoids LOW.
+ snimekHandlers[0].start=0L;
+ snimekHandlers[0].phase=PWM_PHASE;
+ snimekHandlers[0].onSnimek=&displayNothing;
+ //PWM of solenoids HIGH
+ snimekHandlers[1].start=PWM_TIME_LOW;
+ snimekHandlers[1].phase=PWM_PHASE;
+ snimekHandlers[1].onSnimek=&displayCurrentChar;
+ //Check for new frames from the serial.
+ snimekHandlers[2].start=0L;
+ snimekHandlers[2].phase=SERIAL_CHECK_PHASE;
+ snimekHandlers[2].onSnimek=&checkSerial;
+ //Read sensors.  We do this multiple times before we actually record a change.
+ snimekHandlers[3].start=0L;
+ snimekHandlers[3].phase=SENSOR_READ_PHASE;
+ snimekHandlers[3].onSnimek=&readTouchSensors; 
+ //Send sensor events to host, we do this less regularly than we read so as to reduce erroneous events.
+ snimekHandlers[4].start=0L;
+ snimekHandlers[4].phase=SENSOR_SEND_PHASE;
+ snimekHandlers[4].onSnimek=&sendSensorChanges;
+ //Send regular pings to host.
+ snimekHandlers[5].start=0L;
+ snimekHandlers[5].phase=PING_PHASE;
+ snimekHandlers[5].onSnimek=&sendPing;
+ //After initiallizing everything, we want to align our start offsets with the system clock.
+ time=micros();
+ for(int h=0;h<NUM_SNIMEK_HANDLERS;h++){
+  snimekHandlers[h].next=snimekHandlers[h].start+time;
+ }
+}

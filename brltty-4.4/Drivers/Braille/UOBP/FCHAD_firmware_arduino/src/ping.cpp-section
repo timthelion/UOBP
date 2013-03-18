@@ -1,0 +1,8 @@
+void sendPing(){
+  sendFrame(0,3,0,NULL,NULL);
+  /*
+  We ping the driver constantly because sending more information is apparently the only working way to flush the serial buffer.
+  */
+}
+
+
