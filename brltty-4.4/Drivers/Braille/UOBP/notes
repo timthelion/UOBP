@@ -1,4 +1,0 @@
-callHandler
- - All functions called by callHandler must be aware of the type of information that they are recieving through the void * information parameter.
- All frame handlers will recieve an info pointer pointing to a struct of type FrameInfo
-The special frame handler initializeCapabilityNodes must pass some of this info(the pointer to the BrailleDisplay) on to the individual initializers for the individual capabilities.  These initializers take two arguments: a pointer to the capability specific part of the initialization frames initialization buffer, and a pointer to the BrailleDisplay.

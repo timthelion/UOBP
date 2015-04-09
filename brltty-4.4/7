@@ -1,6 +1,0 @@
-2012-10-17@00:39:30.210 BRLTTY 4.4 rev Unversioned directory [http://mielke.cc/brltty/]
-2012-10-17@00:39:30.239 AtSpi2 Screen Driver:
-2012-10-17@00:39:30.239 BrlAPI Server: release 0.5.7
-2012-10-17@00:39:30.647 cannot open file: /home/timothy/works/2012/braille/UOBP/brltty-4.4/Programs/../Tables/brl-ob-all.txt: Adresář nebo soubor neexistuje
-2012-10-17@00:39:30.647 cannot open help file: /home/timothy/works/2012/braille/UOBP/brltty-4.4/Programs/../Tables/brl-ob-all.txt
-2012-10-17@00:39:30.647 UOBP Braille Driver: version 0.0
